@@ -1,0 +1,477 @@
+@use '@angular/material' as mat;
+@use '../../my-lib/src/styles/variables' as *;
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$orange-palette,
+  ),
+));
+
+html {
+  @include mat.all-component-themes($theme);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-family-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Atom DS — Semantic colors (light) */
+  --color-bg-primary:               #FFFFFF;
+  --color-bg-secondary:             #FAFAFA;
+  --color-bg-tertiary:              #F4F4F5;
+  --color-bg-quaternary:            #E4E4E7;
+  --color-bg-inverse-primary:       #18181B;
+  --color-bg-danger-primary:        #FB2C37;
+  --color-bg-status-error:          #FFF0F0;
+  --color-bg-status-success:        #ECFDF5;
+  --color-bg-status-warning:        #FEFCE8;
+  --color-bg-status-info:           #EFF6FF;
+  --color-bg-disabled:              #F4F4F5;
+
+  --color-fg-primary:               #18181B;
+  --color-fg-secondary:             #27272A;
+  --color-fg-tertiary:              #52525C;
+  --color-fg-quaternary:            #71717B;
+  --color-fg-disabled:              #9F9FA9;
+  --color-fg-inverse-primary:       #FAFAFA;
+  --color-fg-brand:                 #FF6B00;
+  --color-fg-status-error:          #9E0812;
+  --color-fg-status-success:        #006145;
+  --color-fg-status-warning:        #894B00;
+  --color-fg-status-info:           #193CB9;
+
+  /* Atom DS — Accent colors */
+  --color-bg-accent-ai-primary:     #18181B;
+  --color-bg-accent-ai-secondary:   #F4F4F5;
+  --color-bg-accent-ai-tertiary:    #FDE7F4;
+  --color-fg-accent-ai-primary:     #FAFAFA;
+  --color-fg-accent-ai-secondary:   #27272A;
+  --color-fg-accent-ai-tertiary:    #C7005C;
+
+  /* Atom DS — Interactive states */
+  --color-bg-interactive-primary-hovered:   #09090B;
+  --color-bg-interactive-primary-pressed:   #000000;
+  --color-bg-interactive-secondary-hovered: #FAFAFA;
+  --color-bg-interactive-secondary-pressed: #F4F4F5;
+  --color-bg-interactive-tertiary-hovered:  #FAFAFA;
+  --color-bg-interactive-tertiary-pressed:  #F4F4F5;
+
+  --color-border-primary:           #71717B;
+  --color-border-secondary:         #D4D4D8;
+  --color-border-tertiary:          #E4E4E7;
+  --color-border-disabled:          #F4F4F5;
+
+  --color-brand-primary:            #FF6B00;
+  --color-primary:                  #FF6B00;
+
+  /* Atom DS — Elevation */
+  --elevation-card:                 0px 2px 4px rgba(9, 9, 11, 0.08);
+  --elevation-popover:              0px 6px 14px rgba(9, 9, 11, 0.08);
+  --elevation-modal:                0px 16px 32px rgba(9, 9, 11, 0.08);
+
+  /* Atom DS — Radius (primitives from radius.css, overridden per index.css) */
+  --radius-none:   0;
+  --radius-xxs:    2px;
+  --radius-xs:     4px;
+  --radius-s:      8px;   /* buttons */
+  --radius-sm:     12px;  /* not used in primitives; kept for compat */
+  --radius-m:      12px;  /* panels, cards — index.css overrides 1rem→12px */
+  --radius-md:     20px;
+  --radius-l:      24px;
+  --radius-xl:     32px;
+  --radius-pill:   9999px;
+
+  /* Atom DS — ATOM shorthand spacing (from index.css @theme) */
+  --xxs:  4px;
+  --xs:   8px;
+  --s:    12px;
+  --m:    16px;
+  --l:    24px;
+  --xl:   32px;
+
+  /* Atom DS — Spacing (from spacing.css primitives) */
+  --spacing-none:  0;
+  --spacing-xxs:   2px;
+  --spacing-xs:    4px;
+  --spacing-s:     8px;
+  --spacing-sm:    12px;
+  --spacing-m:     16px;
+  --spacing-md:    20px;
+  --spacing-l:     24px;
+  --spacing-lg:    28px;
+  --spacing-xl:    32px;
+  --spacing-xxl:   36px;
+  --spacing-2xxl:  40px;
+  --spacing-3xxl:  44px;
+  --spacing-4xxl:  48px;
+
+  /* Atom DS — Misc */
+  --duration-default: 0.6s;
+  --icon-s:           16px;
+  --stroke-xs:        1px;
+
+  /* Atom DS — Typography */
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-bold:    700;
+  --tracking-tighter:    -0.06em;
+  --tracking-tight:      -0.04em;
+  --tracking-normal:     -0.02em;
+  --tracking-wide:       0;
+  --tracking-wider:      0.02em;
+  --tracking-widest:     0.06em;
+
+  /* Atom DS — Button component tokens */
+  --buttons-bg-primary-enabled:         #18181B;
+  --buttons-fg-primary-enabled:         #FFFFFF;
+  --buttons-bg-primary-hovered:         #09090B;
+  --buttons-bg-primary-pressed:         #000000;
+  --buttons-shadow-focus:               0 0 0 4px rgba(24, 24, 27, 0.1);
+  --buttons-bg-secondary-enabled:       #FFFFFF;
+  --buttons-fg-secondary-enabled:       #18181B;
+  --buttons-border-secondary-enabled:   #D4D4D8;
+  --buttons-bg-secondary-hovered:       #FAFAFA;
+  --buttons-bg-secondary-pressed:       #E4E4E7;
+  --buttons-bg-tertiary-enabled:        transparent;
+  --buttons-fg-tertiary-enabled:        #52525C;
+  --buttons-bg-tertiary-hovered:        #FAFAFA;
+  --buttons-bg-tertiary-pressed:        #E4E4E7;
+  --buttons-bg-danger-primary-enabled:  #FB2C37;
+  --buttons-fg-danger-primary-enabled:  #FFFFFF;
+  --buttons-bg-danger-primary-hovered:  #E0242F;
+  --buttons-shadow-focus-danger:        0 0 0 4px rgba(251, 44, 55, 0.2);
+
+  /* Canvas layout constants */
+  --canvas-panel-inset: 12px;
+  --canvas-panel-width: 382px;
+
+  /* Angular Material — MDC button overrides (Atom DS) */
+  --mdc-filled-button-container-color:           #18181B;
+  --mdc-filled-button-label-text-color:          #FFFFFF;
+  --mdc-filled-button-label-text-tracking:       0;
+  --mdc-filled-button-label-text-weight:         600;
+  --mdc-filled-button-label-text-font:           var(--font-sans);
+  --mdc-outlined-button-outline-color:           #D4D4D8;
+  --mdc-outlined-button-label-text-color:        #18181B;
+  --mdc-outlined-button-label-text-tracking:     0;
+  --mdc-outlined-button-label-text-weight:       600;
+  --mdc-outlined-button-label-text-font:         var(--font-sans);
+  --mdc-text-button-label-text-color:            #52525C;
+  --mdc-text-button-label-text-tracking:         0;
+  --mdc-text-button-label-text-weight:           600;
+  --mdc-text-button-label-text-font:             var(--font-sans);
+  --mdc-icon-button-icon-color:                  #71717B;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+code,
+pre,
+kbd,
+samp,
+textarea {
+  font-family: var(--font-mono);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Button
+   Prefix with "html" to get specificity (0,2,1) > Material's (0,2,0) on
+   ".mat-mdc-filled-button.mat-primary" — no !important needed.
+   ────────────────────────────────────────────────────────────────────────────── */
+
+html .mat-mdc-filled-button,
+html .mat-mdc-filled-button.mat-primary,
+html .mat-mdc-unelevated-button,
+html .mat-mdc-unelevated-button.mat-primary {
+  --mdc-filled-button-container-color:     #18181B;
+  --mdc-filled-button-label-text-color:    #FFFFFF;
+  --mdc-filled-button-label-text-tracking: 0;
+  --mdc-filled-button-label-text-weight:   600;
+  --mdc-filled-button-label-text-font:     var(--font-sans);
+  border-radius: 8px !important;
+  letter-spacing: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 36px;
+
+  .mdc-button__ripple { border-radius: 8px; }
+
+  &:hover:not(:disabled) {
+    --mdc-filled-button-container-color: #09090B;
+  }
+
+  &:active:not(:disabled) {
+    --mdc-filled-button-container-color: #000000;
+  }
+
+  &:disabled {
+    --mdc-filled-button-container-color:  #F4F4F5;
+    --mdc-filled-button-label-text-color: #9F9FA9;
+  }
+}
+
+html .mat-mdc-outlined-button,
+html .mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-outline-color:        #D4D4D8;
+  --mdc-outlined-button-label-text-color:     #18181B;
+  --mdc-outlined-button-label-text-tracking:  0;
+  --mdc-outlined-button-label-text-weight:    600;
+  --mdc-outlined-button-label-text-font:      var(--font-sans);
+  border-radius: 8px !important;
+  letter-spacing: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 36px;
+
+  .mdc-button__ripple { border-radius: 8px; }
+
+  &:hover:not(:disabled) {
+    --mdc-outlined-button-outline-color: #A1A1AA;
+    background: #FAFAFA;
+  }
+
+  &:active:not(:disabled) {
+    background: #F4F4F5;
+  }
+
+  &:disabled {
+    --mdc-outlined-button-outline-color:    #E4E4E7;
+    --mdc-outlined-button-label-text-color: #9F9FA9;
+  }
+}
+
+html .mat-mdc-button,
+html .mat-mdc-button.mat-primary {
+  --mdc-text-button-label-text-color:    #52525C;
+  --mdc-text-button-label-text-tracking: 0;
+  --mdc-text-button-label-text-weight:   600;
+  --mdc-text-button-label-text-font:     var(--font-sans);
+  border-radius: 8px !important;
+  letter-spacing: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 36px;
+
+  &:hover:not(:disabled) {
+    background: #FAFAFA;
+  }
+}
+
+/* Danger button variant */
+html .mat-mdc-filled-button.mat-warn,
+html .mat-mdc-filled-button[color="warn"] {
+  --mdc-filled-button-container-color:  #FB2C37;
+  --mdc-filled-button-label-text-color: #FFFFFF;
+
+  &:hover:not(:disabled) {
+    --mdc-filled-button-container-color: #E0242F;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Form Field
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-form-field {
+  font-family: var(--font-sans);
+  min-height: 40px;
+
+  --mat-form-field-outlined-outline-color:          #E4E4E7;
+  --mat-form-field-outlined-hover-outline-color:    #A1A1AA;
+  --mat-form-field-outlined-focus-outline-color:    #FF6B00;
+  --mat-form-field-outlined-focus-label-text-color: #FF6B00;
+  --mat-form-field-outlined-label-text-color:       #71717B;
+  --mat-form-field-outlined-outline-width:          1px;
+  --mat-form-field-outlined-focus-outline-width:    1.5px;
+  --mat-form-field-outlined-caret-color:            #FF6B00;
+  --mat-select-trigger-text-size:                   13px;
+
+  .mat-mdc-floating-label { font-family: var(--font-sans); }
+
+  .mat-mdc-input-element {
+    color: #18181B;
+    font-family: var(--font-sans);
+    caret-color: #FF6B00;
+    letter-spacing: 0;
+
+    &::placeholder { color: #9F9FA9; }
+  }
+
+  .mat-mdc-select-value-text {
+    color: #18181B;
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+  }
+
+  .mat-mdc-select-placeholder {
+    color: #9F9FA9;
+    font-family: var(--font-sans);
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: #E4E4E7;
+  }
+
+  &:hover .mdc-notched-outline__leading,
+  &:hover .mdc-notched-outline__notch,
+  &:hover .mdc-notched-outline__trailing {
+    border-color: #A1A1AA;
+  }
+
+  &.mat-focused .mdc-notched-outline__leading,
+  &.mat-focused .mdc-notched-outline__notch,
+  &.mat-focused .mdc-notched-outline__trailing {
+    border-color: #FF6B00;
+  }
+}
+
+.mat-mdc-option {
+  font-family: var(--font-sans);
+  font-size: $font-size-base;
+  color: #18181B;
+  letter-spacing: 0;
+  min-height: 36px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  --mat-option-selected-state-layer-color: transparent;
+  --mat-option-hover-state-layer-color: #F4F4F5;
+  --mat-option-focus-state-layer-color: #F4F4F5;
+  --mat-option-selected-state-label-text-color: #18181B;
+  --mat-option-label-text-color: #18181B;
+
+  .mdc-list-item__primary-text {
+    font-size: $font-size-base !important;
+    font-family: var(--font-sans) !important;
+    letter-spacing: 0 !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Select panel
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-select-panel {
+  background: #FFFFFF !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 6px 14px rgba(9, 9, 11, 0.08) !important;
+  border: 1px solid #E4E4E7;
+}
+
+.pem-model-panel {
+  min-width: 160px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Checkbox
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color:      #FFFFFF;
+  --mdc-checkbox-selected-focus-icon-color:     #FF6B00;
+  --mdc-checkbox-selected-hover-icon-color:     #FF6B00;
+  --mdc-checkbox-selected-icon-color:           #FF6B00;
+  --mdc-checkbox-selected-pressed-icon-color:   #E55F00;
+  --mdc-checkbox-unselected-focus-icon-color:   #71717B;
+  --mdc-checkbox-unselected-hover-icon-color:   #71717B;
+  --mdc-checkbox-unselected-icon-color:         #D4D4D8;
+  --mdc-checkbox-unselected-pressed-icon-color: #D4D4D8;
+  --mat-checkbox-label-text-font:               var(--font-sans);
+  --mat-checkbox-label-text-size:               14px;
+  --mat-checkbox-label-text-tracking:           0;
+  --mat-checkbox-label-text-color:              #18181B;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Slide toggle
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-slide-toggle {
+  --mat-slide-toggle-label-text-font:    var(--font-sans);
+  --mat-slide-toggle-label-text-size:    14px;
+  --mat-slide-toggle-label-text-tracking: 0;
+  --mat-slide-toggle-label-text-color:   #18181B;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Expansion panel
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-expansion-panel {
+  font-family: var(--font-sans);
+
+  .mat-expansion-panel-header {
+    font-family: var(--font-sans);
+  }
+
+  .mat-expansion-panel-header-title {
+    color: #18181B;
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+  }
+
+  .mat-expansion-panel-header-description {
+    color: #71717B;
+    font-family: var(--font-sans);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Ripple / state layer — neutralize orange primary
+   ────────────────────────────────────────────────────────────────────────────── */
+
+/* Filled button ripple: dark primary, not orange */
+html .mat-mdc-filled-button .mat-mdc-button-ripple,
+html .mat-mdc-filled-button.mat-primary .mat-mdc-button-ripple {
+  --mat-mdc-button-ripple-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Outlined/text button ripple: neutral gray */
+html .mat-mdc-outlined-button .mat-mdc-button-ripple,
+html .mat-mdc-outlined-button.mat-primary .mat-mdc-button-ripple,
+html .mat-mdc-button .mat-mdc-button-ripple,
+html .mat-mdc-button.mat-primary .mat-mdc-button-ripple {
+  --mat-mdc-button-ripple-color: rgba(24, 24, 27, 0.06);
+}
+
+/* Focus ring — use dark primary not orange */
+html .mat-mdc-filled-button .mat-mdc-focus-indicator::before {
+  border-color: rgba(24, 24, 27, 0.2);
+}
+
+/* Icon button — neutral gray */
+html .mat-mdc-icon-button,
+html .mat-mdc-icon-button.mat-primary {
+  --mdc-icon-button-icon-color:         #71717B;
+  --mat-icon-button-icon-color:         #71717B;
+  --mat-icon-button-state-layer-color:  #18181B;
+  color: #71717B;
+
+  &:hover {
+    color: #18181B;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Angular Material — Dialog / MatDialog
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+  box-shadow: 0px 16px 32px rgba(9, 9, 11, 0.08) !important;
+}

@@ -1,0 +1,135 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2 class="modal-title">
+        @if (step() === 'SELECT_TOOLKIT') { {{ 'modals.tool_selection.select_tool' | transloco }} }
+        @else { {{ selectedToolkit()?.name }} }
+      </h2>
+      <button class="modal-close" (click)="closed.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    @if (step() === 'SELECT_TOOLKIT' || step() === 'SELECT_TOOLS') {
+      <div class="modal-search-row">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-search-field">
+          <input matInput [placeholder]="'modals.tool_selection.search' | transloco" [ngModel]="search()" (ngModelChange)="search.set($event)" />
+          <span matPrefix class="modal-search-prefix">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </span>
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="modal-body">
+      @if (step() === 'SELECT_TOOLKIT') {
+        <div class="tool-list">
+          @for (toolkit of filteredToolkits(); track toolkit.id) {
+            <button class="tool-item" (click)="selectToolkit(toolkit)">
+              <div class="tool-item__icon">
+                <span class="tool-item__initial">{{ getToolkitInitial(toolkit.icon) }}</span>
+              </div>
+              <div class="tool-item__info">
+                <p class="tool-item__name">{{ toolkit.name }}</p>
+                <p class="tool-item__desc">{{ toolkit.descriptionKey | transloco }}</p>
+              </div>
+              @if (toolkit.connected) {
+                <span class="tool-item__connected">{{ 'modals.tool_selection.connected' | transloco }}</span>
+              }
+            </button>
+          }
+          @if (filteredToolkits().length === 0) {
+            <div class="tool-empty">
+              <p>{{ 'modals.tool_selection.no_results' | transloco:{ search: search() } }}</p>
+            </div>
+          }
+        </div>
+      }
+
+      @if (step() === 'CONNECT_TOOLKIT' && selectedToolkit()) {
+        <div class="connect-flow">
+          <button class="modal-back-btn" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+            </svg>
+            {{ 'modals.tool_selection.back_to_tools' | transloco }}
+          </button>
+
+          <div class="connect-toolkit-card">
+            <div class="tool-item__icon">
+              <span class="tool-item__initial">{{ getToolkitInitial(selectedToolkit()!.icon) }}</span>
+            </div>
+            <div>
+              <p class="tool-item__name">{{ selectedToolkit()!.name }}</p>
+              <p class="tool-item__desc">{{ selectedToolkit()!.descriptionKey | transloco }}</p>
+            </div>
+          </div>
+
+          <div class="connect-status-card">
+            <p class="connect-status-text">{{ 'modals.tool_selection.not_connected' | transloco }}</p>
+            <button class="modal-primary-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              {{ 'modals.tool_selection.connect' | transloco }}
+            </button>
+          </div>
+
+          <p class="connect-hint">{{ 'modals.tool_selection.connect_hint' | transloco }}</p>
+          <button class="modal-secondary-btn">{{ 'modals.tool_selection.verify_again' | transloco }}</button>
+        </div>
+      }
+
+      @if (step() === 'SELECT_TOOLS' && selectedToolkit()) {
+        <div class="tool-list">
+          <button class="modal-back-btn" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+            </svg>
+            {{ 'modals.tool_selection.back' | transloco }} &nbsp;|&nbsp; {{ selectedToolkit()!.name }}
+          </button>
+
+          @for (tool of filteredTools(); track tool.id) {
+            <button class="tool-select-item" [class.tool-select-item--selected]="isToolSelected(tool)" (click)="toggleTool(tool)">
+              <div class="tool-select-item__check" [class.tool-select-item__check--active]="isToolSelected(tool)">
+                @if (isToolSelected(tool)) {
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="10" height="10">
+                    <path d="M20 6 9 17l-5-5"/>
+                  </svg>
+                }
+              </div>
+              <div class="tool-select-item__info">
+                <p class="tool-select-item__name">{{ tool.name }}</p>
+                <p class="tool-select-item__desc">{{ tool.descriptionKey | transloco }}</p>
+              </div>
+            </button>
+          }
+          @if (filteredTools().length === 0) {
+            <div class="tool-empty">
+              <p>{{ 'modals.tool_selection.no_results' | transloco:{ search: search() } }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      @if (step() !== 'SELECT_TOOLKIT') {
+        <button class="modal-cancel-btn" (click)="goBack()">{{ 'modals.tool_selection.back' | transloco }}</button>
+      }
+      <button class="modal-primary-btn" (click)="confirm()">
+        @if (step() === 'SELECT_TOOLS') {
+          {{ 'modals.tool_selection.add_tools' | transloco:{ count: tempSelected().length } }}
+        } @else {
+          {{ 'modals.tool_selection.select_tool' | transloco }}
+        }
+      </button>
+    </div>
+
+  </div>
+</div>

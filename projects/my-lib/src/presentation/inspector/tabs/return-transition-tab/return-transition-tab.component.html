@@ -1,0 +1,18 @@
+<div class="return-tab__checkbox">
+  <label class="return-tab__checkbox-label">
+    <input type="checkbox" class="return-tab__checkbox-input" [ngModel]="rt.enabled" (ngModelChange)="updateRT({ enabled: $event })" />
+    {{ 'tabs.return.enable' | transloco }}
+  </label>
+</div>
+
+@if (rt.enabled) {
+  <mat-form-field appearance="outline" class="return-tab__field" subscriptSizing="dynamic">
+    <mat-label>{{ 'tabs.return.label' | transloco }}</mat-label>
+    <input matInput type="text" [ngModel]="rt.label" (ngModelChange)="updateRT({ label: $event })" [placeholder]="'tabs.return.label_placeholder' | transloco" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="return-tab__field" subscriptSizing="dynamic">
+    <mat-label>{{ 'tabs.return.condition' | transloco }}</mat-label>
+    <textarea matInput rows="3" [ngModel]="rt.conditionExpression" (ngModelChange)="updateRT({ conditionExpression: $event })"
+      [placeholder]="'tabs.return.condition_placeholder' | transloco"></textarea>
+  </mat-form-field>
+}

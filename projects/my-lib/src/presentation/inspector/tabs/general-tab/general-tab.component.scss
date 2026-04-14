@@ -1,0 +1,577 @@
+@use '../../../../styles' as *;
+
+:host {
+  display: block;
+}
+
+.general-tab {
+  &__section {
+    padding: $spacing-lg;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid $color-border;
+    margin: 0;
+  }
+
+  &__objective-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__section-title {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    color: $color-text-muted;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__section-icon {
+    color: $color-text-light;
+    flex-shrink: 0;
+  }
+
+  &__assistant-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2xs;
+    padding: 2px $spacing-sm;
+    background: transparent;
+    color: $color-text-muted;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    min-height: 24px;
+    transition: background 0.15s;
+
+    &:hover {
+      background: $color-bg-secondary;
+    }
+  }
+
+  &__prompt-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 120px;
+    padding: $spacing-sm $spacing-md;
+    padding-right: $spacing-2xl;
+    background: $color-bg-secondary;
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+
+    &:hover {
+      border-color: rgba($color-primary, 0.5);
+      background: $color-white;
+    }
+  }
+
+  &__prompt-preview-text {
+    font-size: $font-size-base;
+    color: $color-text;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__prompt-preview-placeholder {
+    font-size: $font-size-base;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  &__prompt-expand {
+    position: absolute;
+    bottom: $spacing-sm;
+    right: $spacing-sm;
+    color: $color-text-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
+    opacity: 0;
+    transition: opacity 0.15s;
+
+    .general-tab__prompt-preview:hover & {
+      opacity: 1;
+    }
+  }
+
+  &__prompt-editor {
+    position: relative;
+  }
+
+  &__textarea {
+    @include form-input;
+    resize: vertical;
+    min-height: 120px;
+    font-size: $font-size-base;
+    line-height: 1.6;
+  }
+
+  &__mention-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    margin-bottom: $spacing-2xs;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-dropdown;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 30;
+  }
+
+  &__mention-item {
+    display: block;
+    width: 100%;
+    padding: $spacing-sm $spacing-lg;
+    @include button-reset;
+    text-align: left;
+    font-size: $font-size-base;
+
+    &:hover {
+      background: $color-hover-bg;
+    }
+  }
+
+  &__collapsible-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+
+    .general-tab__section-title {
+      flex: 1;
+      font-weight: 700;
+      transition: color 0.15s;
+    }
+
+    .general-tab__section-icon {
+      transition: color 0.15s;
+    }
+
+    &:hover {
+      .general-tab__section-icon {
+        color: $color-primary;
+      }
+
+      .general-tab__section-title {
+        color: $color-text;
+      }
+    }
+  }
+
+  &__chevron {
+    color: $color-text-muted;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__collapsible-body {
+    margin-top: $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__hint {
+    font-size: $font-size-base;
+    color: $color-text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__warning-box {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    background: rgba($color-primary, 0.05);
+    border: 1px solid rgba($color-primary, 0.10);
+    border-radius: $radius-xl;
+    padding: $spacing-lg;
+    font-size: $font-size-base;
+    color: $color-text;
+    line-height: 1.5;
+  }
+
+  &__warning-emphasis {
+    color: $color-primary;
+  }
+
+  &__warning-icon {
+    color: $color-primary;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  &__field-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__field-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-2xs 0;
+    font-size: $font-size-base;
+    color: $color-text;
+  }
+
+  &__field-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: 0 $spacing-2xs $spacing-sm;
+    border-bottom: 1px solid $color-border;
+    margin-bottom: 0;
+  }
+
+  &__col-campo {
+    flex: 1;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__col-required-header {
+    width: 96px;
+    text-align: center;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+
+  &__col-del {
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  &__field-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: 0;
+  }
+
+  &__field-dropdown-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  &__field-dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 40px;
+    padding: $spacing-sm $spacing-md;
+    background: $color-white;
+    border: 1px solid $color-input-border;
+    border-radius: $radius-xl;
+    cursor: pointer;
+    font-size: $font-size-lg;
+    color: $color-text;
+    text-align: left;
+    transition: border-color 0.15s;
+
+    &:hover { border-color: $color-primary; }
+  }
+
+  &__field-dropdown-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  &__col-required-cell {
+    width: 96px;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__field-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+  }
+
+  &__field-panel {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-dropdown;
+    z-index: 31;
+    overflow: hidden;
+  }
+
+  &__field-search-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border-bottom: 1px solid $color-border;
+    color: $color-text-muted;
+  }
+
+  &__field-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: $font-size-base;
+    color: $color-text;
+
+    &::placeholder { color: $color-text-muted; }
+  }
+
+  &__field-options {
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  &__field-option {
+    display: block;
+    width: 100%;
+    padding: $spacing-sm $spacing-lg;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $font-size-base;
+    color: $color-text;
+    text-align: left;
+    transition: background 0.1s;
+
+    &:hover { background: $color-hover-bg; }
+  }
+
+  &__field-no-results {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    text-align: center;
+    margin: 0;
+  }
+
+  &__field-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $color-text-muted;
+    border-radius: $radius-sm;
+    flex-shrink: 0;
+    padding: $spacing-sm;
+    opacity: 0;
+
+    .general-tab__field-row:hover & { opacity: 1; }
+    &:hover { color: $color-error; }
+  }
+
+  &__select-all-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    cursor: pointer;
+    padding: 0 $spacing-2xs;
+  }
+
+  &__select-all-label {
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 2px solid $color-text-muted;
+    border-radius: $radius-xs;
+    background: transparent;
+    position: relative;
+    transition: border-color 0.15s;
+
+    &:hover {
+      border-color: $color-primary;
+    }
+
+    &:checked {
+      border-color: $color-primary;
+    }
+
+    &:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 0;
+      width: 6px;
+      height: 11px;
+      border: solid $color-primary;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &__field-label {
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $color-text-muted;
+    display: block;
+  }
+
+  &__field-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xs;
+
+    & + & {
+      margin-top: $spacing-lg;
+    }
+  }
+
+  &__action-row {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+
+    /* "Agregar campo" — Primary button style (dark bg, white text) */
+    .general-tab__add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-2xs;
+      background: #18181B;
+      color: $color-white;
+      padding: $spacing-2xs $spacing-md;
+      border-radius: $radius-md;
+      font-size: $font-size-lg;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      min-height: 32px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+
+      &:hover:not(:disabled) {
+        background: #09090B;
+        color: $color-white;
+      }
+    }
+  }
+
+  &__secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2xs;
+    background: $color-white;
+    color: $color-text;
+    border: 1px solid $color-input-border;
+    border-radius: $radius-md;
+    padding: $spacing-2xs $spacing-md;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    min-height: 32px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $color-bg-secondary;
+    }
+  }
+
+  &__add-btn {
+    @include add-circle-button;
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+  }
+
+}
+
+:host ::ng-deep {
+  .general-tab__field.mat-mdc-form-field {
+    width: 100%;
+    --mdc-outlined-text-field-container-shape: #{$radius-xl};
+    --mdc-outlined-text-field-input-text-size: #{$font-size-base};
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0 $spacing-sm;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      min-height: 36px;
+    }
+
+    .mat-mdc-input-element {
+      font-size: $font-size-base;
+    }
+
+    .mdc-notched-outline__leading {
+      border-radius: $radius-xl 0 0 $radius-xl;
+      min-width: $radius-xl;
+    }
+
+    .mdc-notched-outline__trailing {
+      border-radius: 0 $radius-xl $radius-xl 0;
+    }
+  }
+
+}
+

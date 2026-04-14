@@ -1,0 +1,64 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">{{ 'modals.field_creation.title' | transloco }}</h2>
+      </div>
+      <button class="modal-close" (click)="closed.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <p class="modal-subtitle">{{ 'modals.field_creation.subtitle' | transloco }}</p>
+
+    <div class="modal-body">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-field">
+        <mat-label>{{ 'modals.field_creation.field_name' | transloco }}</mat-label>
+        <input matInput type="text"
+          [ngModel]="name()"
+          (ngModelChange)="name.set($event)"
+          [placeholder]="'modals.field_creation.field_name_placeholder' | transloco" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-field">
+        <mat-label>{{ 'modals.field_creation.field_description' | transloco }}</mat-label>
+        <textarea matInput rows="4"
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          [placeholder]="'modals.field_creation.field_description_placeholder' | transloco"
+          maxlength="200"></textarea>
+        <mat-hint>{{ 'modals.field_creation.field_hint' | transloco }}</mat-hint>
+        <mat-hint align="end">{{ description().length }}/200</mat-hint>
+      </mat-form-field>
+
+      <div class="modal-grid-2">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-field">
+          <mat-label>{{ 'modals.field_creation.data_type' | transloco }}</mat-label>
+          <mat-select [ngModel]="dataType()" (ngModelChange)="dataType.set($event)">
+            <mat-option value="Texto">{{ 'modals.field_creation.data_type_text' | transloco }}</mat-option>
+            <mat-option value="Número">{{ 'modals.field_creation.data_type_number' | transloco }}</mat-option>
+            <mat-option value="Email">{{ 'modals.field_creation.data_type_email' | transloco }}</mat-option>
+            <mat-option value="Fecha">{{ 'modals.field_creation.data_type_date' | transloco }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-field">
+          <mat-label>{{ 'modals.field_creation.length' | transloco }}</mat-label>
+          <input matInput type="text"
+            [ngModel]="length()"
+            (ngModelChange)="length.set($event)"
+            [placeholder]="'modals.field_creation.length_placeholder' | transloco" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-cancel-btn" (click)="closed.emit()">{{ 'common.cancel' | transloco }}</button>
+      <button class="modal-create-btn" [disabled]="!canCreate" (click)="create()">{{ 'common.create' | transloco }}</button>
+    </div>
+
+  </div>
+</div>

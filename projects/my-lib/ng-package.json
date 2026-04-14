@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/atom-agentbuilder",
+  "lib": {
+    "entryFile": "./public-api.ts",
+    "cssUrl": "none"
+  },
+  "keepLifecycleScripts": true,
+  "deleteDestPath": false,
+  "allowedNonPeerDependencies": ["tslib"],
+  "assets": ["./assets/**/*.*"]
+}

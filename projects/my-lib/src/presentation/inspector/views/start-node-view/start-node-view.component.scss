@@ -1,0 +1,13 @@
+@use '../../../../styles' as *;
+
+.start-node {
+  padding: $spacing-xl;
+
+  &__text {
+    font-size: $font-size-base;
+    color: $color-text-muted;
+    line-height: 1.5;
+    margin: 0 0 $spacing-sm;
+  }
+}
+

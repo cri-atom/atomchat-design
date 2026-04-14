@@ -1,0 +1,87 @@
+@if (selectedNode() || selectedEdge()) {
+  <div class="inspector" @slideInOut>
+    <div class="inspector__header">
+      @if (selectedNode(); as node) {
+        @if (isEditing()) {
+          <input class="inspector__name-input" #nameInput [value]="node.data.label"
+            (keydown.enter)="saveName(nameInput.value)"
+            (keydown.escape)="isEditing.set(false)"
+            (blur)="saveName(nameInput.value)" autofocus />
+        } @else {
+          <h2 class="inspector__title" (dblclick)="startEditing(node)">
+            {{ node.data.label || nodeIcon(node) + ' ' + node.type }}
+          </h2>
+        }
+      }
+      @if (selectedEdge(); as edge) {
+        <h2 class="inspector__title">{{ 'inspector.edge.title' | transloco }}</h2>
+      }
+      <button class="inspector__close-btn" type="button" (click)="state.setSelectedNode(null); state.setSelectedEdge(null)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    @if (selectedNode(); as node) {
+      @switch (node.type) {
+        @case ('start') {
+          <div class="inspector__content">
+            <flowagent-start-node-view />
+          </div>
+        }
+        @case ('agent') {
+          <div class="inspector__tabs">
+            @for (tab of agentTabs; track tab.id) {
+              <button class="inspector__tab" [class.inspector__tab--active]="activeTab() === tab.id"
+                (click)="activeTab.set(tab.id)">
+                {{ tab.label | transloco }}
+                @if (activeTab() === tab.id) {
+                  <span class="inspector__tab-indicator"></span>
+                }
+              </button>
+            }
+          </div>
+          <div class="inspector__content">
+            @switch (activeTab()) {
+              @case ('general') { <flowagent-general-tab [node]="node" /> }
+              @case ('kb') { <flowagent-knowledge-base-tab [node]="node" /> }
+              @case ('tools') { <flowagent-tools-tab [node]="node" /> }
+            }
+          </div>
+        }
+        @case ('end') {
+          <div class="inspector__content">
+            <flowagent-end-node-view [node]="node" />
+          </div>
+        }
+        @case ('tool') {
+          <div class="inspector__content">
+            <flowagent-tools-tab [node]="node" />
+          </div>
+        }
+      }
+    }
+
+    @if (selectedEdge(); as edge) {
+      <div class="inspector__tabs">
+        <button class="inspector__tab" [class.inspector__tab--active]="activeTab() === 'forward'"
+          (click)="activeTab.set('forward')">
+          {{ 'inspector.edge.forward' | transloco }}
+          @if (activeTab() === 'forward') { <span class="inspector__tab-indicator"></span> }
+        </button>
+        <button class="inspector__tab" [class.inspector__tab--active]="activeTab() === 'return'"
+          (click)="activeTab.set('return')">
+          {{ 'inspector.edge.return' | transloco }}
+          @if (activeTab() === 'return') { <span class="inspector__tab-indicator"></span> }
+        </button>
+      </div>
+      <div class="inspector__content">
+        @switch (activeTab()) {
+          @case ('forward') { <flowagent-edges-tab [edge]="edge" /> }
+          @case ('return') { <flowagent-return-transition-tab [edge]="edge" /> }
+        }
+      </div>
+    }
+  </div>
+}

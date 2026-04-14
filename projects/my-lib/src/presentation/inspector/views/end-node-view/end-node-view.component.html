@@ -1,0 +1,9 @@
+<div class="end-node">
+  <div class="end-node__field-wrap">
+    <label class="end-node__field-label">{{ 'views.end.end_label' | transloco }}</label>
+    <input class="end-node__input" type="text"
+      [ngModel]="endData.endLabel"
+      (ngModelChange)="update({ endLabel: $event })"
+      [placeholder]="'views.end.end_label_placeholder' | transloco" />
+  </div>
+</div>

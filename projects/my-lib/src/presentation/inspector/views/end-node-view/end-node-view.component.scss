@@ -1,0 +1,26 @@
+@use '../../../../styles' as *;
+
+:host {
+  padding: $spacing-lg $spacing-xl;
+  display: block;
+}
+
+.end-node {
+  &__field-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xs;
+  }
+
+  &__field-label {
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $color-text-muted;
+  }
+
+  &__input {
+    @include form-input;
+    background: $color-bg-secondary;
+  }
+}
+

@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "paths": {
+      "@lib/core/*": ["projects/my-lib/src/core/*"],
+      "@lib/infrastructure/*": ["projects/my-lib/src/infrastructure/*"],
+      "@lib/state/*": ["projects/my-lib/src/application/state/*"],
+      "@lib/canvas/*": ["projects/my-lib/src/presentation/canvas/*"],
+      "@lib/inspector/*": ["projects/my-lib/src/presentation/inspector/*"],
+      "@lib/presentation/*": ["projects/my-lib/src/presentation/*"],
+      "@lib/application/*": ["projects/my-lib/src/application/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}

@@ -1,0 +1,320 @@
+﻿{
+  "common": {
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "create": "Criar",
+    "delete": "Excluir",
+    "edit": "Editar"
+  },
+  "defaults": {
+    "node": {
+      "start": "Início",
+      "agent": "Novo agente",
+      "tool_dispatch": "Despachante de ferramentas",
+      "select_agent": "Selecionar agente",
+      "end": "Fim"
+    },
+    "edge": {
+      "new_condition": "Nova condição",
+      "end_condition": "Condição de fim",
+      "return_condition": "Condição de retorno"
+    }
+  },
+  "editor": {
+    "zoom": {
+      "in": "Aumentar zoom",
+      "out": "Diminuir zoom",
+      "fit": "Ajustar à tela"
+    },
+    "actions": {
+      "history": "Histórico",
+      "publish": "Publicar",
+      "save": "Salvar",
+      "simulate": "Simular",
+      "menu": "Menu",
+      "delete_branch": "Excluir ramificação",
+      "duplicate": "Duplicar"
+    },
+    "validation": {
+      "title": "Validação",
+      "errors_title": "Erros"
+    },
+    "add_menu": {
+      "agent_title": "Agente",
+      "agent_desc": "Adicionar um nó de agente",
+      "end_title": "Fim",
+      "end_desc": "Adicionar um nó de fim"
+    },
+    "node": {
+      "goal_placeholder": "O que este nó deve alcançar?"
+    }
+  },
+  "errors": {
+    "save_failed": "Erro ao salvar fluxo"
+  },
+  "global": {
+    "expand": "Expandir configurações globais",
+    "collapse": "Recolher configurações globais",
+    "title": "Configurações globais",
+    "subtitle": "Configure o comportamento padrão do seu fluxo",
+    "instructions": {
+      "title": "Instruções base",
+      "placeholder": "Escreva instruções globais para o agente"
+    },
+    "actions": {
+      "add": "Adicionar etapa"
+    },
+    "pipeline": {
+      "sales": "Vendas",
+      "service": "Serviço"
+    },
+    "stages": {
+      "title": "Etapas",
+      "delete": "Excluir etapa",
+      "atom_name": "Nome do Atom",
+      "already_used": "(já usado)",
+      "stage_name": "Nome da etapa",
+      "stage_name_placeholder": "Informe o nome da etapa",
+      "save_condition": "Condição de salvamento",
+      "save_condition_placeholder": "Defina quando salvar",
+      "empty": "Nenhuma etapa configurada para {{pipeline}}"
+    },
+    "fields": {
+      "title": "Campos para salvar",
+      "helper": "Escolha os campos a persistir",
+      "header": "Campo",
+      "search_placeholder": "Buscar campos",
+      "no_results": "Nenhum campo correspondente",
+      "delete": "Excluir campo",
+      "add": "Adicionar campo"
+    },
+    "timezone": {
+      "title": "Fuso horário"
+    },
+    "prevent_loops": {
+      "title": "Evitar loops infinitos",
+      "description": "Interromper a execução se caminhos repetitivos forem detectados"
+    }
+  },
+  "inspector": {
+    "edge": {
+      "title": "Transição",
+      "forward": "Avanço",
+      "return": "Retorno"
+    },
+    "tabs": {
+      "general": "Geral",
+      "knowledge_base": "Base de conhecimento",
+      "tools": "Ferramentas"
+    }
+  },
+  "modals": {
+    "field_creation": {
+      "title": "Criar campo",
+      "subtitle": "Defina um novo campo para coletar",
+      "field_name": "Nome do campo",
+      "field_name_placeholder": "Ex. customer_email",
+      "field_description": "Descrição do campo",
+      "field_description_placeholder": "Descreva o que deve ser capturado",
+      "field_hint": "Use uma descrição clara e específica",
+      "data_type": "Tipo de dado",
+      "data_type_text": "Texto",
+      "data_type_number": "Número",
+      "data_type_email": "E-mail",
+      "data_type_date": "Data",
+      "length": "Tamanho máximo",
+      "length_placeholder": "Ex. 255"
+    },
+    "file_selection": {
+      "title": "Selecionar arquivos",
+      "subtitle": "Anexe arquivos a este nó",
+      "search_placeholder": "Buscar arquivos",
+      "upload_file": "Enviar arquivo",
+      "save_selection": "Salvar seleção",
+      "table": {
+        "name": "Nome",
+        "type": "Tipo",
+        "size": "Tamanho",
+        "updated": "Atualizado"
+      },
+      "pagination": {
+        "rows_per_page": "Linhas por página",
+        "range": "{{count}} itens"
+      }
+    },
+    "http_request": {
+      "request_label": "Requisição HTTP",
+      "to": "para",
+      "description": "Configure uma requisição HTTP para conectar com sistemas externos.",
+      "learn_request": "Conheça a requisição HTTP",
+      "learn_body": "As requisições HTTP permitem enviar e receber dados de serviços externos através da sua API. Você pode configurar o método, a URL, os cabeçalhos e o corpo da requisição.",
+      "basic_config": "Configuração básica",
+      "method": "Método da requisição",
+      "url": "URL do serviço e parâmetros",
+      "url_placeholder": "https://api.exemplo.com/v1/recurso",
+      "url_hint": "Endereço web para enviar a requisição",
+      "test_request": "Testar requisição",
+      "request_body": "Corpo da requisição",
+      "request_body_desc": "Especifique os dados que serão enviados no corpo da requisição HTTP, em formato JSON.",
+      "headers": "Cabeçalhos",
+      "headers_desc": "Adicione os cabeçalhos necessários para executar a requisição.",
+      "advanced_config": "Configurações avançadas",
+      "authorization": "Autorização",
+      "authorization_desc": "Configure o tipo de autorização que a requisição HTTP requer, como OAuth 2.0 ou Basic Auth.",
+      "save_response": "Salvar resposta",
+      "save_response_desc": "Salva os valores da resposta HTTP em campos de informação do Atom.",
+      "handle_response_codes": "Tratamento de códigos de resposta",
+      "handle_response_codes_desc": "Gerencie o sucesso ou erro da requisição com base no código de resposta HTTP.",
+      "api_timeout": "Tempo de espera da API",
+      "api_timeout_desc": "Defina o tempo máximo em segundos para aguardar uma resposta da API.",
+      "save_config": "Salvar configuração"
+    },
+    "prompt_editor": {
+      "name_placeholder": "Nome do agente",
+      "instructions_label": "Instruções do prompt",
+      "textarea_placeholder": "Escreva as instruções detalhadas para o comportamento do agente...",
+      "insert_tool": "Inserir ferramenta",
+      "insert_field": "Inserir campo",
+      "no_results": "Sem resultados",
+      "assistant_title": "Assistente de IA",
+      "assistant_desc": "Descreva o que deseja melhorar e a IA atualizará as instruções.",
+      "assistant_placeholder": "Ex: Torne-o mais amigável e pergunte sobre o orçamento...",
+      "refining": "Refinando...",
+      "refine_btn": "Refinar prompt",
+      "tools_title": "Ferramentas disponíveis",
+      "tools_hint": "Digite @ no prompt para mencionar uma ferramenta.",
+      "tools_empty": "Nenhuma ferramenta adicionada a este nó."
+    },
+    "tool_selection": {
+      "select_tool": "Selecione um toolkit",
+      "search": "Buscar",
+      "connected": "Conectado",
+      "not_connected": "Não conectado",
+      "connect": "Conectar",
+      "connect_hint": "Você precisa conectar este toolkit antes de selecionar ferramentas",
+      "verify_again": "Verificar novamente",
+      "back_to_tools": "Voltar aos toolkits",
+      "back": "Voltar",
+      "no_results": "Nenhum resultado para \"{{search}}\"",
+      "add_tools": "Adicionar {{count}} ferramenta(s)",
+      "toolkits": {
+        "gmail": "Integração do Gmail",
+        "github": "Integração do GitHub",
+        "google_calendar": "Integração do Google Calendar",
+        "notion": "Integração do Notion",
+        "google_sheets": "Integração do Google Sheets"
+      },
+      "tools": {
+        "gmail_1": "Modificar rótulos no Gmail",
+        "gmail_2": "Excluir mensagens do Gmail em lote",
+        "gmail_3": "Criar rascunho de e-mail",
+        "gmail_4": "Enviar e-mail"
+      }
+    }
+  },
+  "tabs": {
+    "code": {
+      "title": "Código",
+      "coming_soon": "As ferramentas de código estarão disponíveis em breve"
+    },
+    "edges": {
+      "condition_label": "Rótulo da condição",
+      "condition_label_placeholder": "Ex. cliente aceitou",
+      "override_end_condition": "Sobrescrever condição de fim",
+      "condition_expression": "Expressão da condição",
+      "condition_expression_placeholder": "Escreva a expressão da condição"
+    },
+    "general": {
+      "conversation_goal": "Objetivo da conversa",
+      "assistant": "Assistente",
+      "goal_placeholder": "Descreva o que este agente deve alcançar",
+      "info_fields": "Campos de informação",
+      "info_hint": "Selecione os campos que este nó deve coletar",
+      "info_warning_prefix": "Apenas campos",
+      "required": "obrigatórios",
+      "info_warning_suffix": "podem ser usados aqui.",
+      "select_all": "Selecionar tudo",
+      "create_field": "Criar campo",
+      "add_field": "Adicionar campo",
+      "advanced_config": "Configuração avançada",
+      "llm_model": "Modelo LLM",
+      "thinking_level": "Nível de raciocínio",
+      "level": {
+        "auto": "Automático",
+        "low": "Baixo",
+        "medium": "Médio",
+        "high": "Alto"
+      }
+    },
+    "http_tools": {
+      "add": "Adicionar ferramenta HTTP",
+      "untitled": "Ferramenta sem título",
+      "tool_name": "Nome da ferramenta",
+      "tool_description": "Descrição da ferramenta",
+      "url_placeholder": "URL da requisição",
+      "body_template": "Modelo do corpo da requisição",
+      "empty": "Nenhuma ferramenta HTTP configurada"
+    },
+    "info_collection": {
+      "title": "Coleta de dados",
+      "add": "Adicionar item",
+      "note": "Defina quais informações este nó deve coletar",
+      "default_label": "Novo item",
+      "default_description": "Descreva a informação a coletar",
+      "empty": "Ainda não há itens de coleta de informação"
+    },
+    "knowledge_base": {
+      "documents": "Documentos",
+      "select_or_upload": "Selecionar ou enviar documentos",
+      "no_documents": "Nenhum documento vinculado",
+      "dynamic_table": "Tabela dinâmica",
+      "dynamic_table_hint": "Selecione uma tabela dinâmica para enriquecer o contexto",
+      "select_table": "Selecionar tabela",
+      "no_table_selected": "Nenhuma tabela selecionada"
+    },
+    "return": {
+      "enable": "Ativar transição de retorno",
+      "label": "Rótulo de retorno",
+      "label_placeholder": "Rótulo de retorno",
+      "condition": "Condição de retorno",
+      "condition_placeholder": "Escreva uma condição de retorno"
+    },
+    "tools": {
+      "integrations": "Integrações",
+      "add_integration": "Adicionar integração",
+      "no_integrations": "Nenhuma integração adicionada",
+      "http_request": "Requisições HTTP",
+      "add_http_request": "Adicionar requisição HTTP",
+      "no_http_requests": "Nenhuma requisição HTTP adicionada",
+      "code": "Código",
+      "coming_soon": "Em breve",
+      "code_description": "As ferramentas de execução de código estarão disponíveis em breve"
+    }
+  },
+  "validation": {
+    "agent_missing_goal": "O agente \"{{label}}\" não possui objetivo de conversa",
+    "tool_missing_tools": "O nó de ferramentas \"{{label}}\" não possui ferramentas configuradas",
+    "condition_missing_expression": "A condição \"{{label}}\" não possui expressão",
+    "node_without_outputs": "O nó \"{{label}}\" não possui saídas",
+    "node_without_inputs": "O nó \"{{label}}\" não possui entradas"
+  },
+  "views": {
+    "start": {
+      "entry_point": "Ponto de entrada",
+      "hint": "O fluxo começa aqui"
+    },
+    "end": {
+      "end_label": "Rótulo de fim",
+      "end_label_placeholder": "Ex. Concluído",
+      "description": "Descrição",
+      "description_placeholder": "Descreva este estado final",
+      "configure_field_extraction": "Configurar extração de campos",
+      "field_extraction_info": "Extraia valores finais deste nó"
+    }
+  },
+  "state": {
+    "default_flow_name": "Novo agente",
+    "default_prompt": "Não finalize a conversa a menos que o usuário peça ou que você já tenha coletado todas as informações necessárias."
+  }
+}

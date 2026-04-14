@@ -1,0 +1,166 @@
+<div class="pem-overlay" (click)="closed.emit()">
+  <div class="pem-panel" (click)="$event.stopPropagation()">
+
+    <div class="pem-header">
+      <div class="pem-header-left">
+        <div class="pem-header-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/>
+          </svg>
+        </div>
+        <input class="pem-name-input" type="text"
+          [ngModel]="data.label"
+          (ngModelChange)="updateLabel($event)"
+          [placeholder]="'modals.prompt_editor.name_placeholder' | transloco" />
+      </div>
+      <div class="pem-header-right">
+        <div class="pem-model-select-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="pem-model-icon">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
+          <mat-select class="pem-model-select"
+            [ngModel]="data.aiAgentModel?.id || ''"
+            (ngModelChange)="onModelChange($event)"
+            panelClass="pem-model-panel">
+            <mat-option value="">Gemini 1.5 Pro</mat-option>
+            <mat-option value="gemini-1.5-pro">Gemini 1.5 Pro</mat-option>
+            <mat-option value="gemini-1.5-flash">Gemini 1.5 Flash</mat-option>
+            <mat-option value="gemini-2.0-flash">Gemini 2.0 Flash</mat-option>
+          </mat-select>
+        </div>
+        <button class="pem-close-btn" type="button" (click)="closed.emit()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="pem-body">
+
+      <div class="pem-col-main">
+        <p class="pem-col-label">{{ 'modals.prompt_editor.instructions_label' | transloco }}</p>
+        <div class="pem-textarea-wrap">
+          <textarea #goalTextarea class="pem-textarea"
+            [ngModel]="data.conversationGoal"
+            (ngModelChange)="false"
+            (input)="onGoalInput($event)"
+            (keydown.escape)="closeDropdowns()"
+            [placeholder]="'modals.prompt_editor.textarea_placeholder' | transloco"></textarea>
+
+          @if (showMentions()) {
+            <div class="pem-mention-dropdown"
+                 [style.top.px]="dropdownPos().y"
+                 [style.left.px]="dropdownPos().x">
+              <div class="pem-mention-header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                <span>{{ 'modals.prompt_editor.insert_tool' | transloco }}</span>
+              </div>
+              @if (filteredTools().length > 0) {
+                @for (tool of filteredTools(); track tool.name) {
+                  <button class="pem-mention-item" type="button" (mousedown)="insertMention(tool.name, $event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    {{ tool.name }}
+                  </button>
+                }
+              } @else {
+                <p class="pem-mention-empty">{{ 'modals.prompt_editor.no_results' | transloco }}</p>
+              }
+            </div>
+          }
+
+          @if (showFields()) {
+            <div class="pem-mention-dropdown"
+                 [style.top.px]="dropdownPos().y"
+                 [style.left.px]="dropdownPos().x">
+              <div class="pem-mention-header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                </svg>
+                <span>{{ 'modals.prompt_editor.insert_field' | transloco }}</span>
+              </div>
+              @if (filteredFields().length > 0) {
+                @for (field of filteredFields(); track field.name) {
+                  <button class="pem-mention-item" type="button" (mousedown)="insertField(field.name, $event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                    </svg>
+                    {{ field.name }}
+                  </button>
+                }
+              } @else {
+                <p class="pem-mention-empty">{{ 'modals.prompt_editor.no_results' | transloco }}</p>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- NOTE: Aside column commented out — only the editor should be visible for now.
+      <div class="pem-col-aside">
+
+        <div class="pem-aside-section">
+          <div class="pem-aside-section-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="pem-aside-icon">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            </svg>
+            <span class="pem-aside-title">{{ 'modals.prompt_editor.assistant_title' | transloco }}</span>
+          </div>
+          <p class="pem-aside-desc">{{ 'modals.prompt_editor.assistant_desc' | transloco }}</p>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="pem-aside-field">
+            <textarea matInput rows="4"
+              [ngModel]="assistantInput()"
+              (ngModelChange)="assistantInput.set($event)"
+              [placeholder]="'modals.prompt_editor.assistant_placeholder' | transloco"></textarea>
+          </mat-form-field>
+          <button mat-flat-button color="primary" type="button" class="pem-refine-btn"
+            [disabled]="!assistantInput().trim() || isOptimizing()"
+            (click)="refinePrompt()">
+            @if (isOptimizing()) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="pem-spin">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+              {{ 'modals.prompt_editor.refining' | transloco }}
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+              </svg>
+              {{ 'modals.prompt_editor.refine_btn' | transloco }}
+            }
+          </button>
+        </div>
+
+        <div class="pem-aside-section">
+          <div class="pem-aside-section-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="pem-aside-icon">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            <span class="pem-aside-title">{{ 'modals.prompt_editor.tools_title' | transloco }}</span>
+          </div>
+          <p class="pem-aside-desc">{{ 'modals.prompt_editor.tools_hint' | transloco }}</p>
+          @if ((data.tools || []).length === 0) {
+            <p class="pem-aside-empty">{{ 'modals.prompt_editor.tools_empty' | transloco }}</p>
+          } @else {
+            <div class="pem-tools-list">
+              @for (tool of data.tools || []; track tool.id) {
+                <div class="pem-tool-chip">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  </svg>
+                  {{ tool.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+      </div>
+      -->
+    </div>
+
+  </div>
+</div>

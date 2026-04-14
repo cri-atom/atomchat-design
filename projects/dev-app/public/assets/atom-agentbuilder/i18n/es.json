@@ -1,0 +1,351 @@
+{
+  "common": {
+    "back": "Atrás",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "create": "Crear",
+    "delete": "Eliminar",
+    "edit": "Editar"
+  },
+  "defaults": {
+    "node": {
+      "start": "Inicio",
+      "agent": "Nuevo Agente",
+      "tool_dispatch": "Despachador de herramientas",
+      "select_agent": "Seleccionar agente",
+      "end": "Fin"
+    },
+    "edge": {
+      "new_condition": "Nueva condición",
+      "end_condition": "Condición de fin",
+      "return_condition": "Condición de retorno"
+    }
+  },
+  "editor": {
+    "zoom": {
+      "in": "Acercar",
+      "out": "Alejar",
+      "fit": "Ajustar vista"
+    },
+    "actions": {
+      "history": "Historial",
+      "publish": "Publicar",
+      "save": "Guardar",
+      "simulate": "Simular",
+      "menu": "Más",
+      "delete_branch": "Eliminar rama",
+      "duplicate": "Duplicar",
+      "undo": "Deshacer",
+      "redo": "Rehacer",
+      "status": "Estado",
+      "close": "Cerrar",
+      "suggestions": "Sugerencias IA"
+    },
+    "validation": {
+      "title": "Validación",
+      "errors_title": "Errores"
+    },
+    "add_menu": {
+      "agent_title": "Agente",
+      "agent_desc": "Agregar un nodo de agente",
+      "end_title": "Fin",
+      "end_desc": "Agregar un nodo de fin"
+    },
+    "node": {
+      "goal_placeholder": "Añade las instrucciones para el agente.",
+      "flow_name_placeholder": "Nombre del flujo"
+    }
+  },
+  "errors": {
+    "save_failed": "Error al guardar el flujo"
+  },
+  "global": {
+    "expand": "Expandir configuración global",
+    "collapse": "Colapsar configuración global",
+    "title": "Configuración Global",
+    "subtitle": "Afecta a todo el flujo",
+    "instructions": {
+      "title": "Instrucciones Generales",
+      "placeholder": "Estas instrucciones aplicarán a todos los agentes del flujo (estilo, tono, etc.)..."
+    },
+    "actions": {
+      "add": "Agregar"
+    },
+    "pipeline": {
+      "sales": "Venta",
+      "service": "Servicio"
+    },
+    "stages": {
+      "title": "Etapas",
+      "delete": "Eliminar etapa",
+      "atom_name": "Nombre en Atom",
+      "already_used": "(Ya usado)",
+      "stage_name": "Nombre de la etapa",
+      "stage_name_placeholder": "Nombre de la etapa",
+      "save_condition": "Condición para guardar",
+      "save_condition_placeholder": "Ej: Si el usuario muestra interés...",
+      "empty": "No hay etapas definidas para el pipeline de {{pipeline}}.",
+      "new_stage": "Nueva Etapa"
+    },
+    "fields": {
+      "title": "Campos a identificar y guardar",
+      "helper": "Define qué información debe identificar y guardar el agente si el cliente la menciona durante la conversación.",
+      "header": "Campo a identificar",
+      "search_placeholder": "Buscar campo...",
+      "no_results": "No se encontraron campos",
+      "delete": "Eliminar campo",
+      "add": "Agregar campo",
+      "select_field": "Seleccionar campo"
+    },
+    "timezone": {
+      "title": "Zona Horaria"
+    },
+    "prevent_loops": {
+      "title": "Prevenir bucles infinitos",
+      "description": "Detener la ejecución si se detectan rutas repetitivas"
+    }
+  },
+  "inspector": {
+    "edge": {
+      "title": "Condición",
+      "forward": "Avance",
+      "return": "Retorno"
+    },
+    "tabs": {
+      "general": "General",
+      "knowledge_base": "Base de conocimiento",
+      "tools": "Herramientas"
+    },
+    "header": {
+      "agent_placeholder": "Nombre del Agente",
+      "end": "Fin",
+      "start": "Inicio",
+      "condition": "Condición"
+    }
+  },
+  "modals": {
+    "field_creation": {
+      "title": "Crear nuevo campo de información",
+      "subtitle": "En este campo se guardará el dato proporcionado por el cliente. Agrega una descripción para facilitar su recolección.",
+      "field_name": "Nombre del campo*",
+      "field_name_placeholder": "Ej: email_usuario",
+      "field_description": "Descripción del campo*",
+      "field_description_placeholder": "Describe la información del campo y da un ejemplo *",
+      "field_hint": "Ejemplo: Este campo almacena la marca de vehículo que le interesa al cliente. Ej. Toyota.",
+      "data_type": "Tipo de dato*",
+      "data_type_text": "Texto",
+      "data_type_number": "Número",
+      "data_type_email": "Email",
+      "data_type_date": "Fecha",
+      "length": "Longitud*",
+      "length_placeholder": "Longitud*"
+    },
+    "file_selection": {
+      "title": "Seleccionar archivos",
+      "subtitle": "Elige los archivos del gestor de recursos que alimentarán a este agente o carga un archivo nuevo.",
+      "search_placeholder": "Buscar archivos...",
+      "upload_file": "Cargar archivo",
+      "save_selection": "Guardar selección",
+      "select_all_aria": "Seleccionar todos los archivos",
+      "table": {
+        "name": "Nombre",
+        "type": "Tipo",
+        "size": "Tamaño",
+        "updated": "Actualizado"
+      },
+      "pagination": {
+        "rows_per_page": "Registros por página",
+        "range": "{{start}} - {{end}} de {{total}} items"
+      }
+    },
+    "http_request": {
+      "request_label": "Petición HTTP",
+      "to": "a",
+      "description": "Configura una petición HTTP para conectar con sistemas externos.",
+      "learn_request": "Conoce la petición HTTP",
+      "learn_body": "Las peticiones HTTP te permiten enviar y recibir datos de servicios externos a través de su API. Puedes configurar el método, la URL, los encabezados y el cuerpo de la petición.",
+      "basic_config": "Configuración básica",
+      "method": "Método de la petición*",
+      "url": "URL del servicio y parámetros*",
+      "url_placeholder": "https://api.ejemplo.com/v1/recurso",
+      "url_hint": "Dirección web donde enviar la petición",
+      "test_request": "Probar petición",
+      "request_body": "Cuerpo de la petición",
+      "request_body_desc": "Especifica los datos que se enviarán en el cuerpo de la petición HTTP, en formato JSON.",
+      "headers": "Encabezados",
+      "headers_desc": "Agrega los encabezados necesarios para ejecutar la petición.",
+      "advanced_config": "Configuraciones avanzadas",
+      "authorization": "Autorización",
+      "authorization_desc": "Configura el tipo de autorización que requiere la petición HTTP, como OAuth 2.0 o Basic Auth.",
+      "save_response": "Guardar respuesta",
+      "save_response_desc": "Guarda los valores de la respuesta HTTP en campos de información de Atom.",
+      "handle_response_codes": "Manejo de códigos de respuesta",
+      "handle_response_codes_desc": "Gestiona el éxito o error de la petición según el código de respuesta HTTP.",
+      "api_timeout": "Tiempo de espera de API",
+      "api_timeout_desc": "Define el tiempo máximo en segundos que se esperará para obtener una respuesta del API.",
+      "save_config": "Guardar configuración"
+    },
+    "prompt_editor": {
+      "name_placeholder": "Nombre del Agente",
+      "instructions_label": "Instrucciones del Prompt",
+      "textarea_placeholder": "Escribe aquí las instrucciones detalladas para el comportamiento del agente...",
+      "insert_tool": "Insertar Herramienta",
+      "insert_field": "Insertar campo",
+      "no_results": "No se encontraron herramientas seleccionadas.",
+      "assistant_title": "Asistente de IA",
+      "assistant_desc": "Describe qué quieres mejorar o añadir al prompt y la IA lo actualizará.",
+      "assistant_placeholder": "Ej: Haz que sea más amable y pregunte por el presupuesto...",
+      "refining": "Refinando...",
+      "refine_btn": "Refinar Prompt",
+      "tools_title": "Herramientas disponibles",
+      "tools_hint": "Escribe @ en el prompt para mencionar una herramienta.",
+      "tools_empty": "No hay herramientas añadidas a este nodo.",
+      "response_format": "Formato de respuesta",
+      "response_format_condition": "¿En qué caso debe el formato de respuesta ser {{format}}?",
+      "response_format_condition_placeholder": "Ej: Cuando el usuario pida ver los planes disponibles...",
+      "ai_suggestions": "Sugerencias de IA",
+      "format_buttons": "Botones",
+      "format_cards": "Tarjetas",
+      "format_carousels": "Carruseles"
+    },
+    "tool_selection": {
+      "select_tool": "Seleccionar herramienta",
+      "search": "Buscar...",
+      "connected": "Conectado",
+      "not_connected": "No conectado",
+      "connect": "Conectar",
+      "connect_hint": "No conectado — conéctate para usar herramientas de esta integración",
+      "verify_again": "Verificar de nuevo",
+      "verify_hint": "Después de conectarte en la nueva pestaña, haz clic en \"Verificar de nuevo\" o vuelve a abrir esta integración para actualizar el estado.",
+      "back_to_tools": "Volver a herramientas",
+      "back": "Volver",
+      "no_results": "No se encontraron herramientas para \"{{search}}\"",
+      "add_tools": "Añadir {{count}} herramienta(s)",
+      "toolkits": {
+        "gmail": "Integración de Gmail",
+        "github": "Integración de GitHub",
+        "google_calendar": "Integración de Google Calendar",
+        "notion": "Integración de Notion",
+        "google_sheets": "Integración de Google Sheets"
+      },
+      "tools": {
+        "gmail_1": "Modificar etiquetas en Gmail",
+        "gmail_2": "Eliminar mensajes de Gmail por lotes",
+        "gmail_3": "Crear borrador de correo",
+        "gmail_4": "Enviar correo"
+      }
+    }
+  },
+  "tabs": {
+    "code": {
+      "title": "Código",
+      "coming_soon": "Las herramientas de código estarán disponibles pronto"
+    },
+    "edges": {
+      "condition_label": "Nombre",
+      "condition_label_placeholder": "Ej: Transferir a Soporte",
+      "override_end_condition": "Sobrescribir condición de fin",
+      "condition_expression": "Condición",
+      "condition_expression_placeholder": "Ej: El usuario está molesto...",
+      "timeout_label": "Tiempo sin respuesta",
+      "timeout_hint": "Define cuánto tiempo debe pasar sin respuesta del usuario para que se active esta rama.",
+      "timeout_minutes": "Minutos",
+      "timeout_hours": "Horas"
+    },
+    "general": {
+      "conversation_goal": "Objetivo de la conversación",
+      "assistant": "Asistente",
+      "goal_placeholder": "Añade las instrucciones para el agente.",
+      "info_fields": "Consultar campos de información",
+      "info_hint": "Define qué información debe solicitar el agente al cliente.",
+      "info_warning_prefix": "Marca como",
+      "required": "obligatorio",
+      "info_warning_suffix": "los campos que el cliente debe proporcionar para avanzar.",
+      "select_all": "Seleccionar todos",
+      "field_header": "Campo",
+      "required_header": "Obligatorio",
+      "create_field": "Crear campo",
+      "add_field": "Agregar campo",
+      "advanced_config": "Configuración avanzada",
+      "llm_model": "Modelo LLM",
+      "thinking_level": "Nivel de razonamiento",
+      "level": {
+        "auto": "Automático",
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      }
+    },
+    "http_tools": {
+      "add": "Añadir Petición HTTP",
+      "untitled": "Herramienta sin título",
+      "tool_name": "Nombre de herramienta",
+      "tool_description": "Descripción de la herramienta",
+      "url_placeholder": "URL de solicitud",
+      "body_template": "Plantilla del cuerpo de solicitud",
+      "empty": "No hay peticiones HTTP configuradas."
+    },
+    "info_collection": {
+      "title": "Recolección de datos",
+      "add": "Agregar ítem",
+      "note": "Define qué información debe recolectar este nodo",
+      "default_label": "Nuevo ítem",
+      "default_description": "Describe la información a recolectar",
+      "empty": "Aún no hay ítems de recolección"
+    },
+    "knowledge_base": {
+      "documents": "Documentos",
+      "select_or_upload": "Seleccionar o cargar archivo",
+      "no_documents": "No hay documentos seleccionados.",
+      "dynamic_table": "Tabla dinámica",
+      "dynamic_table_hint": "Selecciona la tabla que servirá como base de conocimiento para responder las consultas de tus clientes.",
+      "select_table": "Seleccionar tabla*",
+      "no_table_selected": "Ninguna tabla seleccionada",
+      "sql_prompt": "Prompt SQL",
+      "sql_prompt_placeholder": "Escribe aquí las instrucciones SQL personalizadas...",
+      "sql_prompt_hint": "Define reglas específicas para las consultas SQL de esta tabla.",
+      "advanced_config": "Configuración avanzada"
+    },
+    "return": {
+      "enable": "Habilitar transición de retorno",
+      "label": "Etiqueta de retorno",
+      "label_placeholder": "Etiqueta de retorno",
+      "condition": "Condición de retorno",
+      "condition_placeholder": "Escribe una condición de retorno"
+    },
+    "tools": {
+      "integrations": "Integraciones",
+      "add_integration": "Añadir Integración",
+      "no_integrations": "No hay integraciones seleccionadas.",
+      "http_request": "HTTP Request",
+      "add_http_request": "Añadir Petición HTTP",
+      "no_http_requests": "No hay peticiones HTTP configuradas.",
+      "code": "Código",
+      "coming_soon": "Próximamente",
+      "code_description": "Ejecuta scripts personalizados en el flujo."
+    }
+  },
+  "validation": {
+    "agent_missing_goal": "Al agente \"{{label}}\" le falta un objetivo de conversación",
+    "tool_missing_tools": "El nodo de herramientas \"{{label}}\" no tiene herramientas configuradas",
+    "condition_missing_expression": "La condición \"{{label}}\" no tiene una expresión",
+    "node_without_outputs": "El nodo \"{{label}}\" no tiene salidas",
+    "node_without_inputs": "El nodo \"{{label}}\" no tiene entradas"
+  },
+  "views": {
+    "start": {
+      "entry_point": "Punto de entrada",
+      "hint": "El flujo comienza aquí"
+    },
+    "end": {
+      "end_label": "Etiqueta de Finalización",
+      "end_label_placeholder": "Ej: Resuelto, Escalado...",
+      "description": "Descripción",
+      "description_placeholder": "Describe este estado final"
+    }
+  },
+  "state": {
+    "default_flow_name": "Nuevo agente",
+    "default_prompt": "No finalices la conversación a menos que el usuario te lo pida o que ya hayas recopilado toda la información necesaria."
+  }
+}

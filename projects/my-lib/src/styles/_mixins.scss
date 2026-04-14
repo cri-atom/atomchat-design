@@ -1,0 +1,110 @@
+@use 'variables' as *;
+
+// ==========================================================================
+// Focus States
+// ==========================================================================
+
+@mixin input-focus {
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+// ==========================================================================
+// Button Resets
+// ==========================================================================
+
+@mixin button-reset {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// ==========================================================================
+// Flex Helpers
+// ==========================================================================
+
+@mixin flex-row($gap: 0, $align: stretch) {
+  display: flex;
+  flex-direction: row;
+  gap: $gap;
+  align-items: $align;
+}
+
+@mixin flex-column($gap: 0) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+// ==========================================================================
+// Common Form Patterns
+// ==========================================================================
+
+@mixin form-input {
+  width: 100%;
+  border: 1px solid $color-input-border;
+  border-radius: $radius-md;
+  padding: $spacing-sm;
+  font-size: $font-size-base;
+  @include input-focus;
+}
+
+@mixin add-button {
+  width: 100%;
+  padding: $spacing-sm;
+  border: 1px dashed $color-input-border;
+  border-radius: $radius-md;
+  background: none;
+  cursor: pointer;
+  color: $color-primary;
+  font-size: $font-size-base;
+}
+
+@mixin delete-button {
+  @include button-reset;
+  opacity: 0;
+}
+
+// ==========================================================================
+// Add button — matches legacy design
+// Transparent background, orange text, uppercase, circular Plus icon.
+// Use: @include add-circle-button; on the button element.
+// The button must contain a <span class="..."> for the icon.
+// ==========================================================================
+
+@mixin add-circle-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: $color-primary;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-sans, inherit);
+  line-height: 1;
+  transition: color 0.15s;
+
+  &:hover:not(:disabled) {
+    color: $color-primary-dark;
+  }
+
+  &:disabled {
+    color: $color-text-quaternary;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@mixin empty-state {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $color-text-light;
+  font-size: $font-size-base;
+}

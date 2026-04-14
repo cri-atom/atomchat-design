@@ -1,0 +1,273 @@
+@use '../../../../styles' as *;
+
+:host {
+  display: block;
+}
+
+.tools-tab {
+  &__section {
+    padding: $spacing-lg $spacing-xl;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid $color-border;
+    margin: 0;
+  }
+
+  &__section-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    color: $color-text-muted;
+  }
+
+  &__section-title {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    color: $color-text-muted;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__add-dark-btn {
+    @include button-reset;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    min-height: 36px;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-md;
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $color-white;
+    background: $color-text;
+    margin-bottom: $spacing-md;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $color-text-secondary;
+    }
+  }
+
+  &__empty-text {
+    font-size: $font-size-base;
+    color: $color-text-muted;
+    font-style: italic;
+    margin: 0;
+    padding: 0 $spacing-2xs;
+  }
+
+  /* ── Accordion card list ── */
+  &__card-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__card {
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    transition: border-color 0.18s;
+
+    &:hover {
+      border-color: rgba($color-primary, 0.3);
+    }
+
+    &--expanded {
+      border-color: rgba($color-primary, 0.3);
+    }
+  }
+
+  &__card-header {
+    padding: $spacing-lg;
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba($color-bg-secondary, 0.5);
+    }
+  }
+
+  &__card-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-bg-tertiary;
+    border-radius: $radius-lg;
+    color: $color-text-muted;
+    flex-shrink: 0;
+
+    &--http {
+      color: $color-success;
+    }
+  }
+
+  &__card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 2px;
+  }
+
+  &__card-name {
+    font-size: $font-size-base;
+    font-weight: 700;
+    color: $color-text;
+    line-height: 1.2;
+  }
+
+  &__card-desc {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__card-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    flex-shrink: 0;
+  }
+
+  &__card-edit,
+  &__card-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    color: $color-text-muted;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+
+    .tools-tab__card:hover & { opacity: 1; }
+  }
+
+  &__card-edit:hover {
+    color: $color-primary;
+    background: $color-primary-light;
+  }
+
+  &__card-delete:hover {
+    color: $color-error;
+    background: #FFF0F0;
+  }
+
+  &__card-chevron {
+    color: $color-text-muted;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__card-detail {
+    padding: $spacing-md $spacing-lg $spacing-lg;
+    border-top: 1px solid $color-border;
+    background: rgba($color-bg-secondary, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__card-detail-desc {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__card-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__card-badge {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: $color-bg-tertiary;
+    padding: 2px $spacing-sm;
+    border-radius: $radius-xs;
+
+    &--method {
+      background: $color-method-bg;
+      color: $color-method-text;
+    }
+  }
+
+  &__card-detail-id {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    padding: $spacing-2xl $spacing-xl;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-bg-secondary;
+    text-align: center;
+  }
+
+  &__coming-soon-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-bg-tertiary;
+    border-radius: $radius-md;
+    color: $color-text-muted;
+  }
+
+  &__coming-soon-title {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    color: $color-text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  &__coming-soon-desc {
+    font-size: $font-size-base;
+    color: $color-text-light;
+    margin: 0;
+  }
+}
+

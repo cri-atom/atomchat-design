@@ -1,0 +1,340 @@
+@use '../../../../styles' as *;
+
+@keyframes pem-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pem-panel-in {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pem-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pem-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-2xl;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: pem-overlay-in 0.18s ease-out;
+}
+
+.pem-panel {
+  animation: pem-panel-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-2xl;
+  box-shadow: 0 32px 64px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 960px;
+  height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+
+.pem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg $spacing-2xl;
+  border-bottom: 1px solid $color-border;
+  background: $color-white;
+  flex-shrink: 0;
+  gap: $spacing-lg;
+}
+
+.pem-header-left {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex: 1;
+  min-width: 0;
+}
+
+.pem-header-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: $radius-lg;
+  background: rgba($color-primary, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-primary;
+  flex-shrink: 0;
+}
+
+.pem-name-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $color-text;
+  background: transparent;
+  min-width: 0;
+
+  &::placeholder { color: $color-text-muted; }
+  &:focus { color: $color-text; }
+}
+
+.pem-header-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex-shrink: 0;
+}
+
+.pem-model-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: $color-bg-secondary;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: 0 $spacing-md;
+}
+
+.pem-model-icon {
+  color: $color-primary;
+  flex-shrink: 0;
+}
+
+.pem-model-select {
+  width: 150px;
+  font-size: $font-size-base;
+  font-weight: 600;
+  color: $color-text;
+}
+
+.pem-close-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  color: $color-text-muted;
+  transition: all 0.15s;
+
+  &:hover {
+    background: $color-bg-tertiary;
+    color: $color-text;
+  }
+}
+
+// ─── Body ─────────────────────────────────────────────────────────────────────
+
+.pem-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+// Left column
+
+.pem-col-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-xl;
+  background: $color-bg-secondary;
+  overflow: hidden;
+}
+
+.pem-col-label {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $color-text-muted;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 $spacing-md;
+}
+
+.pem-textarea-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+}
+
+.pem-textarea {
+  flex: 1;
+  width: 100%;
+  padding: $spacing-xl;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-2xl;
+  font-size: $font-size-base;
+  font-family: inherit;
+  color: $color-text;
+  line-height: 1.65;
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.08);
+  }
+
+  &::placeholder { color: $color-text-muted; }
+}
+
+.pem-mention-dropdown {
+  position: absolute;
+  width: 220px;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.pem-mention-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-secondary;
+  border-bottom: 1px solid $color-border;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $color-text-muted;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pem-mention-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: $font-size-sm;
+  color: $color-text;
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover { background: $color-hover-bg; }
+}
+
+.pem-mention-empty {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  font-style: italic;
+  margin: 0;
+}
+
+// Right column
+
+.pem-col-aside {
+  width: 400px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  padding: $spacing-xl;
+  border-left: 1px solid $color-border;
+  background: $color-white;
+  overflow-y: auto;
+}
+
+.pem-aside-section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  background: $color-bg-secondary;
+  border: 1px solid $color-border;
+  border-radius: $radius-xl;
+}
+
+.pem-aside-section-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.pem-aside-icon { color: $color-primary; flex-shrink: 0; }
+
+.pem-aside-title {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $color-text-muted;
+}
+
+.pem-aside-desc {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.pem-refine-btn {
+  width: 100%;
+  font-size: $font-size-sm;
+}
+
+:host ::ng-deep {
+  .pem-aside-field.mat-mdc-form-field {
+    width: 100%;
+  }
+}
+
+.pem-spin {
+  animation: pem-spin 0.8s linear infinite;
+}
+
+.pem-code {
+  font-family: monospace;
+  background: rgba($color-primary, 0.08);
+  color: $color-primary;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.pem-aside-empty {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  font-style: italic;
+  margin: 0;
+}
+
+.pem-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.pem-tool-chip {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: 3px $spacing-sm;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-pill;
+  font-size: $font-size-xs;
+  color: $color-text;
+  font-weight: 600;
+}
+

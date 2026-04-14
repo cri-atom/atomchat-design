@@ -1,0 +1,179 @@
+@use '../../../../styles' as *;
+
+@keyframes modal-overlay-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-panel-enter {
+  from {
+    transform: scale(0.94) translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  animation: modal-overlay-enter 0.2s ease-out;
+}
+
+.modal-panel {
+  animation: modal-panel-enter 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: $color-white;
+  border-radius: $radius-2xl;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-xl;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: $spacing-3xl;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: $font-size-2xl;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0;
+}
+
+.modal-subtitle {
+  font-size: $font-size-base;
+  color: $color-text-muted;
+  margin: 0 0 $spacing-3xl;
+  line-height: 1.5;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  color: $color-text-muted;
+  flex-shrink: 0;
+  transition: all 0.15s;
+
+  &:hover {
+    background: $color-bg-tertiary;
+  }
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2xl;
+}
+
+.modal-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-top: $spacing-3xl;
+  flex-shrink: 0;
+}
+
+.modal-cancel-btn {
+  @include button-reset;
+  min-height: 32px;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: $font-size-lg;
+  font-weight: 500;
+  color: $color-text-muted;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: $color-bg-secondary;
+  }
+}
+
+.modal-create-btn {
+  @include button-reset;
+  min-height: 32px;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  font-size: $font-size-lg;
+  font-weight: 500;
+  color: $color-white;
+  background: $color-text;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: $color-text-secondary;
+  }
+
+  &:disabled {
+    background: $color-bg-quaternary;
+    color: $color-text-light;
+    cursor: not-allowed;
+  }
+}
+
+:host ::ng-deep {
+  .modal-field.mat-mdc-form-field {
+    width: 100%;
+    --mdc-outlined-text-field-container-shape: #{$radius-xl};
+    --mdc-outlined-text-field-input-text-size: #{$font-size-base};
+    --mat-form-field-container-height: 40px;
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0 $spacing-sm;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      min-height: 36px;
+    }
+
+    .mat-mdc-input-element {
+      font-size: $font-size-base;
+    }
+
+    .mdc-notched-outline__leading {
+      border-radius: $radius-xl 0 0 $radius-xl;
+      min-width: $radius-xl;
+    }
+
+    .mdc-notched-outline__trailing {
+      border-radius: 0 $radius-xl $radius-xl 0;
+    }
+  }
+}
+

@@ -1,0 +1,21 @@
+<mat-form-field appearance="outline" class="edges-tab__field" subscriptSizing="dynamic">
+  <mat-label>{{ 'tabs.edges.condition_label' | transloco }}</mat-label>
+  <input matInput type="text" [ngModel]="edge().data.label" (ngModelChange)="update({ label: $event })" [placeholder]="'tabs.edges.condition_label_placeholder' | transloco" />
+</mat-form-field>
+
+@if (isTargetEnd) {
+  <div class="edges-tab__checkbox">
+    <label class="edges-tab__checkbox-label">
+      <input type="checkbox" class="edges-tab__checkbox-input" [ngModel]="edge().data.overrideEndCondition" (ngModelChange)="update({ overrideEndCondition: $event })" />
+      {{ 'tabs.edges.override_end_condition' | transloco }}
+    </label>
+  </div>
+}
+
+@if (!isTargetEnd || edge().data.overrideEndCondition) {
+  <mat-form-field appearance="outline" class="edges-tab__field" subscriptSizing="dynamic">
+    <mat-label>{{ 'tabs.edges.condition_expression' | transloco }}</mat-label>
+    <textarea matInput rows="3" [ngModel]="edge().data.conditionExpression" (ngModelChange)="update({ conditionExpression: $event })"
+      [placeholder]="'tabs.edges.condition_expression_placeholder' | transloco"></textarea>
+  </mat-form-field>
+}

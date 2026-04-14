@@ -1,0 +1,38 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "resolveJsonModule": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "es2022",
+    "lib": ["es2022", "dom"],
+    "useDefineForClassFields": false,
+    "paths": {
+      "@atom/agentbuilder": ["projects/my-lib/public-api"],
+      "@lib/core/*": ["projects/my-lib/src/core/*"],
+      "@lib/infrastructure/*": ["projects/my-lib/src/infrastructure/*"],
+      "@lib/state/*": ["projects/my-lib/src/application/state/*"],
+      "@lib/canvas/*": ["projects/my-lib/src/presentation/canvas/*"],
+      "@lib/inspector/*": ["projects/my-lib/src/presentation/inspector/*"],
+      "@lib/presentation/*": ["projects/my-lib/src/presentation/*"],
+      "@lib/application/*": ["projects/my-lib/src/application/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial",
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": false
+  }
+}

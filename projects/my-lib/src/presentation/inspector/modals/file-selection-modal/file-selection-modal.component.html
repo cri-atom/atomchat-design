@@ -1,0 +1,92 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal-panel modal-panel--wide" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">{{ 'modals.file_selection.title' | transloco }}</h2>
+        <p class="modal-subtitle-inline">{{ 'modals.file_selection.subtitle' | transloco }}</p>
+      </div>
+      <button class="modal-close" (click)="closed.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-search-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-search-field">
+        <input matInput [placeholder]="'modals.file_selection.search_placeholder' | transloco" [ngModel]="search()" (ngModelChange)="search.set($event)" />
+        <span matPrefix class="modal-search-prefix">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </span>
+      </mat-form-field>
+      <button class="modal-upload-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        {{ 'modals.file_selection.upload_file' | transloco }}
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-table-wrap">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th class="modal-th modal-th--check">
+                <input type="checkbox" class="modal-checkbox"
+                  [checked]="allSelected"
+                  (change)="toggleAll($any($event.target).checked)" />
+              </th>
+              <th class="modal-th">{{ 'modals.file_selection.table.name' | transloco }}</th>
+              <th class="modal-th">{{ 'modals.file_selection.table.type' | transloco }}</th>
+              <th class="modal-th">{{ 'modals.file_selection.table.size' | transloco }}</th>
+              <th class="modal-th">{{ 'modals.file_selection.table.updated' | transloco }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (file of filteredFiles(); track file.id) {
+              <tr class="modal-tr" [class.modal-tr--selected]="isSelected(file)" (click)="toggleFile(file)">
+                <td class="modal-td modal-td--check">
+                  <input type="checkbox" class="modal-checkbox" [checked]="isSelected(file)" (click)="$event.stopPropagation()" (change)="toggleFile(file)" />
+                </td>
+                <td class="modal-td">
+                  <div class="modal-file-name-cell">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="modal-file-icon">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    </svg>
+                    <span class="modal-file-name" [title]="file.name">{{ file.name }}</span>
+                  </div>
+                </td>
+                <td class="modal-td modal-td--muted">{{ file.type }}</td>
+                <td class="modal-td modal-td--muted">{{ file.size }}</td>
+                <td class="modal-td modal-td--muted">{{ file.updatedAt }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-pagination">
+        <div class="modal-pagination-left">
+          <span class="modal-pagination-text">{{ 'modals.file_selection.pagination.rows_per_page' | transloco }}</span>
+          <select class="modal-pagination-select"><option>9</option><option>20</option></select>
+        </div>
+        <span class="modal-pagination-text">{{ 'modals.file_selection.pagination.range' | transloco:{ count: filteredFiles().length } }}</span>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-cancel-btn" (click)="closed.emit()">{{ 'common.cancel' | transloco }}</button>
+      <button class="modal-primary-btn" (click)="confirm()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        {{ 'modals.file_selection.save_selection' | transloco }}
+      </button>
+    </div>
+
+  </div>
+</div>

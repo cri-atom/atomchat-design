@@ -1,0 +1,68 @@
+<div class="kb-tab__section">
+  <div class="kb-tab__section-header">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+    </svg>
+    <span class="kb-tab__section-title">{{ 'tabs.knowledge_base.documents' | transloco }}</span>
+  </div>
+
+  <button class="kb-tab__upload-btn" (click)="showFileModal.set(true)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+      <path d="M5 12h14"/><path d="M12 5v14"/>
+    </svg>
+    {{ 'tabs.knowledge_base.select_or_upload' | transloco }}
+  </button>
+
+  @if (addedKbs.length === 0) {
+    <p class="kb-tab__empty-text">{{ 'tabs.knowledge_base.no_documents' | transloco }}</p>
+  } @else {
+    <div class="kb-tab__file-list">
+      @for (kb of addedKbs; track kb.id) {
+        <div class="kb-tab__file-item">
+          <div class="kb-tab__file-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            </svg>
+          </div>
+          <div class="kb-tab__file-info">
+            <span class="kb-tab__file-name">{{ kb.name }}</span>
+            @if (kb.fileSize) {
+              <span class="kb-tab__file-size">{{ (kb.fileSize / 1024).toFixed(0) }} KB</span>
+            }
+          </div>
+          <button class="kb-tab__delete-btn" type="button" (click)="removeFromNode(kb.id)" [title]="'common.delete' | transloco">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<hr class="kb-tab__divider">
+
+<div class="kb-tab__section">
+  <div class="kb-tab__section-header">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+    </svg>
+    <span class="kb-tab__section-title">{{ 'tabs.knowledge_base.dynamic_table' | transloco }}</span>
+  </div>
+  <p class="kb-tab__hint">{{ 'tabs.knowledge_base.dynamic_table_hint' | transloco }}</p>
+  <mat-form-field appearance="outline" class="kb-tab__field" subscriptSizing="dynamic">
+    <mat-label>{{ 'tabs.knowledge_base.select_table' | transloco }}</mat-label>
+    <mat-select [ngModel]="selectedTable()" (ngModelChange)="selectedTable.set($event)">
+      <mat-option value="">{{ 'tabs.knowledge_base.no_table_selected' | transloco }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+@if (showFileModal()) {
+  <flowagent-file-selection-modal
+    [selectedFiles]="addedKbs"
+    (closed)="showFileModal.set(false)"
+    (saved)="onFilesSaved($event)"
+  />
+}

@@ -1,0 +1,174 @@
+<div class="general-tab__section">
+  <div class="general-tab__objective-header">
+    <span class="general-tab__section-title">{{ 'tabs.general.conversation_goal' | transloco }}</span>
+    <button class="general-tab__assistant-btn" type="button" (click)="showPromptModal.set(true)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+      </svg>
+      {{ 'tabs.general.assistant' | transloco }}
+    </button>
+  </div>
+  <button class="general-tab__prompt-preview" type="button" (click)="showPromptModal.set(true)">
+    @if (agentData.conversationGoal) {
+      <span class="general-tab__prompt-preview-text">{{ agentData.conversationGoal }}</span>
+    } @else {
+      <span class="general-tab__prompt-preview-placeholder">{{ 'tabs.general.goal_placeholder' | transloco }}</span>
+    }
+    <span class="general-tab__prompt-expand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
+      </svg>
+    </span>
+  </button>
+</div>
+
+@if (showPromptModal()) {
+  <flowagent-prompt-editor-modal
+    [node]="node()"
+    (closed)="showPromptModal.set(false)" />
+}
+
+<hr class="general-tab__divider">
+
+<div class="general-tab__section">
+  <button class="general-tab__collapsible-header" (click)="showInfoSection.set(!showInfoSection())">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="general-tab__section-icon">
+      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+    </svg>
+    <span class="general-tab__section-title">{{ 'tabs.general.info_fields' | transloco }}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="general-tab__chevron" [class.general-tab__chevron--open]="showInfoSection()">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </button>
+  @if (showInfoSection()) {
+    <div class="general-tab__collapsible-body">
+      <p class="general-tab__hint">{{ 'tabs.general.info_hint' | transloco }}</p>
+      <div class="general-tab__warning-box">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" class="general-tab__warning-icon">
+          <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+        </svg>
+        <span>{{ 'tabs.general.info_warning_prefix' | transloco }} <strong class="general-tab__warning-emphasis">{{ 'tabs.general.required' | transloco }}</strong> {{ 'tabs.general.info_warning_suffix' | transloco }}</span>
+      </div>
+      @if (infoCollection.length > 0) {
+        <div class="general-tab__field-list">
+          <div class="general-tab__field-header">
+            <span class="general-tab__col-campo">Campo</span>
+            <span class="general-tab__col-required-header">Obligatorio</span>
+            <span class="general-tab__col-del"></span>
+          </div>
+          @for (field of infoCollection; track field.id) {
+            <div class="general-tab__field-row">
+              <div class="general-tab__field-dropdown-wrap">
+                <button class="general-tab__field-dropdown-btn" type="button" (click)="openDropdown(field.id)">
+                  <span class="general-tab__field-dropdown-label">{{ field.label }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                @if (openDropdownId() === field.id) {
+                  <div class="general-tab__field-backdrop" (click)="openDropdownId.set(null)"></div>
+                  <div class="general-tab__field-panel">
+                    <div class="general-tab__field-search-row">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                      <input class="general-tab__field-search-input" type="text"
+                        [ngModel]="fieldSearch()"
+                        (ngModelChange)="fieldSearch.set($event)"
+                        placeholder="Buscar campo..."
+                        autofocus />
+                    </div>
+                    <div class="general-tab__field-options">
+                      @for (opt of filteredPredefined(); track opt) {
+                        <button class="general-tab__field-option" type="button" (mousedown)="setFieldLabel(field.id, opt)">{{ opt }}</button>
+                      }
+                      @if (filteredPredefined().length === 0) {
+                        <p class="general-tab__field-no-results">Sin resultados</p>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+              <div class="general-tab__col-required-cell">
+                <input type="checkbox" class="general-tab__checkbox"
+                  [checked]="field.type !== 'optional'"
+                  (change)="toggleRequired(field.id)" />
+              </div>
+              <button class="general-tab__field-delete" type="button" (click)="removeField(field.id)" [title]="'common.delete' | transloco">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>
+          }
+        </div>
+      }
+      <label class="general-tab__select-all-row">
+        <input type="checkbox" class="general-tab__checkbox"
+          [checked]="isAllRequired()"
+          (change)="toggleSelectAll()" />
+        <span class="general-tab__select-all-label">{{ 'tabs.general.select_all' | transloco }}</span>
+      </label>
+      <div class="general-tab__action-row">
+        <button class="general-tab__secondary-btn" type="button" (click)="showFieldModal.set(true)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          {{ 'tabs.general.create_field' | transloco }}
+        </button>
+        <button type="button" class="general-tab__add-btn" (click)="addPredefinedField()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          {{ 'tabs.general.add_field' | transloco }}
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+<hr class="general-tab__divider">
+
+<div class="general-tab__section">
+  <button class="general-tab__collapsible-header" (click)="showAdvancedSection.set(!showAdvancedSection())">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="general-tab__section-icon">
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+    <span class="general-tab__section-title">{{ 'tabs.general.advanced_config' | transloco }}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="general-tab__chevron" [class.general-tab__chevron--open]="showAdvancedSection()">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </button>
+  @if (showAdvancedSection()) {
+    <div class="general-tab__collapsible-body">
+      <div class="general-tab__field-wrap">
+        <span class="general-tab__field-label">{{ 'tabs.general.llm_model' | transloco }}</span>
+        <mat-form-field appearance="outline" class="general-tab__field" subscriptSizing="dynamic">
+          <mat-select [ngModel]="agentData.aiAgentModel?.id || ''" (ngModelChange)="onModelChange($event)">
+            <mat-option value="">Gemini 1.5 Pro</mat-option>
+            <mat-option value="gemini-1.5-pro">Gemini 1.5 Pro</mat-option>
+            <mat-option value="gemini-1.5-flash">Gemini 1.5 Flash</mat-option>
+            <mat-option value="gemini-2.0-flash">Gemini 2.0 Flash</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!--
+      <div class="general-tab__field-wrap">
+        <span class="general-tab__field-label">{{ 'tabs.general.thinking_level' | transloco }}</span>
+        <mat-form-field appearance="outline" class="general-tab__field" subscriptSizing="dynamic">
+          <mat-select [ngModel]="agentData.thinkingLevel || 'auto'" (ngModelChange)="update({ thinkingLevel: $event })">
+            <mat-option value="auto">{{ 'tabs.general.level.auto' | transloco }}</mat-option>
+            <mat-option value="low">{{ 'tabs.general.level.low' | transloco }}</mat-option>
+            <mat-option value="medium">{{ 'tabs.general.level.medium' | transloco }}</mat-option>
+            <mat-option value="high">{{ 'tabs.general.level.high' | transloco }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      -->
+    </div>
+  }
+</div>
+
+@if (showFieldModal()) {
+  <flowagent-field-creation-modal
+    (closed)="showFieldModal.set(false)"
+    (created)="onFieldCreated($event)"
+  />
+}

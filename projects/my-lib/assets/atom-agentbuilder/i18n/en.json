@@ -1,0 +1,351 @@
+{
+	"common": {
+		"back": "Back",
+		"cancel": "Cancel",
+		"close": "Close",
+		"create": "Create",
+		"delete": "Delete",
+		"edit": "Edit"
+	},
+	"defaults": {
+		"node": {
+			"start": "Start",
+			"agent": "New Agent",
+			"tool_dispatch": "Tool Dispatcher",
+			"select_agent": "Select Agent",
+			"end": "End"
+		},
+		"edge": {
+			"new_condition": "New condition",
+			"end_condition": "End condition",
+			"return_condition": "Return condition"
+		}
+	},
+	"editor": {
+		"zoom": {
+			"in": "Zoom in",
+			"out": "Zoom out",
+			"fit": "Fit view"
+		},
+		"actions": {
+			"history": "History",
+			"publish": "Publish",
+			"save": "Save",
+			"simulate": "Simulate",
+			"menu": "More",
+			"delete_branch": "Delete branch",
+			"duplicate": "Duplicate",
+			"undo": "Undo",
+			"redo": "Redo",
+			"status": "Status",
+			"close": "Close",
+			"suggestions": "AI Suggestions"
+		},
+		"validation": {
+			"title": "Validation",
+			"errors_title": "Errors"
+		},
+		"add_menu": {
+			"agent_title": "Agent",
+			"agent_desc": "Add an agent node",
+			"end_title": "End",
+			"end_desc": "Add an end node"
+		},
+		"node": {
+			"goal_placeholder": "Add the instructions for the agent.",
+			"flow_name_placeholder": "Flow name"
+		}
+	},
+	"errors": {
+		"save_failed": "Error saving flow"
+	},
+	"global": {
+		"expand": "Expand global settings",
+		"collapse": "Collapse global settings",
+		"title": "Global Configuration",
+		"subtitle": "Affects the entire flow",
+		"instructions": {
+			"title": "General Instructions",
+			"placeholder": "These instructions will apply to all agents in the flow (style, tone, etc.)..."
+		},
+		"actions": {
+			"add": "Add"
+		},
+		"pipeline": {
+			"sales": "Sales",
+			"service": "Service"
+		},
+		"stages": {
+			"title": "Stages",
+			"delete": "Delete stage",
+			"atom_name": "Atom name",
+			"already_used": "(Already used)",
+			"stage_name": "Stage name",
+			"stage_name_placeholder": "Stage name",
+			"save_condition": "Save condition",
+			"save_condition_placeholder": "E.g. If the user shows interest...",
+			"empty": "There are no defined stages for the {{pipeline}} pipeline.",
+			"new_stage": "New Stage"
+		},
+		"fields": {
+			"title": "Fields to identify and save",
+			"helper": "Define what information the agent should identify and save if the customer mentions it during the conversation.",
+			"header": "Field to identify",
+			"search_placeholder": "Search field...",
+			"no_results": "No matching fields",
+			"delete": "Delete field",
+			"add": "Add field",
+			"select_field": "Select field"
+		},
+		"timezone": {
+			"title": "Timezone"
+		},
+		"prevent_loops": {
+			"title": "Prevent infinite loops",
+			"description": "Stop execution if repetitive paths are detected"
+		}
+	},
+	"inspector": {
+		"edge": {
+			"title": "Condition",
+			"forward": "Forward",
+			"return": "Return"
+		},
+		"tabs": {
+			"general": "General",
+			"knowledge_base": "Knowledge Base",
+			"tools": "Tools"
+		},
+		"header": {
+			"agent_placeholder": "Agent Name",
+			"end": "End",
+			"start": "Start",
+			"condition": "Condition"
+		}
+	},
+	"modals": {
+		"field_creation": {
+			"title": "Create new information field",
+			"subtitle": "This field will store the data provided by the customer. Add a description to facilitate its collection.",
+			"field_name": "Field name*",
+			"field_name_placeholder": "E.g. user_email",
+			"field_description": "Field description*",
+			"field_description_placeholder": "Describe the field information and give an example *",
+			"field_hint": "Example: This field stores the vehicle brand the customer is interested in. E.g. Toyota.",
+			"data_type": "Data type*",
+			"data_type_text": "Text",
+			"data_type_number": "Number",
+			"data_type_email": "Email",
+			"data_type_date": "Date",
+			"length": "Length*",
+			"length_placeholder": "Length*"
+		},
+		"file_selection": {
+			"title": "Select files",
+			"subtitle": "Choose files from the resource manager that will feed this agent or upload a new file.",
+			"search_placeholder": "Search files...",
+			"upload_file": "Upload file",
+			"save_selection": "Save selection",
+			"select_all_aria": "Select all files",
+			"table": {
+				"name": "Name",
+				"type": "Type",
+				"size": "Size",
+				"updated": "Updated"
+			},
+			"pagination": {
+				"rows_per_page": "Records per page",
+				"range": "{{start}} - {{end}} of {{total}} items"
+			}
+		},
+		"http_request": {
+			"request_label": "HTTP Request",
+			"to": "to",
+			"description": "Configure an HTTP request to connect with external systems.",
+			"learn_request": "Learn about HTTP requests",
+			"learn_body": "HTTP requests allow you to send and receive data from external services through their API. You can configure the method, URL, headers, and request body.",
+			"basic_config": "Basic configuration",
+			"method": "Request method*",
+			"url": "Service URL and parameters*",
+			"url_placeholder": "https://api.example.com/v1/resource",
+			"url_hint": "Web address where to send the request",
+			"test_request": "Test request",
+			"request_body": "Request body",
+			"request_body_desc": "Specify the data to be sent in the HTTP request body, in JSON format.",
+			"headers": "Headers",
+			"headers_desc": "Add the headers required to execute the request.",
+			"advanced_config": "Advanced settings",
+			"authorization": "Authorization",
+			"authorization_desc": "Configure the authorization type required by the HTTP request, such as OAuth 2.0 or Basic Auth.",
+			"save_response": "Save response",
+			"save_response_desc": "Save HTTP response values into Atom information fields.",
+			"handle_response_codes": "Response code handling",
+			"handle_response_codes_desc": "Manage request success or failure based on the HTTP response code.",
+			"api_timeout": "API timeout",
+			"api_timeout_desc": "Define the maximum time in seconds to wait for an API response.",
+			"save_config": "Save configuration"
+		},
+		"prompt_editor": {
+			"name_placeholder": "Agent Name",
+			"instructions_label": "Prompt Instructions",
+			"textarea_placeholder": "Write here the detailed instructions for the agent's behavior...",
+			"insert_tool": "Insert Tool",
+			"insert_field": "Insert field",
+			"no_results": "No selected tools found.",
+			"assistant_title": "AI Assistant",
+			"assistant_desc": "Describe what you want to improve or add to the prompt and the AI will update it.",
+			"assistant_placeholder": "E.g. Make it friendlier and ask about the budget...",
+			"refining": "Refining...",
+			"refine_btn": "Refine Prompt",
+			"tools_title": "Available tools",
+			"tools_hint": "Type @ in the prompt to mention a tool.",
+			"tools_empty": "No tools added to this node.",
+			"response_format": "Response format",
+			"response_format_condition": "When should the response format be {{format}}?",
+			"response_format_condition_placeholder": "E.g. When the user asks to see available plans...",
+			"ai_suggestions": "AI Suggestions",
+			"format_buttons": "Buttons",
+			"format_cards": "Cards",
+			"format_carousels": "Carousels"
+		},
+		"tool_selection": {
+			"select_tool": "Select tool",
+			"search": "Search...",
+			"connected": "Connected",
+			"not_connected": "Not connected",
+			"connect": "Connect",
+			"connect_hint": "Not connected — connect to use tools from this integration",
+			"verify_again": "Verify again",
+			"verify_hint": "After connecting in the new tab, click \"Verify again\" or reopen this integration to update the status.",
+			"back_to_tools": "Back to tools",
+			"back": "Back",
+			"no_results": "No tools found for \"{{search}}\"",
+			"add_tools": "Add {{count}} tool(s)",
+			"toolkits": {
+				"gmail": "Gmail integration",
+				"github": "GitHub integration",
+				"google_calendar": "Google Calendar integration",
+				"notion": "Notion integration",
+				"google_sheets": "Google Sheets integration"
+			},
+			"tools": {
+				"gmail_1": "Modify labels in Gmail",
+				"gmail_2": "Batch delete Gmail messages",
+				"gmail_3": "Create an email draft",
+				"gmail_4": "Send email"
+			}
+		}
+	},
+	"tabs": {
+		"code": {
+			"title": "Code",
+			"coming_soon": "Code tools are coming soon"
+		},
+		"edges": {
+			"condition_label": "Name",
+			"condition_label_placeholder": "E.g. Transfer to Support",
+			"override_end_condition": "Override end condition",
+			"condition_expression": "Condition",
+			"condition_expression_placeholder": "E.g. The user is upset...",
+			"timeout_label": "No response timeout",
+			"timeout_hint": "Define how long without user response before this branch activates.",
+			"timeout_minutes": "Minutes",
+			"timeout_hours": "Hours"
+		},
+		"general": {
+			"conversation_goal": "Conversation goal",
+			"assistant": "Assistant",
+			"goal_placeholder": "Add the instructions for the agent.",
+			"info_fields": "Query information fields",
+			"info_hint": "Define what information the agent should request from the customer.",
+			"info_warning_prefix": "Mark as",
+			"required": "required",
+			"info_warning_suffix": "the fields the customer must provide to proceed.",
+			"select_all": "Select all",
+			"field_header": "Field",
+			"required_header": "Required",
+			"create_field": "Create field",
+			"add_field": "Add field",
+			"advanced_config": "Advanced configuration",
+			"llm_model": "LLM model",
+			"thinking_level": "Thinking level",
+			"level": {
+				"auto": "Auto",
+				"low": "Low",
+				"medium": "Medium",
+				"high": "High"
+			}
+		},
+		"http_tools": {
+			"add": "Add HTTP Request",
+			"untitled": "Untitled tool",
+			"tool_name": "Tool name",
+			"tool_description": "Tool description",
+			"url_placeholder": "Request URL",
+			"body_template": "Request body template",
+			"empty": "No HTTP requests configured."
+		},
+		"info_collection": {
+			"title": "Data Collection",
+			"add": "Add item",
+			"note": "Define what information this node should collect",
+			"default_label": "New item",
+			"default_description": "Describe the information to collect",
+			"empty": "No info collection items yet"
+		},
+		"knowledge_base": {
+			"documents": "Documents",
+			"select_or_upload": "Select or upload file",
+			"no_documents": "No documents selected.",
+			"dynamic_table": "Dynamic table",
+			"dynamic_table_hint": "Select the table that will serve as the knowledge base to answer your customers' queries.",
+			"select_table": "Select table*",
+			"no_table_selected": "No table selected",
+			"sql_prompt": "SQL Prompt",
+			"sql_prompt_placeholder": "Write custom SQL instructions here...",
+			"sql_prompt_hint": "Define specific rules for SQL queries on this table.",
+			"advanced_config": "Advanced configuration"
+		},
+		"return": {
+			"enable": "Enable return transition",
+			"label": "Return label",
+			"label_placeholder": "Return label",
+			"condition": "Return condition",
+			"condition_placeholder": "Write a return condition"
+		},
+		"tools": {
+			"integrations": "Integrations",
+			"add_integration": "Add Integration",
+			"no_integrations": "No integrations selected.",
+			"http_request": "HTTP Request",
+			"add_http_request": "Add HTTP Request",
+			"no_http_requests": "No HTTP requests configured.",
+			"code": "Code",
+			"coming_soon": "Coming soon",
+			"code_description": "Run custom scripts in the flow."
+		}
+	},
+	"validation": {
+		"agent_missing_goal": "Agent \"{{label}}\" is missing a conversation goal",
+		"tool_missing_tools": "Tool node \"{{label}}\" has no configured tools",
+		"condition_missing_expression": "Condition \"{{label}}\" is missing an expression",
+		"node_without_outputs": "Node \"{{label}}\" has no outputs",
+		"node_without_inputs": "Node \"{{label}}\" has no inputs"
+	},
+	"views": {
+		"start": {
+			"entry_point": "Entry point",
+			"hint": "The flow starts here"
+		},
+		"end": {
+			"end_label": "End Label",
+			"end_label_placeholder": "E.g. Resolved, Escalated...",
+			"description": "Description",
+			"description_placeholder": "Describe this end state"
+		}
+	},
+	"state": {
+		"default_flow_name": "New Agent",
+		"default_prompt": "Do not end the conversation unless the user asks you to do so or you have collected all the information you need."
+	}
+}
