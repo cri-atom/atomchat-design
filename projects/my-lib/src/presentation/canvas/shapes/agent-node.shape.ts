@@ -25,20 +25,20 @@ export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
       fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, rx: 16, ry: 16, refWidth: '100%', refHeight: '100%',
       filter: { name: 'dropShadow', args: { dx: 0, dy: 2, blur: 4, color: '#09090B', opacity: 0.08 } },
     },
-    iconBg: { x: 12, y: 14, width: 40, height: 40, rx: 10, ry: 10, fill: '#F4F4F5', stroke: '#E4E4E7', strokeWidth: 1 },
+    iconBg: { x: 12, y: 14, width: 40, height: 40, rx: 12, ry: 12, fill: '#F4F4F5', stroke: '#E4E4E7', strokeWidth: 1 },
     icon: { d: ICONS.bot, stroke: '#52525C', strokeWidth: 1.5, fill: 'none', refX: 23, refY: 25, transform: 'scale(0.75)' },
-    label: { text: 'Nuevo Agente', refX: 62, refY: 29, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#18181B', fontFamily: FONT_FAMILY, fontSize: 14, fontWeight: '700' },
-    subtitle: { text: '', refX: 62, refY: 43, textAnchor: 'start', textVerticalAnchor: 'top', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 11, textWrap: { width: 150, maxLineCount: 1, ellipsis: true } },
+    label: { text: 'Nuevo Agente', refX: 62, refY: 29, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#18181B', fontFamily: FONT_FAMILY, fontSize: 13, fontWeight: '700' },
+    subtitle: { text: '', refX: 62, refY: 43, textAnchor: 'start', textVerticalAnchor: 'top', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 9, textWrap: { width: 150, maxLineCount: 1, ellipsis: true } },
     separator: { refX: 16, refY: 62, refWidth: -32, d: 'M 0 0 L 248 0', stroke: '#E4E4E7', strokeWidth: 0.5 },
     // Badge: Tools
     badgeToolsIcon: { d: ICONS.wrench, stroke: '#71717B', strokeWidth: 1.5, fill: 'none', refX: 16, refY: 70, transform: 'scale(0.55)' },
-    badgeToolsText: { text: '+0', refX: 33, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 11 },
+    badgeToolsText: { text: '+0', refX: 33, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 9 },
     // Badge: Knowledge Base
     badgeKbIcon: { d: ICONS.database, stroke: '#71717B', strokeWidth: 1.5, fill: 'none', refX: 70, refY: 70, transform: 'scale(0.55)' },
-    badgeKbText: { text: '+0', refX: 87, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 11 },
+    badgeKbText: { text: '+0', refX: 87, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 9 },
     // Badge: Info Collection
     badgeInfoIcon: { d: ICONS.bookmark, stroke: '#71717B', strokeWidth: 1.5, fill: 'none', refX: 124, refY: 70, transform: 'scale(0.55)' },
-    badgeInfoText: { text: '+0', refX: 141, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 11 },
+    badgeInfoText: { text: '+0', refX: 141, refY: 77, textAnchor: 'start', textVerticalAnchor: 'middle', fill: '#71717B', fontFamily: FONT_FAMILY, fontSize: 9 },
     // Add child button
     addButtonBg: { width: 28, height: 28, rx: 14, ry: 14, fill: '#FFFFFF', stroke: '#E4E4E7', strokeWidth: 1.5, refX: '50%', refDy: 10, x: -14, cursor: 'pointer', event: 'cell:addChild', magnet: true },
     addButtonIcon: { d: ICONS.plus, stroke: '#71717B', strokeWidth: 2, fill: 'none', refX: '50%', refDy: 10, transform: 'translate(-6, 8) scale(0.5)', pointerEvents: 'none' },

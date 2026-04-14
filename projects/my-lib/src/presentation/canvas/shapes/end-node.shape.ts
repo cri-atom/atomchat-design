@@ -17,7 +17,7 @@ export const EndNodeShape = dia.Element.define('agentApp.EndNode', {
   attrs: {
     body: { fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, rx: 24, ry: 24, refWidth: '100%', refHeight: '100%' },
     icon: { d: ICONS.checkCircle, stroke: '#52525C', strokeWidth: 2, fill: 'none', refX: 50, refY: 17, transform: 'scale(0.6)' },
-    label: { text: 'FIN', refX: '58%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: '#18181B', fontFamily: FONT_FAMILY, fontSize: 13, fontWeight: '700' },
+    label: { text: 'FIN', refX: '58%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: '#18181B', fontFamily: FONT_FAMILY, fontSize: 11, fontWeight: '700' },
   },
   markup: [
     { tagName: 'rect', selector: 'body' },

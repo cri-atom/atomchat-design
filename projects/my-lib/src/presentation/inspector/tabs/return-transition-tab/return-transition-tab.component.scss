@@ -2,7 +2,7 @@
 
 :host {
   display: block;
-  padding: $spacing-lg $spacing-xl;
+  padding: $spacing-md $spacing-lg;
 }
 
 .return-tab {
@@ -14,9 +14,9 @@
     display: flex;
     align-items: center;
     gap: $spacing-sm;
-    font-size: $font-size-base;
+    font-size: $font-size-md;
     font-weight: 500;
-    color: $color-text-muted;
+    color: $color-text;
     cursor: pointer;
   }
 

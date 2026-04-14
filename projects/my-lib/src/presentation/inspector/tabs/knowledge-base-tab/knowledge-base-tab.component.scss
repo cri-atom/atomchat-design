@@ -6,28 +6,29 @@
 
 .kb-tab {
   &__section {
-    padding: $spacing-xl $spacing-xl $spacing-3xl;
+    padding: $spacing-md $spacing-lg;
   }
 
   &__divider {
     border: none;
     border-top: 1px solid $color-border;
-    margin: 0 $spacing-xl;
+    margin: 0;
   }
 
   &__section-header {
     display: flex;
     align-items: center;
     gap: $spacing-sm;
-    margin-bottom: $spacing-xl;
+    min-height: 34px;
+    margin-bottom: $spacing-md;
     color: $color-text-muted;
   }
 
   &__section-title {
-    font-size: $font-size-sm;
-    font-weight: 700;
-    color: $color-text-muted;
-    letter-spacing: 0.06em;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
@@ -38,8 +39,8 @@
     align-items: center;
     justify-content: center;
     gap: $spacing-sm;
-    min-height: 36px;
-    padding: $spacing-md $spacing-md;
+    min-height: 40px;
+    padding: $spacing-md $spacing-lg;
     border-radius: $radius-md;
     font-size: $font-size-lg;
     font-weight: 500;
@@ -54,8 +55,8 @@
   }
 
   &__empty-text {
-    font-size: $font-size-base;
-    color: $color-text-muted;
+    font-size: $font-size-md;
+    color: $color-text-quaternary;
     font-style: italic;
     margin: 0;
     padding: 0 $spacing-2xs;
@@ -74,7 +75,7 @@
     padding: $spacing-md;
     background: $color-bg-secondary;
     border: 1px solid $color-border;
-    border-radius: $radius-lg;
+    border-radius: $radius-xl;
     transition: border-color 0.18s;
 
     &:hover {
@@ -103,8 +104,8 @@
   }
 
   &__file-name {
-    font-size: $font-size-base;
-    font-weight: 700;
+    font-size: $font-size-md;
+    font-weight: 500;
     color: $color-text;
     white-space: nowrap;
     overflow: hidden;
@@ -112,8 +113,8 @@
   }
 
   &__file-size {
-    font-size: $font-size-sm;
-    color: $color-text-muted;
+    font-size: $font-size-xs;
+    color: $color-text-quaternary;
   }
 
   &__delete-btn {
@@ -140,9 +141,9 @@
   }
 
   &__hint {
-    font-size: $font-size-base;
-    color: $color-text-muted;
-    margin: 0 0 $spacing-2xl;
+    font-size: $font-size-md;
+    color: $color-text-quaternary;
+    margin: 0 0 $spacing-lg;
     line-height: 1.5;
   }
 
@@ -151,7 +152,7 @@
 :host ::ng-deep {
   .kb-tab__field.mat-mdc-form-field {
     width: 100%;
-    --mdc-outlined-text-field-container-shape: #{$radius-xl};
+    --mdc-outlined-text-field-container-shape: #{$radius-md};
     --mdc-outlined-text-field-input-text-size: #{$font-size-base};
     --mat-form-field-container-height: 40px;
 
@@ -166,12 +167,12 @@
     }
 
     .mdc-notched-outline__leading {
-      border-radius: $radius-xl 0 0 $radius-xl;
-      min-width: $radius-xl;
+      border-radius: $radius-md 0 0 $radius-md;
+      min-width: $radius-md;
     }
 
     .mdc-notched-outline__trailing {
-      border-radius: 0 $radius-xl $radius-xl 0;
+      border-radius: 0 $radius-md $radius-md 0;
     }
   }
 }

@@ -23,11 +23,11 @@
   }
 
   &__section-title {
-    font-size: $font-size-sm;
-    font-weight: 700;
-    color: $color-text-muted;
-    letter-spacing: 0.06em;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   &__section-icon {
@@ -166,7 +166,7 @@
 
     .general-tab__section-title {
       flex: 1;
-      font-weight: 700;
+      font-weight: 500;
       transition: color 0.15s;
     }
 
@@ -203,8 +203,8 @@
   }
 
   &__hint {
-    font-size: $font-size-base;
-    color: $color-text-muted;
+    font-size: $font-size-md;
+    color: $color-text-quaternary;
     margin: 0;
     line-height: 1.5;
   }
@@ -213,21 +213,21 @@
     display: flex;
     align-items: flex-start;
     gap: $spacing-md;
-    background: rgba($color-primary, 0.05);
-    border: 1px solid rgba($color-primary, 0.10);
-    border-radius: $radius-xl;
+    background: rgba($color-warning, 0.08);
+    border: 1px solid rgba($color-warning, 0.30);
+    border-radius: $radius-sm;
     padding: $spacing-lg;
-    font-size: $font-size-base;
-    color: $color-text;
+    font-size: $font-size-md;
+    color: darken($color-warning, 20%);
     line-height: 1.5;
   }
 
   &__warning-emphasis {
-    color: $color-primary;
+    color: darken($color-warning, 15%);
   }
 
   &__warning-icon {
-    color: $color-primary;
+    color: $color-warning;
     flex-shrink: 0;
     margin-top: 1px;
   }
@@ -298,18 +298,18 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    min-height: 40px;
+    min-height: 36px;
     padding: $spacing-sm $spacing-md;
     background: $color-white;
     border: 1px solid $color-input-border;
-    border-radius: $radius-xl;
+    border-radius: $radius-md;
     cursor: pointer;
-    font-size: $font-size-lg;
+    font-size: $font-size-md;
     color: $color-text;
     text-align: left;
     transition: border-color 0.15s;
 
-    &:hover { border-color: $color-primary; }
+    &:hover { border-color: rgba($color-primary, 0.4); }
   }
 
   &__field-dropdown-label {
@@ -459,7 +459,7 @@
   }
 
   &__field-label {
-    font-size: $font-size-base;
+    font-size: $font-size-md;
     font-weight: 500;
     color: $color-text-muted;
     display: block;
@@ -477,16 +477,22 @@
 
   &__action-row {
     display: flex;
-    gap: $spacing-md;
-    justify-content: flex-end;
+    gap: $spacing-sm;
 
-    /* "Agregar campo" — Primary button style (dark bg, white text) */
+    .general-tab__secondary-btn,
+    .general-tab__add-btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* "Agregar campo" — same secondary style as "Crear campo" */
     .general-tab__add-btn {
       display: inline-flex;
       align-items: center;
       gap: $spacing-2xs;
-      background: #18181B;
-      color: $color-white;
+      background: $color-white;
+      color: $color-text;
+      border: 1px solid $color-input-border;
       padding: $spacing-2xs $spacing-md;
       border-radius: $radius-md;
       font-size: $font-size-lg;
@@ -495,12 +501,10 @@
       letter-spacing: 0;
       min-height: 32px;
       cursor: pointer;
-      border: none;
       transition: background 0.2s;
 
       &:hover:not(:disabled) {
-        background: #09090B;
-        color: $color-white;
+        background: $color-bg-secondary;
       }
     }
   }
@@ -546,7 +550,7 @@
 :host ::ng-deep {
   .general-tab__field.mat-mdc-form-field {
     width: 100%;
-    --mdc-outlined-text-field-container-shape: #{$radius-xl};
+    --mdc-outlined-text-field-container-shape: #{$radius-md};
     --mdc-outlined-text-field-input-text-size: #{$font-size-base};
 
     .mat-mdc-text-field-wrapper {
@@ -564,12 +568,12 @@
     }
 
     .mdc-notched-outline__leading {
-      border-radius: $radius-xl 0 0 $radius-xl;
-      min-width: $radius-xl;
+      border-radius: $radius-md 0 0 $radius-md;
+      min-width: $radius-md;
     }
 
     .mdc-notched-outline__trailing {
-      border-radius: 0 $radius-xl $radius-xl 0;
+      border-radius: 0 $radius-md $radius-md 0;
     }
   }
 

@@ -19,7 +19,7 @@
 
   /* Compact mat-form-field for stage/field inputs */
   .gs-field.mat-mdc-form-field {
-    --mdc-outlined-text-field-container-shape: #{$radius-xl};
+    --mdc-outlined-text-field-container-shape: #{$radius-sm};
     --mdc-outlined-text-field-input-text-size: #{$font-size-base};
 
     .mat-mdc-text-field-wrapper {
@@ -42,12 +42,12 @@
 
     /* MDC outlined notch — border-radius explícito */
     .mdc-notched-outline__leading {
-      border-radius: $radius-xl 0 0 $radius-xl;
-      min-width: $radius-xl;
+      border-radius: $radius-sm 0 0 $radius-sm;
+      min-width: $radius-sm;
     }
 
     .mdc-notched-outline__trailing {
-      border-radius: 0 $radius-xl $radius-xl 0;
+      border-radius: 0 $radius-sm $radius-sm 0;
     }
   }
 
@@ -197,49 +197,30 @@
   }
 
   &__header {
-    padding: $spacing-xs $spacing-2xl;
+    padding: $spacing-sm $spacing-lg;
     border-bottom: 1px solid $color-border;
     display: flex;
     align-items: center;
-    gap: $spacing-md;
+    gap: $spacing-sm;
     flex-shrink: 0;
-  }
-
-  &__header-icon {
-    width: 36px;
-    height: 36px;
-    background: $color-primary-light;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $color-primary;
-    flex-shrink: 0;
+    min-height: 34px;
   }
 
   &__title {
-    font-size: $font-size-3xl;
+    font-size: $font-size-base;
     font-weight: 700;
     color: $color-text;
-    margin-top: $spacing-lg;
-    margin-bottom: 1px;
+    margin: 0;
     line-height: 1.2;
-  }
-
-  &__subtitle {
-    font-size: $font-size-base;
-    color: $color-text-muted;
-    margin-bottom: $spacing-lg;
-    margin-top: 0;
   }
 
   &__body {
     flex: 1;
     overflow-y: auto;
-    padding: $spacing-xl $spacing-2xl $spacing-3xl;
+    padding: $spacing-md $spacing-lg $spacing-3xl;
     display: flex;
     flex-direction: column;
-    gap: $spacing-3xl;
+    gap: $spacing-lg;
   }
 
   &__section {
@@ -288,10 +269,10 @@
 
   &__section-title {
     font-size: $font-size-md;
-    font-weight: 700;
-    color: $color-text-muted;
+    font-weight: 500;
+    color: $color-text;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     margin: 0;
   }
 
@@ -318,9 +299,8 @@
     padding: $spacing-md $spacing-sm;
 
     &--active {
-      color: $color-primary;
-      background: $color-white;
-      box-shadow: inset 0 0 0 1px $color-border;
+      color: $color-text;
+      background: $color-bg-tertiary;
     }
 
     &:not(.global-settings__tab--active):hover {
@@ -330,7 +310,7 @@
 
   &__empty-box {
     border: 1px dashed $color-border;
-    border-radius: $radius-3xl;
+    border-radius: $radius-md;
     min-height: 100px;
     padding: $spacing-xl;
     color: $color-text-muted;
@@ -346,7 +326,7 @@
   &__stage-card {
     background: $color-bg-secondary;
     border: 1px solid $color-border;
-    border-radius: $radius-2xl;
+    border-radius: $radius-xl;
     padding: $spacing-lg;
     display: flex;
     flex-direction: column;
@@ -375,7 +355,7 @@
 
   &__stage-label {
     font-size: $font-size-sm;
-    font-weight: 700;
+    font-weight: 500;
     color: $color-text-muted;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -388,15 +368,15 @@
   }
 
   &__helper-text {
-    font-size: $font-size-base;
-    color: $color-text-muted;
+    font-size: $font-size-md;
+    color: $color-text-quaternary;
     margin: 0 0 $spacing-xs;
     line-height: 1.5;
   }
 
   &__field-label {
     font-size: $font-size-sm;
-    font-weight: 700;
+    font-weight: 500;
     color: $color-text-muted;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -442,18 +422,38 @@
 }
 
 .gs-add-btn {
-  @include add-circle-button;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  background: $color-white;
+  border: 1px solid $color-input-border;
+  border-radius: $radius-sm;
+  color: $color-text;
+  font-size: $font-size-base;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: $spacing-2xs $spacing-md;
+  min-height: 32px;
+  cursor: pointer;
+  font-family: var(--font-sans, inherit);
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
 
-  &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 12px;
-    height: 12px;
-    border: 2px solid currentColor;
-    border-radius: 50%;
-    padding: 2px;
-    flex-shrink: 0;
+  &:hover:not(:disabled) {
+    background: $color-bg-secondary;
+  }
+
+  &:disabled {
+    color: $color-text-quaternary;
+    border-color: $color-border;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &--full {
+    width: 100%;
   }
 }
 

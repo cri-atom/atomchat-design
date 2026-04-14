@@ -23,30 +23,33 @@
   pointer-events: auto;
 
   &__header {
-    padding: $spacing-xl $spacing-xl;
+    padding: $spacing-md $spacing-lg;
     border-bottom: 1px solid $color-border;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: $spacing-sm;
+    min-height: 34px;
     flex-shrink: 0;
   }
 
   &__title {
-    font-size: $font-size-2xl;
+    font-size: $font-size-base;
     font-weight: 700;
     color: $color-text;
     margin: 0;
+    flex: 1;
     cursor: default;
   }
 
   &__name-input {
-    font-size: $font-size-2xl;
+    font-size: $font-size-base;
     font-weight: 700;
     color: $color-text;
     background: none;
     border: none;
     outline: none;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 
   &__close-btn {
@@ -71,23 +74,25 @@
 
   &__tabs {
     display: flex;
+    gap: $spacing-2xl;
     border-bottom: 1px solid $color-border;
+    padding: $spacing-md $spacing-lg 0;
     flex-shrink: 0;
   }
 
   &__tab {
-    flex: 1;
-    padding: $spacing-lg 0;
+    flex: none;
+    padding: $spacing-2xs 0 $spacing-md;
     background: none;
     border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
     cursor: pointer;
-    font-size: $font-size-sm;
-    line-height: 9px;
-    font-weight: 600;
+    font-size: $font-size-md;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: $color-text-muted;
-    position: relative;
+    letter-spacing: 0.04em;
+    color: $color-text-quaternary;
     transition: color 0.15s;
 
     &:hover {
@@ -95,17 +100,13 @@
     }
 
     &--active {
-      color: $color-primary;
+      color: $color-text;
+      border-bottom-color: $color-text;
     }
   }
 
   &__tab-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: $color-primary;
+    display: none;
   }
 
   &__tab-badge {

@@ -6,7 +6,7 @@
 
 .tools-tab {
   &__section {
-    padding: $spacing-lg $spacing-xl;
+    padding: $spacing-md $spacing-lg;
   }
 
   &__divider {
@@ -19,15 +19,16 @@
     display: flex;
     align-items: center;
     gap: $spacing-sm;
+    min-height: 34px;
     margin-bottom: $spacing-md;
     color: $color-text-muted;
   }
 
   &__section-title {
-    font-size: $font-size-sm;
-    font-weight: 700;
-    color: $color-text-muted;
-    letter-spacing: 0.06em;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
@@ -38,10 +39,10 @@
     align-items: center;
     justify-content: center;
     gap: $spacing-sm;
-    min-height: 36px;
-    padding: $spacing-sm $spacing-md;
+    min-height: 40px;
+    padding: $spacing-md $spacing-lg;
     border-radius: $radius-md;
-    font-size: $font-size-base;
+    font-size: $font-size-lg;
     font-weight: 500;
     color: $color-white;
     background: $color-text;
@@ -54,8 +55,8 @@
   }
 
   &__empty-text {
-    font-size: $font-size-base;
-    color: $color-text-muted;
+    font-size: $font-size-md;
+    color: $color-text-quaternary;
     font-style: italic;
     margin: 0;
     padding: 0 $spacing-2xs;
@@ -71,7 +72,7 @@
   &__card {
     background: $color-white;
     border: 1px solid $color-border;
-    border-radius: $radius-2xl;
+    border-radius: $radius-xl;
     overflow: hidden;
     transition: border-color 0.18s;
 
@@ -123,14 +124,14 @@
   }
 
   &__card-name {
-    font-size: $font-size-base;
+    font-size: $font-size-md;
     font-weight: 700;
     color: $color-text;
     line-height: 1.2;
   }
 
   &__card-desc {
-    font-size: $font-size-sm;
+    font-size: $font-size-base;
     color: $color-text-muted;
     white-space: nowrap;
     overflow: hidden;
@@ -193,7 +194,7 @@
   }
 
   &__card-detail-desc {
-    font-size: $font-size-sm;
+    font-size: $font-size-base;
     color: $color-text-muted;
     margin: 0;
     line-height: 1.5;
@@ -209,8 +210,6 @@
     font-size: $font-size-xs;
     font-weight: 700;
     color: $color-text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
     background: $color-bg-tertiary;
     padding: 2px $spacing-sm;
     border-radius: $radius-xs;
@@ -222,10 +221,8 @@
   }
 
   &__card-detail-id {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     color: $color-text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
