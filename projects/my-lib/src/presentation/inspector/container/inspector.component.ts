@@ -1,19 +1,19 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trigger, transition, style, animate, keyframes } from '@angular/animations';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@jsverse/transloco';
 import { FlowAgentInternalStateService } from '../../../application/state/flow-agent-internal-state.service';
 import { AgentNodeType, FlowAgentNode, FlowAgentEdge } from '../../../core/model/agent-flow.model';
 import { StartNodeViewComponent } from '../views/start-node-view/start-node-view.component';
 import { EndNodeViewComponent } from '../views/end-node-view/end-node-view.component';
 import { EdgesTabComponent } from '../tabs/edges-tab/edges-tab.component';
-import { ReturnTransitionTabComponent } from '../tabs/return-transition-tab/return-transition-tab.component';
 import { GeneralTabComponent } from '../tabs/general-tab/general-tab.component';
 import { ToolsTabComponent } from '../tabs/tools-tab/tools-tab.component';
 import { KnowledgeBaseTabComponent } from '../tabs/knowledge-base-tab/knowledge-base-tab.component';
 
-type TabId = 'general' | 'kb' | 'tools' | 'forward' | 'return';
+type TabId = 'general' | 'kb' | 'tools';
 interface TabConfig { id: TabId; label: string; }
 
 @Component({
@@ -23,25 +23,20 @@ interface TabConfig { id: TabId; label: string; }
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        animate('600ms ease-out', keyframes([
-          style({ transform: 'translateX(100%)', offset: 0 }),
-          style({ transform: 'translateX(0)', offset: 0.55 }),
-          style({ transform: 'translateX(3%)', offset: 0.72 }),
-          style({ transform: 'translateX(0)', offset: 0.88 }),
-          style({ transform: 'translateX(0.8%)', offset: 0.94 }),
-          style({ transform: 'translateX(0)', offset: 1 }),
-        ])),
+        style({ transform: 'translateX(100%)' }),
+        animate('240ms ease-out', style({ transform: 'translateX(0)' })),
       ]),
       transition(':leave', [
-        animate('250ms cubic-bezier(0.4, 0, 1, 1)', style({ transform: 'translateX(100%)' })),
+        animate('240ms ease-in', style({ transform: 'translateX(100%)' })),
       ]),
     ]),
   ],
   imports: [
     CommonModule,
+    MatInputModule,
     TranslocoModule,
     StartNodeViewComponent, EndNodeViewComponent,
-    EdgesTabComponent, ReturnTransitionTabComponent,
+    EdgesTabComponent,
     GeneralTabComponent, ToolsTabComponent, KnowledgeBaseTabComponent,
   ],
   templateUrl: './inspector.component.html',
@@ -50,7 +45,6 @@ interface TabConfig { id: TabId; label: string; }
 export class InspectorComponent {
   public readonly state = inject(FlowAgentInternalStateService);
   public readonly activeTab = signal<TabId>('general');
-  public readonly isEditing = signal(false);
 
   public readonly agentTabs: TabConfig[] = [
     { id: 'general', label: 'inspector.tabs.general' },
@@ -75,27 +69,18 @@ export class InspectorComponent {
 
   constructor() {
     effect(() => {
-      if (this._selectedEdgeId()) this.activeTab.set('forward');
-      else if (this._selectedNodeId()) this.activeTab.set('general');
+      if (this._selectedNodeId()) this.activeTab.set('general');
     });
   }
 
-  public nodeIcon(node: FlowAgentNode): string {
-    const icons: Record<string, string> = { start: '📩', agent: '🤖', tool: '🔧', selectAgent: '👥', end: '✂️' };
-    return icons[node.type] || '📦';
+  public canEditNodeName(node: FlowAgentNode): boolean {
+    return node.type === AgentNodeType.Agent || node.type === AgentNodeType.Tool;
   }
 
-  public startEditing(node: FlowAgentNode): void {
-    if (node.type === AgentNodeType.Agent || node.type === AgentNodeType.Tool) {
-      this.isEditing.set(true);
-    }
-  }
-
-  public saveName(value: string): void {
+  public updateName(value: string): void {
     const id = this.state.selectedNodeId$.value;
-    if (id && value.trim()) {
-      this.state.updateNodeData(id, { label: value.trim() });
+    if (id) {
+      this.state.updateNodeData(id, { label: value });
     }
-    this.isEditing.set(false);
   }
 }

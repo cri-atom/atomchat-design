@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -55,10 +56,13 @@ export class GlobalSettingsViewComponent {
 
   public readonly canAddStage = computed(() => this.availableTypes().length > 0);
 
-  public readonly pipelineLabel = computed(() =>
-    this.transloco.translate(
-      this.pipelineType() === 'venta' ? 'global.pipeline.sales' : 'global.pipeline.service'
-    )
+  public readonly pipelineLabel = toSignal(
+    this.state.pipelineType$.pipe(
+      switchMap(type => this.transloco.selectTranslate(
+        type === 'venta' ? 'global.pipeline.sales' : 'global.pipeline.service'
+      ))
+    ),
+    { initialValue: '' }
   );
 
   public readonly canAddSaveField = computed(() =>

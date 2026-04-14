@@ -21,7 +21,7 @@ export class FieldCreationModalComponent {
   public name = signal('');
   public description = signal('');
   public dataType = signal('Texto');
-  public length = signal('');
+  public length = signal<number | null>(null);
 
   public get canCreate(): boolean {
     return !!this.name().trim() && !!this.description().trim();
@@ -39,6 +39,6 @@ export class FieldCreationModalComponent {
     this.name.set('');
     this.description.set('');
     this.dataType.set('Texto');
-    this.length.set('');
+    this.length.set(null);
   }
 }

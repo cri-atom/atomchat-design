@@ -102,7 +102,7 @@
   background: $color-bg-secondary;
   border: 1px solid $color-border;
   border-radius: $radius-lg;
-  padding: 0 $spacing-md;
+  padding: $spacing-2xs $spacing-md;
 }
 
 .pem-model-icon {
@@ -156,7 +156,7 @@
 }
 
 .pem-col-label {
-  font-size: $font-size-xs;
+  font-size: $font-size-sm;
   font-weight: 700;
   color: $color-text-muted;
   letter-spacing: 0.06em;

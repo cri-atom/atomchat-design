@@ -12,7 +12,7 @@ import { FlowAgentInternalStateService } from '../../../application/state/flow-a
 import { FlowAgentDefaultsService } from '../../../application/state/flow-agent-defaults.service';
 import { FlowAgentValidationService } from '../../../application/state/flow-agent-validation.service';
 import { AgentNodeType, FlowAgentNode, FlowAgentEdge, ValidationError } from '../../../core/model/agent-flow.model';
-import { ZOOM_INITIAL, ZOOM_MAX, ZOOM_MIN, BODY_BORDER, SELECTED_BORDER, EDGE_SELECTED, ERROR_COLOR } from '../theme';
+import { ZOOM_INITIAL, ZOOM_MAX, ZOOM_MIN, BODY_BG, BODY_BORDER, SELECTED_BORDER, EDGE_SELECTED, ERROR_COLOR } from '../theme';
 import { environment } from '../../../environments/environment';
 
 import '../shapes/app.shapes';
@@ -140,6 +140,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       interactive: { linkMove: false, labelMove: false },
       defaultLink: () => new (shapes as any).agentApp.Link(),
       defaultConnectionPoint: { name: 'boundary' },
+      clickThreshold: 5,
+      moveThreshold: 2,
       magnetThreshold: 5,
       highlighting: {
         default: { name: 'stroke', options: { attrs: { stroke: SELECTED_BORDER, 'stroke-width': 1 } } },
@@ -441,6 +443,38 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         if (link) {
           link.attr('line/stroke', EDGE_SELECTED);
           link.attr('line/targetMarker/fill', EDGE_SELECTED);
+
+          const labels = (link as dia.Link).labels();
+          if (labels.length > 0) {
+            const firstLabel = labels[0] || {};
+            const labelAttrs = firstLabel.attrs || {};
+
+            (link as dia.Link).labels([
+              {
+                ...firstLabel,
+                attrs: {
+                  ...labelAttrs,
+                  labelBody: {
+                    ...labelAttrs['labelBody'],
+                    fill: EDGE_SELECTED,
+                    stroke: EDGE_SELECTED,
+                  },
+                  labelText: {
+                    ...labelAttrs['labelText'],
+                    fill: BODY_BG,
+                  },
+                  labelIcon: {
+                    ...labelAttrs['labelIcon'],
+                    stroke: BODY_BG,
+                  },
+                  labelIconHole: {
+                    ...labelAttrs['labelIconHole'],
+                    stroke: BODY_BG,
+                  },
+                },
+              },
+            ]);
+          }
         }
       }
       this.zone.run(() => this.computeEdgeActions(edgeId));

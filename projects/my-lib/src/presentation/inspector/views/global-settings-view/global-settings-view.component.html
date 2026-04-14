@@ -23,15 +23,23 @@
   <div class="global-settings__panel">
     <header class="global-settings__header">
       <h2 class="global-settings__title">{{ 'global.title' | transloco }}</h2>
+      <button
+        type="button"
+        class="global-settings__close-btn"
+        [attr.aria-label]="'common.close' | transloco"
+        (click)="toggleCollapsed()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
     </header>
 
     <div class="global-settings__body">
 
       <section class="global-settings__section">
         <div class="global-settings__section-header">
-          <svg class="global-settings__section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" />
-          </svg>
           <h3 class="global-settings__section-title">{{ 'global.instructions.title' | transloco }}</h3>
         </div>
         <mat-form-field appearance="outline" class="gs-field" subscriptSizing="dynamic">
@@ -44,11 +52,8 @@
         </mat-form-field>
       </section>
 
-      <section class="global-settings__section">
+      <section class="global-settings__section global-settings__section--divider">
         <div class="global-settings__section-header">
-          <svg class="global-settings__section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" />
-          </svg>
           <h3 class="global-settings__section-title">{{ 'global.stages.title' | transloco }}</h3>
         </div>
 
@@ -73,12 +78,12 @@
 
             <div class="global-settings__stage-row">
               <div class="global-settings__stage-field">
-                <span class="global-settings__stage-label">{{ 'global.stages.type' | transloco }}</span>
+                <span class="global-settings__stage-label">{{ 'global.stages.atom_name' | transloco }}</span>
                 <mat-form-field appearance="outline" class="gs-field" subscriptSizing="dynamic">
                   <mat-select [ngModel]="stage.type" (ngModelChange)="updateStage(stage.id, 'type', $event)">
                     @for (type of STAGE_ORDER; track type) {
                       <mat-option [value]="type" [disabled]="isTypeUsed(type, stage.id)">
-                        {{ type }}{{ isTypeUsed(type, stage.id) ? (' ' + ('global.stages.used' | transloco)) : '' }}
+                        {{ type }}{{ isTypeUsed(type, stage.id) ? (' ' + ('global.stages.already_used' | transloco)) : '' }}
                       </mat-option>
                     }
                   </mat-select>
@@ -86,23 +91,23 @@
               </div>
 
               <div class="global-settings__stage-field">
-                <span class="global-settings__stage-label">{{ 'global.stages.name' | transloco }}</span>
+                <span class="global-settings__stage-label">{{ 'global.stages.stage_name' | transloco }}</span>
                 <mat-form-field appearance="outline" class="gs-field" subscriptSizing="dynamic">
                   <input matInput type="text"
                     [ngModel]="stage.name"
                     (ngModelChange)="updateStage(stage.id, 'name', $event)"
-                    [placeholder]="'global.stages.name_placeholder' | transloco" />
+                    [placeholder]="'global.stages.stage_name_placeholder' | transloco" />
                 </mat-form-field>
               </div>
             </div>
 
             <div class="global-settings__stage-field">
-              <span class="global-settings__stage-label">{{ 'global.stages.condition' | transloco }}</span>
+              <span class="global-settings__stage-label">{{ 'global.stages.save_condition' | transloco }}</span>
               <mat-form-field appearance="outline" class="gs-field" subscriptSizing="dynamic">
                 <input matInput type="text"
                   [ngModel]="stage.condition"
                   (ngModelChange)="updateStage(stage.id, 'condition', $event)"
-                  [placeholder]="'global.stages.condition_placeholder' | transloco" />
+                  [placeholder]="'global.stages.save_condition_placeholder' | transloco" />
               </mat-form-field>
             </div>
           </div>
@@ -135,7 +140,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
 
-          <p class="global-settings__helper-text">{{ 'global.fields.hint' | transloco }}</p>
+          <p class="global-settings__helper-text">{{ 'global.fields.helper' | transloco }}</p>
 
           @if (saveFields().length > 0) {
             <div class="global-settings__fields-header">
@@ -163,12 +168,10 @@
           }
 
           <div class="global-settings__action-row">
-            <button type="button" class="gs-add-btn" (click)="addSaveField()" [disabled]="!canAddSaveField()">
-              <span class="gs-add-btn__icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="10" height="10">
-                  <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-                </svg>
-              </span>
+            <button type="button" class="gs-add-btn gs-add-btn--full" (click)="addSaveField()" [disabled]="!canAddSaveField()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
               {{ 'global.actions.add' | transloco }}
             </button>
           </div>

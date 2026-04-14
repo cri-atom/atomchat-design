@@ -19,14 +19,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-lg;
   }
 
   &__section-title {
     font-size: $font-size-md;
     font-weight: 500;
     color: $color-text;
-    text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
@@ -60,15 +59,16 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    min-height: 120px;
+    height: 80px;
     padding: $spacing-sm $spacing-md;
     padding-right: $spacing-2xl;
-    background: $color-bg-secondary;
+    background: white;
     border: 1px solid $color-border;
     border-radius: $radius-xl;
     cursor: pointer;
     text-align: left;
     position: relative;
+    margin-bottom: $spacing-md;
     transition: border-color 0.15s, background 0.15s;
 
     &:hover {
@@ -90,7 +90,6 @@
   &__prompt-preview-placeholder {
     font-size: $font-size-base;
     color: $color-text-muted;
-    font-style: italic;
   }
 
   &__prompt-expand {
@@ -199,7 +198,7 @@
     margin-top: $spacing-lg;
     display: flex;
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: $spacing-sm;
   }
 
   &__hint {
@@ -214,20 +213,20 @@
     align-items: flex-start;
     gap: $spacing-md;
     background: rgba($color-warning, 0.08);
-    border: 1px solid rgba($color-warning, 0.30);
+    border: 1px solid $color-warning-text;
     border-radius: $radius-sm;
-    padding: $spacing-lg;
+    padding: $spacing-md;
     font-size: $font-size-md;
-    color: darken($color-warning, 20%);
+    color: $color-warning-text;
     line-height: 1.5;
-  }
-
-  &__warning-emphasis {
-    color: darken($color-warning, 15%);
+    margin-bottom: $spacing-2xs;
   }
 
   &__warning-icon {
-    color: $color-warning;
+    color: $color-primary-light;
+    border-radius: $radius-pill;
+    fill: $color-warning-text;
+    padding: 2px;
     flex-shrink: 0;
     margin-top: 1px;
   }
@@ -463,6 +462,7 @@
     font-weight: 500;
     color: $color-text-muted;
     display: block;
+    margin-bottom: $spacing-xs;
   }
 
   &__field-wrap {
@@ -483,9 +483,9 @@
     .general-tab__add-btn {
       flex: 1;
       justify-content: center;
+      font-size: $font-size-base;
     }
 
-    /* "Agregar campo" — same secondary style as "Crear campo" */
     .general-tab__add-btn {
       display: inline-flex;
       align-items: center;
@@ -495,7 +495,7 @@
       border: 1px solid $color-input-border;
       padding: $spacing-2xs $spacing-md;
       border-radius: $radius-md;
-      font-size: $font-size-lg;
+      font-size: $font-size-base;
       font-weight: 500;
       text-transform: none;
       letter-spacing: 0;

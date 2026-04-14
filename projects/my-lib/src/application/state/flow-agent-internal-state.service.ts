@@ -25,6 +25,20 @@ export class FlowAgentInternalStateService {
     });
   }
 
+  private setDefaultStartNodeLabel(force = false): void {
+    this.transloco.selectTranslate('defaults.node.start').pipe(take(1)).subscribe(text => {
+      if (force || !this.isFlowLoaded$.value) {
+        const nodes = this.nodes$.value;
+        const startNode = nodes.find(n => n.id === 'start-node');
+        if (startNode && startNode.data.label !== text) {
+          this.nodes$.next(
+            nodes.map(n => n.id === 'start-node' ? { ...n, data: { ...n.data, label: text } } : n)
+          );
+        }
+      }
+    });
+  }
+
   readonly nodes$ = new BehaviorSubject<FlowAgentNode[]>(this.defaults.createInitialNodes());
   readonly edges$ = new BehaviorSubject<FlowAgentEdge[]>([]);
   readonly selectedNodeId$ = new BehaviorSubject<string | null>(null);
@@ -37,6 +51,7 @@ export class FlowAgentInternalStateService {
   constructor() {
     this.setDefaultFlowNameFromTranslations();
     this.setDefaultPromptFromTranslations();
+    this.setDefaultStartNodeLabel();
   }
 
   readonly pipelineType$ = new BehaviorSubject<'venta' | 'servicio'>('venta');
@@ -171,6 +186,7 @@ export class FlowAgentInternalStateService {
     this.isFlowLoaded$.next(false);
     this.setDefaultFlowNameFromTranslations(true);
     this.setDefaultPromptFromTranslations(true);
+    this.setDefaultStartNodeLabel(true);
     this.selectedNodeId$.next(null);
     this.selectedEdgeId$.next(null);
     this.pipelineType$.next('venta');

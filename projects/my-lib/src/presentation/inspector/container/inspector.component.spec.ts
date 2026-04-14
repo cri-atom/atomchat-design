@@ -48,24 +48,19 @@ describe('InspectorComponent', () => {
     expect(component.selectedNode()?.id).toBe('agent-1');
   });
 
-  it('enables editing only for agent or tool nodes', () => {
-    component.startEditing(nodes[0]);
-    expect(component.isEditing()).toBeTrue();
-
-    component.isEditing.set(false);
-    component.startEditing(nodes[1]);
-    expect(component.isEditing()).toBeFalse();
+  it('allows editing only for agent or tool nodes', () => {
+    expect(component.canEditNodeName(nodes[0])).toBeTrue();
+    expect(component.canEditNodeName(nodes[1])).toBeFalse();
   });
 
-  it('saves trimmed name for selected node', () => {
-    component.saveName('  Qualified Agent  ');
+  it('updates node name while typing', () => {
+    component.updateName('Qualified Agent');
     expect(stateMock.updateNodeData).toHaveBeenCalledWith('agent-1', { label: 'Qualified Agent' });
-    expect(component.isEditing()).toBeFalse();
   });
 
-  it('does not save blank names', () => {
+  it('allows empty node names', () => {
     stateMock.updateNodeData.calls.reset();
-    component.saveName('   ');
-    expect(stateMock.updateNodeData).not.toHaveBeenCalled();
+    component.updateName('');
+    expect(stateMock.updateNodeData).toHaveBeenCalledWith('agent-1', { label: '' });
   });
 });

@@ -7,11 +7,11 @@
 
 @keyframes modal-panel-enter {
   from {
-    transform: scale(0.94) translateY(16px);
+    transform: translateY(16px);
     opacity: 0;
   }
   to {
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -30,7 +30,7 @@
 }
 
 .modal-panel {
-  animation: modal-panel-enter 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: modal-panel-enter 0.24s ease;
   background: $color-white;
   border-radius: $radius-2xl;
   border: 1px solid $color-border;
@@ -62,7 +62,7 @@
 .modal-subtitle {
   font-size: $font-size-base;
   color: $color-text-muted;
-  margin: 0 0 $spacing-3xl;
+  margin: 0 0 $spacing-2xl;
   line-height: 1.5;
 }
 
@@ -91,6 +91,8 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-2xl;
+  padding: $spacing-sm $spacing-sm 0;
+  overflow: hidden;
 }
 
 .modal-grid-2 {
@@ -111,7 +113,7 @@
 .modal-cancel-btn {
   @include button-reset;
   min-height: 32px;
-  padding: $spacing-xs $spacing-sm;
+  padding: $spacing-xs $spacing-xl;
   border-radius: $radius-sm;
   font-size: $font-size-lg;
   font-weight: 500;
@@ -126,7 +128,7 @@
 .modal-create-btn {
   @include button-reset;
   min-height: 32px;
-  padding: $spacing-xs $spacing-md;
+  padding: $spacing-xs $spacing-3xl;
   border-radius: $radius-sm;
   font-size: $font-size-lg;
   font-weight: 500;
@@ -174,6 +176,10 @@
     .mdc-notched-outline__trailing {
       border-radius: 0 $radius-xl $radius-xl 0;
     }
+  }
+
+  .modal-hint--muted {
+    color: $color-text-muted;
   }
 }
 

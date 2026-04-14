@@ -31,16 +31,36 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
   defaultLabel: {
     markup: [
       { tagName: 'rect', selector: 'labelBody' },
+      { tagName: 'path', selector: 'labelIcon' },
+      { tagName: 'path', selector: 'labelIconHole' },
       { tagName: 'text', selector: 'labelText' },
     ],
     attrs: {
       labelBody: {
         fill: '#FFFFFF', stroke: '#E4E4E7', rx: 10, ry: 10,
-        x: -70, y: -10, width: 110, height: 20,
+        x: -74, y: -10, width: 128, height: 20,
+      },
+      labelIcon: {
+        d: 'M20.59 13.41 11 3.83V2H9.17L2 9.17V11h1.83l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z',
+        fill: 'none',
+        stroke: '#52525C',
+        strokeWidth: 1.8,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        transform: 'translate(-68 -6) scale(0.55)',
+      },
+      labelIconHole: {
+        d: 'M7 7h.01',
+        fill: 'none',
+        stroke: '#52525C',
+        strokeWidth: 2.6,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        transform: 'translate(-68 -6) scale(0.55)',
       },
       labelText: {
         fill: '#52525C', fontFamily: FONT_FAMILY, fontSize: 11, fontWeight: '600',
-        textAnchor: 'middle', textVerticalAnchor: 'middle', x: -15,
+        textAnchor: 'middle', textVerticalAnchor: 'middle', x: -4,
       },
     },
     position: { distance: 0.5, offset: -14 },
@@ -95,6 +115,8 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     this.labels([{
       attrs: {
         labelBody: { fill: bodyFill, stroke: bodyStroke },
+        labelIcon: { stroke: textFill },
+        labelIconHole: { stroke: textFill },
         labelText: { fill: textFill, text: data.label || 'Condición' },
       },
       position: { distance: 0.5, offset: -14 },

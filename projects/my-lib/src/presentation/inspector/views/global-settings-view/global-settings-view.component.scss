@@ -197,17 +197,38 @@
   }
 
   &__header {
-    padding: $spacing-sm $spacing-lg;
+    padding: $spacing-2xs $spacing-lg;
     border-bottom: 1px solid $color-border;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: $spacing-sm;
     flex-shrink: 0;
     min-height: 34px;
   }
 
+  &__close-btn {
+    border: none;
+    background: transparent;
+    color: $color-text-muted;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: color 0.16s ease, background 0.16s ease;
+
+    &:hover {
+      color: $color-text;
+      background: $color-bg-secondary;
+    }
+  }
+
   &__title {
-    font-size: $font-size-base;
+    font-size: $font-size-xl;
     font-weight: 700;
     color: $color-text;
     margin: 0;
@@ -247,6 +268,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
 
     &--between {
       justify-content: space-between;
@@ -271,19 +293,15 @@
     font-size: $font-size-md;
     font-weight: 500;
     color: $color-text;
-    text-transform: uppercase;
     letter-spacing: 0.04em;
     margin: 0;
   }
 
   &__tabs {
     width: 100%;
-    background: $color-bg-secondary;
-    border: 1px solid $color-border;
     border-radius: $radius-xl;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: $spacing-2xs;
     gap: $spacing-2xs;
   }
 
@@ -309,9 +327,6 @@
   }
 
   &__empty-box {
-    border: 1px dashed $color-border;
-    border-radius: $radius-md;
-    min-height: 100px;
     padding: $spacing-xl;
     color: $color-text-muted;
     font-size: $font-size-md;
@@ -377,7 +392,7 @@
   &__field-label {
     font-size: $font-size-sm;
     font-weight: 500;
-    color: $color-text-muted;
+    color: $color-text;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 
@@ -462,7 +477,7 @@
   border: none;
   cursor: pointer;
   padding: 6px;
-  color: $color-text-quaternary;
+  color: $color-text;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;

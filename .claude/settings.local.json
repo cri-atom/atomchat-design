@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx ng:*)",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "Bash(grep -E \"\\\\.\\(tsx?|jsx?\\)$\")",
+      "Bash(find:*)",
+      "Bash(sed -n '40,60p' \"C:/dev/atom-agentbuilder/projects/my-lib/src/presentation/inspector/tabs/general-tab/general-tab.component.scss\")",
+      "Bash(sed -n '140,160p' \"C:/dev/atom-agentbuilder/projects/my-lib/src/presentation/inspector/tabs/general-tab/general-tab.component.scss\")",
+      "Bash(sed -n '237,255p' \"C:/dev/atom-agentbuilder/projects/my-lib/src/presentation/inspector/tabs/general-tab/general-tab.component.scss\")",
+      "Bash(sed -n '355,400p' \"C:/dev/atom-agentbuilder/projects/my-lib/src/presentation/inspector/tabs/general-tab/general-tab.component.scss\")",
+      "Bash(sed -n '415,435p' \"C:/dev/atom-agentbuilder/projects/my-lib/src/presentation/inspector/tabs/general-tab/general-tab.component.scss\")",
+      "Bash(xargs wc:*)",
+      "Bash(grep -E \"\\\\.\\(json|ts\\)$\")",
+      "mcp__plugin_claude-mem_mcp-search__smart_outline",
+      "Bash(xargs grep:*)",
+      "Bash(git -C /c/dev/atom-agentbuilder log --oneline --all --grep=\"stage\\\\|description\\\\|etapa\")",
+      "Bash(grep:*)",
+      "Bash(git -C /c/dev/atom-agentbuilder log --oneline projects/my-lib/src/presentation/inspector/views/global-settings-view/)"
+    ]
+  },
+  "spinnerTipsEnabled": false
+}

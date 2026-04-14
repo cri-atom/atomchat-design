@@ -315,6 +315,8 @@ html .mat-mdc-filled-button[color="warn"] {
     color: #18181B;
     font-family: var(--font-sans);
     letter-spacing: 0;
+    padding-left: $spacing-sm;
+    padding-right: $spacing-sm;
   }
 
   .mat-mdc-select-placeholder {

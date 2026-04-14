@@ -267,7 +267,7 @@
       "create_field": "Crear campo",
       "add_field": "Agregar campo",
       "advanced_config": "Configuración avanzada",
-      "llm_model": "Modelo LLM",
+      "llm_model": "Modelo",
       "thinking_level": "Nivel de razonamiento",
       "level": {
         "auto": "Automático",
