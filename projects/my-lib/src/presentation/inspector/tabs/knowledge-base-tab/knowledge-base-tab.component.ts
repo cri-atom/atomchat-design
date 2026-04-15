@@ -16,13 +16,29 @@ import { FileSelectionModalComponent } from '../../modals/file-selection-modal/f
   styleUrl: './knowledge-base-tab.component.scss',
 })
 export class KnowledgeBaseTabComponent {
+  /** The agent node whose knowledge-base configuration is displayed and edited in this tab. */
   public readonly node = input.required<FlowAgentNode>();
+
   private readonly state = inject(FlowAgentInternalStateService);
+
+  /** IANA identifier of the dynamic table currently selected in the dropdown. Empty string when none. */
   public readonly selectedTable = signal('');
+  /** Controls visibility of the file-selection modal overlay. */
   public readonly showFileModal = signal(false);
 
+  /**
+   * Typed accessor for the knowledge-base documents attached to this node.
+   *
+   * @returns The current array of {@link KnowledgeBase} entries, or an empty array.
+   */
   public get addedKbs(): KnowledgeBase[] { return (this.node().data as AgentNodeData).knowledgeBases || []; }
 
+  /**
+   * Appends newly selected files to the node's knowledge-base list.
+   * Files already present (matched by `id`) are silently skipped to prevent duplicates.
+   *
+   * @param files - The array of {@link KnowledgeBase} items returned by the file-selection modal.
+   */
   public onFilesSaved(files: KnowledgeBase[]): void {
     const current = this.addedKbs;
     const existingIds = new Set(current.map(k => k.id));
@@ -30,6 +46,11 @@ export class KnowledgeBaseTabComponent {
     this.state.updateNodeData(this.node().id, { knowledgeBases: [...current, ...toAdd] });
   }
 
+  /**
+   * Removes a knowledge-base document from this node.
+   *
+   * @param kbId - The ID of the {@link KnowledgeBase} entry to remove.
+   */
   public removeFromNode(kbId: string): void {
     this.state.updateNodeData(this.node().id, { knowledgeBases: this.addedKbs.filter(k => k.id !== kbId) });
   }

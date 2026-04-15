@@ -5,10 +5,25 @@ import {
   AgentNodeType, ConditionType, AgentNodeData, ToolNodeData,
 } from '../../core/model/agent-flow.model';
 
+/**
+ * Validates the structural and semantic correctness of an agent flow graph.
+ *
+ * @remarks
+ * Validation is stateless and purely functional — it operates on plain data arrays
+ * and produces a list of errors. Run on every graph change via the
+ * {@link AtomAgentBuilderComponent} subscription.
+ */
 @Injectable()
 export class FlowAgentValidationService {
   private readonly transloco = inject(TranslocoService);
 
+  /**
+   * Runs all validation checks against the provided nodes and edges.
+   *
+   * @param nodes - Current array of flow nodes.
+   * @param edges - Current array of flow edges.
+   * @returns A flat array of translated validation errors, or an empty array when the flow is valid.
+   */
   validate(nodes: FlowAgentNode[], edges: FlowAgentEdge[]): ValidationError[] {
     return [
       ...this.checkAgentGoals(nodes),
@@ -19,6 +34,12 @@ export class FlowAgentValidationService {
     ];
   }
 
+  /**
+   * Convenience helper that returns `true` when {@link validate} produces no errors.
+   *
+   * @param nodes - Current array of flow nodes.
+   * @param edges - Current array of flow edges.
+   */
   isValid(nodes: FlowAgentNode[], edges: FlowAgentEdge[]): boolean {
     return this.validate(nodes, edges).length === 0;
   }

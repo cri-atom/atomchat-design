@@ -15,12 +15,24 @@ import { FlowAgentEdge, ConditionEdgeData } from '../../../../core/model/agent-f
   styleUrl: './edges-tab.component.scss',
 })
 export class EdgesTabComponent {
+  /** The condition edge whose properties are displayed and edited in this tab. */
   public readonly edge = input.required<FlowAgentEdge>();
+
   private readonly state = inject(FlowAgentInternalStateService);
   private readonly transloco = inject(TranslocoService);
 
+  /**
+   * A randomly selected translated example string shown as placeholder text
+   * in the condition expression textarea. Chosen once at component instantiation.
+   */
   public readonly conditionExpressionPlaceholder = this.getRandomConditionExpressionPlaceholder();
 
+  /**
+   * Picks a random translated example from three condition expression examples
+   * to use as the textarea placeholder.
+   *
+   * @returns A translated placeholder string.
+   */
   private getRandomConditionExpressionPlaceholder(): string {
     const keys = [
       'tabs.edges.condition_expression_placeholder_example_1',
@@ -31,6 +43,11 @@ export class EdgesTabComponent {
     return this.transloco.translate(keys[randomIndex] || keys[0]);
   }
 
+  /**
+   * Merges partial changes into the edge's condition data.
+   *
+   * @param data - The fields to update. Only the provided keys are overwritten.
+   */
   public update(data: Partial<ConditionEdgeData>): void {
     this.state.updateEdgeData(this.edge().id, data);
   }

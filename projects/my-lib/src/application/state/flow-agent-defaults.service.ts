@@ -10,13 +10,27 @@ import {
 let nodeCounter = 0;
 let edgeCounter = 0;
 
+/**
+ * Factory service that generates default nodes, edges, and IDs for the agent flow canvas.
+ *
+ * @remarks
+ * All user-facing labels are resolved through Transloco so they reflect the active locale.
+ * Node IDs are generated using a combination of timestamp and monotonic counter to ensure
+ * uniqueness within a session.
+ */
 @Injectable()
 export class FlowAgentDefaultsService {
   private readonly transloco = inject(TranslocoService);
 
+  /** Generates a unique node ID using a timestamp + monotonic counter. */
   generateNodeId(): string { return `node-${Date.now()}-${++nodeCounter}`; }
+  /** Generates a unique edge ID using a timestamp + monotonic counter. */
   generateEdgeId(): string { return `edge-${Date.now()}-${++edgeCounter}`; }
 
+  /**
+   * Returns a translated default data object for the given node type.
+   * @param type - The type of node to create default data for.
+   */
   createDefaultData(type: AgentNodeType): any {
     const factories: Record<AgentNodeType, () => any> = {
       [AgentNodeType.Start]: (): StartNodeData => ({ label: this.transloco.translate('defaults.node.start') }),
@@ -33,6 +47,13 @@ export class FlowAgentDefaultsService {
     return factories[type]();
   }
 
+  /**
+   * Creates a fully initialized {@link FlowAgentNode} with a generated ID and translated defaults.
+   *
+   * @param type - Node type to create.
+   * @param position - Canvas position in logical pixels.
+   * @param data - Optional data overrides merged over the defaults.
+   */
   createNode(type: AgentNodeType, position: { x: number; y: number }, data?: Partial<any>): FlowAgentNode {
     return {
       id: this.generateNodeId(),
@@ -42,6 +63,19 @@ export class FlowAgentDefaultsService {
     };
   }
 
+  /**
+   * Creates a {@link FlowAgentEdge} with appropriate defaults based on source and target node types.
+   *
+   * @remarks
+   * - Edges from a Start node are unconditional (`conditionType: null`, empty label).
+   * - Edges targeting an End node get the "end condition" label and `overrideEndCondition: false`.
+   * - Agent-to-agent edges automatically include a disabled return transition.
+   *
+   * @param source - ID of the source node.
+   * @param target - ID of the target node.
+   * @param sourceType - Type of the source node; used to set condition defaults.
+   * @param targetType - Type of the target node; used to set condition defaults.
+   */
   createEdge(source: string, target: string, sourceType?: AgentNodeType, targetType?: AgentNodeType): FlowAgentEdge {
     const data: ConditionEdgeData = { label: this.transloco.translate('defaults.edge.new_condition'), conditionType: ConditionType.LLMCondition };
 
@@ -66,14 +100,31 @@ export class FlowAgentDefaultsService {
     return { id: this.generateEdgeId(), source, target, data };
   }
 
+  /**
+   * Returns the initial node array for a new empty flow — a single Start node at the top-center.
+   */
   createInitialNodes(): FlowAgentNode[] {
     return [{ id: 'start-node', type: AgentNodeType.Start, position: { x: 410, y: 50 }, data: { label: this.transloco.translate('defaults.node.start') } }];
   }
 
+  /** Returns the initial edge array for a new empty flow (always empty). */
   createInitialEdges(): FlowAgentEdge[] {
     return [];
   }
 
+  /**
+   * Calculates the canvas position for a new child node relative to its parent.
+   *
+   * @remarks
+   * The child is placed below the parent with a 120px vertical gap.
+   * If the parent already has sibling children, the new node is placed 320px to the right
+   * of the rightmost sibling to avoid overlap.
+   *
+   * @param parent - The parent node used as the position anchor.
+   * @param siblings - Existing child nodes of the same parent.
+   * @param childType - Type of the child node; used to look up its canvas width for centering.
+   * @returns Canvas `{ x, y }` coordinates in logical pixels.
+   */
   getChildPosition(parent: FlowAgentNode, siblings: FlowAgentNode[], childType?: AgentNodeType): { x: number; y: number } {
     const widths: Record<string, number> = {
       [AgentNodeType.Agent]: 300, [AgentNodeType.Start]: 100,

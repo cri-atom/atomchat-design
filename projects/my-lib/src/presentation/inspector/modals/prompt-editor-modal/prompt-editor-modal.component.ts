@@ -17,26 +17,42 @@ import { FlowAgentNode, AgentNodeData } from '../../../../core/model/agent-flow.
   styleUrl: './prompt-editor-modal.component.scss',
 })
 export class PromptEditorModalComponent {
+  /** The agent node whose conversation goal (prompt) is edited in this modal. */
   public readonly node = input.required<FlowAgentNode>();
+  /** Emits when the modal is dismissed. */
   public readonly closed = output<void>();
 
+  /** Reference to the main textarea element, used to imperatively set cursor position after insertions. */
   @ViewChild('goalTextarea') goalTextarea!: ElementRef<HTMLTextAreaElement>;
 
   private readonly state = inject(FlowAgentInternalStateService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly zone = inject(NgZone);
 
+  /** Current text in the AI assistant refinement input. */
   public readonly assistantInput = signal('');
+  /** `true` while the mock AI optimization timeout is running. */
   public readonly isOptimizing = signal(false);
+  /** Whether the `@`-triggered tool-mention dropdown is visible. */
   public readonly showMentions = signal(false);
+  /** Whether the `/`-triggered field-mention dropdown is visible. */
   public readonly showFields = signal(false);
+  /** Tools matching the current `@` search prefix, shown in the mention dropdown. */
   public readonly filteredTools = signal<{ name: string }[]>([]);
+  /** Fields matching the current `/` search prefix, shown in the field dropdown. */
   public readonly filteredFields = signal<{ name: string }[]>([]);
+  /**
+   * Pixel coordinates `{ x, y }` for positioning the mention/field dropdown
+   * relative to the textarea's top-left content corner.
+   */
   public readonly dropdownPos = signal<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  /** Character index in the textarea where the current `@` trigger was detected. */
   private mentionStart = -1;
+  /** Character index in the textarea where the current `/` trigger was detected. */
   private fieldStart = -1;
 
+  /** Built-in system fields always available for `/` insertion regardless of node config. */
   private readonly SYSTEM_FIELDS = [
     { name: 'first_name' },
     { name: 'last_name' },
@@ -45,6 +61,11 @@ export class PromptEditorModalComponent {
     { name: 'company' },
   ];
 
+  /**
+   * Typed accessor for the node's data payload narrowed to {@link AgentNodeData}.
+   *
+   * @returns The node data cast to `AgentNodeData`.
+   */
   public get data(): AgentNodeData { return this.node().data as AgentNodeData; }
 
   private update(patch: Partial<AgentNodeData>): void {
@@ -148,6 +169,14 @@ export class PromptEditorModalComponent {
     return { x, y };
   }
 
+  /**
+   * Handles `input` events on the conversation-goal textarea.
+   * Detects `@` (tool mention) and `/` (field mention) triggers, filters the relevant lists,
+   * calculates the dropdown position via `getCaretCoords`, and shows the appropriate dropdown.
+   * Hides both dropdowns and persists the updated value when no trigger is active.
+   *
+   * @param event - The native DOM `input` event from the goal textarea.
+   */
   public onGoalInput(event: Event): void {
     const ta = event.target as HTMLTextAreaElement;
     const pos = ta.selectionStart ?? ta.value.length;
@@ -188,11 +217,21 @@ export class PromptEditorModalComponent {
     this.cdr.markForCheck();
   }
 
+  /** Hides both the tool-mention and field-mention dropdowns. */
   public closeDropdowns(): void {
     this.showMentions.set(false);
     this.showFields.set(false);
   }
 
+  /**
+   * Inserts a tool mention into the goal textarea at the `@` trigger position,
+   * replacing any partial text typed after the trigger with `@[name]`.
+   * Restores the cursor position after the inserted token and persists the new value.
+   * Prevents the default mouse event to avoid blurring the textarea.
+   *
+   * @param name - The tool name to insert.
+   * @param event - The `mousedown` event from the dropdown item.
+   */
   public insertMention(name: string, event: MouseEvent): void {
     event.preventDefault();
     const ta = this.goalTextarea.nativeElement;
@@ -208,6 +247,15 @@ export class PromptEditorModalComponent {
     this.update({ conversationGoal: newValue, description: newValue });
   }
 
+  /**
+   * Inserts a field reference into the goal textarea at the `/` trigger position,
+   * replacing any partial text typed after the trigger with `/{name}`.
+   * Restores the cursor position after the inserted token and persists the new value.
+   * Prevents the default mouse event to avoid blurring the textarea.
+   *
+   * @param name - The field name to insert.
+   * @param event - The `mousedown` event from the dropdown item.
+   */
   public insertField(name: string, event: MouseEvent): void {
     event.preventDefault();
     const ta = this.goalTextarea.nativeElement;
@@ -223,15 +271,34 @@ export class PromptEditorModalComponent {
     this.update({ conversationGoal: newValue, description: newValue });
   }
 
+  /**
+   * Persists a new display label for the agent node.
+   *
+   * @param value - The new label string entered in the name field.
+   */
   public updateLabel(value: string): void {
     this.update({ label: value });
   }
 
+  /**
+   * Handles LLM model selection from the dropdown.
+   * Constructs a minimal {@link AIAgentModel} from the selected ID,
+   * or clears the model when the empty option is chosen.
+   *
+   * @param modelId - The selected model identifier string, or an empty string to clear.
+   */
   public onModelChange(modelId: string): void {
     const model = modelId ? { id: modelId, name: modelId, provider: 'google' } : null;
     this.update({ aiAgentModel: model });
   }
 
+  /**
+   * Triggers the mock AI prompt-refinement flow.
+   * Runs outside Angular's zone to avoid triggering unnecessary change detection during the delay.
+   * Generates a structured prompt template from `assistantInput`, updates the goal, and resets
+   * the assistant input after the simulated 1.5-second processing delay.
+   * No-ops when `assistantInput` is empty.
+   */
   public refinePrompt(): void {
     const input = this.assistantInput().trim();
     if (!input) return;

@@ -29,28 +29,55 @@ const MOCK_FILES: MockFile[] = [
   styleUrl: './file-selection-modal.component.scss',
 })
 export class FileSelectionModalComponent {
+  /** Files already attached to the node; used to pre-select rows when the modal opens. */
   public readonly selectedFiles = input<KnowledgeBase[]>([]);
+  /** Emits when the modal is dismissed without saving. */
   public readonly closed = output<void>();
+  /** Emits the confirmed array of {@link KnowledgeBase} items when the user saves their selection. */
   public readonly saved = output<KnowledgeBase[]>();
 
+  /** Current value of the search input used to filter the file list. */
   public readonly search = signal('');
+  /** Full list of available files. Currently backed by mock data. */
   public readonly files = signal<MockFile[]>([...MOCK_FILES]);
+  /** Files selected in the current modal session (not yet confirmed). */
   public readonly tempSelected = signal<MockFile[]>([]);
 
+  /**
+   * Files visible in the table after applying the current `search` filter.
+   * Returns all files when the search string is empty.
+   */
   public readonly filteredFiles = computed(() => {
     const q = this.search().toLowerCase();
     return q ? this.files().filter(f => f.name.toLowerCase().includes(q)) : this.files();
   });
 
+  /**
+   * Returns whether a specific file is in the current selection.
+   *
+   * @param file - The file row to check.
+   * @returns `true` when the file is currently selected.
+   */
   public isSelected(file: MockFile): boolean {
     return this.tempSelected().some(f => f.id === file.id);
   }
 
+  /**
+   * `true` when the filtered list is non-empty and every visible file is selected,
+   * used to drive the "select all" checkbox state.
+   *
+   * @returns `true` when all filtered files are selected.
+   */
   public get allSelected(): boolean {
     return this.filteredFiles().length > 0 &&
       this.filteredFiles().every(f => this.isSelected(f));
   }
 
+  /**
+   * Adds the file to `tempSelected` if not already present, or removes it if it is.
+   *
+   * @param file - The file row to toggle.
+   */
   public toggleFile(file: MockFile): void {
     if (this.isSelected(file)) {
       this.tempSelected.update(sel => sel.filter(f => f.id !== file.id));
@@ -59,6 +86,11 @@ export class FileSelectionModalComponent {
     }
   }
 
+  /**
+   * Selects or deselects all currently filtered files at once.
+   *
+   * @param checked - `true` to select all filtered files; `false` to clear the selection.
+   */
   public toggleAll(checked: boolean): void {
     if (checked) {
       this.tempSelected.set([...this.filteredFiles()]);
@@ -67,6 +99,10 @@ export class FileSelectionModalComponent {
     }
   }
 
+  /**
+   * Converts the current selection to {@link KnowledgeBase} objects, emits them via `saved`,
+   * and dismisses the modal via `closed`.
+   */
   public confirm(): void {
     const kbs: KnowledgeBase[] = this.tempSelected().map(f => ({
       id: f.id,

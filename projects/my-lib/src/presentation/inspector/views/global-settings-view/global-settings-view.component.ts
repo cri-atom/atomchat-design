@@ -33,31 +33,60 @@ export class GlobalSettingsViewComponent {
   public readonly state = inject(FlowAgentInternalStateService);
   private readonly transloco = inject(TranslocoService);
 
+  /** Whether the settings panel is in its collapsed (narrow) state. Defaults to `false`. */
   public readonly isCollapsed = input(false);
+  /** Emits the new boolean state whenever the user toggles the collapse button. */
   public readonly isCollapsedChange = output<boolean>();
+  /** Emits once after the CSS `width` transition finishes on collapse or expand. */
   public readonly collapsedTransitionDone = output<void>();
+  /** Controls the expanded/collapsed state of the "Fields to save" expansion panel. */
   public readonly isFieldsOpen = signal(true);
 
+  /** Current pipeline type (`'venta'` or `'servicio'`), synced from state. */
   public readonly pipelineType = toSignal(this.state.pipelineType$, { initialValue: 'venta' as PipelineType });
+  /** Sales pipeline stages, synced from state. */
   public readonly stagesVenta = toSignal(this.state.stagesVenta$, { initialValue: [] as GlobalStage[] });
+  /** Service pipeline stages, synced from state. */
   public readonly stagesServicio = toSignal(this.state.stagesServicio$, { initialValue: [] as GlobalStage[] });
+  /** Global save-fields list, synced from state. */
   public readonly saveFields = toSignal(this.state.saveFields$, { initialValue: [] as GlobalSaveField[] });
+  /** Active IANA timezone, synced from state. */
   public readonly timezone = toSignal(this.state.timezone$, { initialValue: 'America/Argentina/Buenos_Aires' });
 
+  /**
+   * The stages array for the currently active pipeline type.
+   * Switches between `stagesVenta` and `stagesServicio` reactively.
+   */
   public readonly currentStages = computed(() =>
     this.pipelineType() === 'venta' ? this.stagesVenta() : this.stagesServicio()
   );
 
+  /**
+   * A sorted copy of `currentStages` ordered according to the canonical funnel sequence
+   * defined in `STAGE_ORDER` (Awareness → Lead → MQL → SQL → Opportunity → -).
+   */
   public readonly sortedStages = computed(() =>
     [...this.currentStages()].sort((a, b) => STAGE_ORDER.indexOf(a.type) - STAGE_ORDER.indexOf(b.type))
   );
 
+  /**
+   * Stage types from `STAGE_ORDER` that have not yet been assigned to any stage
+   * in the active pipeline, and are therefore available for the next `addStage()` call.
+   */
   public readonly availableTypes = computed(() =>
     STAGE_ORDER.filter(type => !this.currentStages().some(s => s.type === type))
   );
 
+  /**
+   * `true` when at least one stage type in `STAGE_ORDER` is still unassigned,
+   * i.e. the user is allowed to add another stage.
+   */
   public readonly canAddStage = computed(() => this.availableTypes().length > 0);
 
+  /**
+   * Translated display label for the active pipeline type (e.g. `"Ventas"` or `"Servicio"`).
+   * Updates reactively when the pipeline type changes or when the active locale changes.
+   */
   public readonly pipelineLabel = toSignal(
     this.state.pipelineType$.pipe(
       switchMap(type => this.transloco.selectTranslate(
@@ -67,12 +96,18 @@ export class GlobalSettingsViewComponent {
     { initialValue: '' }
   );
 
+  /**
+   * `true` when the number of configured save-fields is below the total number
+   * of predefined field options, meaning the user can still add more.
+   */
   public readonly canAddSaveField = computed(() =>
     this.saveFields().length < PREDEFINED_FIELDS.length
   );
 
+  /** Exposes the canonical stage order so the template can reference it without importing the constant. */
   public readonly STAGE_ORDER = STAGE_ORDER;
 
+  /** IANA timezone options available for selection in the timezone dropdown. */
   public readonly timezones: ReadonlyArray<{ value: string; label: string }> = [
     { value: 'America/Argentina/Buenos_Aires', label: 'Argentina - Buenos Aires' },
     { value: 'America/Bogota', label: 'Colombia - Bogotá' },
@@ -85,6 +120,16 @@ export class GlobalSettingsViewComponent {
     { value: 'UTC', label: 'UTC' },
   ];
 
+  /** Whether the infinite-loop prevention toggle is enabled, synced from state. */
+  public readonly preventInfiniteLoops = toSignal(this.state.preventInfiniteLoops$, { initialValue: false });
+
+  /**
+   * Handles the container's CSS `transitionend` event.
+   * Only reacts to the `width` property transition; other transitions are ignored.
+   * Emits `collapsedTransitionDone` after the collapse animation finishes.
+   *
+   * @param event - The native `TransitionEvent` fired by the browser.
+   */
   public onContainerTransitionEnd(event: TransitionEvent): void {
     if (event.propertyName !== 'width') return;
     if (this.isCollapsed()) {
@@ -92,9 +137,22 @@ export class GlobalSettingsViewComponent {
     }
   }
 
+  /**
+   * Toggles the panel between collapsed and expanded state by emitting `isCollapsedChange`.
+   */
   public toggleCollapsed(): void { this.isCollapsedChange.emit(!this.isCollapsed()); }
+
+  /**
+   * Sets the active pipeline type and persists it to state.
+   *
+   * @param type - The pipeline type to activate (`'venta'` or `'servicio'`).
+   */
   public setPipeline(type: PipelineType): void { this.state.pipelineType$.next(type); }
 
+  /**
+   * Appends a new stage to the active pipeline using the first available stage type.
+   * No-ops if all stage types are already in use.
+   */
   public addStage(): void {
     const available = this.availableTypes();
     if (available.length === 0) return;
@@ -112,6 +170,14 @@ export class GlobalSettingsViewComponent {
     }
   }
 
+  /**
+   * Updates a single field on an existing stage in the active pipeline.
+   * Silently no-ops if the caller attempts to assign a `type` already in use by another stage.
+   *
+   * @param id - The ID of the stage to update.
+   * @param field - The stage property key to modify.
+   * @param value - The new string value to assign to the field.
+   */
   public updateStage(id: string, field: keyof GlobalStage, value: string): void {
     if (field === 'type' && this.isTypeUsed(value as StageType, id)) {
       return;
@@ -125,6 +191,11 @@ export class GlobalSettingsViewComponent {
     }
   }
 
+  /**
+   * Removes a stage from the active pipeline.
+   *
+   * @param id - The ID of the stage to delete.
+   */
   public removeStage(id: string): void {
     const apply = (stages: GlobalStage[]) => stages.filter(s => s.id !== id);
     if (this.pipelineType() === 'venta') {
@@ -134,6 +205,10 @@ export class GlobalSettingsViewComponent {
     }
   }
 
+  /**
+   * Adds the first available predefined field (one not yet used by any existing save-field row).
+   * No-ops when all predefined fields are already added.
+   */
   public addSaveField(): void {
     const firstAvailable = PREDEFINED_FIELDS.find(
       label => !this.state.saveFields$.value.some(f => f.label === label)
@@ -143,10 +218,22 @@ export class GlobalSettingsViewComponent {
     this.state.saveFields$.next([...this.state.saveFields$.value, newField]);
   }
 
+  /**
+   * Removes a save-field row by its ID.
+   *
+   * @param id - The ID of the save-field to remove.
+   */
   public removeSaveField(id: string): void {
     this.state.saveFields$.next(this.state.saveFields$.value.filter(f => f.id !== id));
   }
 
+  /**
+   * Returns the subset of predefined field labels available for a specific save-field row.
+   * Labels already selected by *other* rows are excluded to prevent duplicate assignments.
+   *
+   * @param fieldId - The ID of the save-field row requesting the options list.
+   * @returns An array of label strings the user can choose for this row.
+   */
   public saveFieldOptions(fieldId: string): string[] {
     const selectedByOthers = new Set(
       this.state.saveFields$.value
@@ -157,18 +244,41 @@ export class GlobalSettingsViewComponent {
     return PREDEFINED_FIELDS.filter(option => !selectedByOthers.has(option));
   }
 
+  /**
+   * Updates the label of a save-field row when the user selects a new option.
+   *
+   * @param fieldId - The ID of the row to update.
+   * @param label - The newly selected predefined field label.
+   */
   public onSaveFieldChange(fieldId: string, label: string): void {
     this.state.saveFields$.next(
       this.state.saveFields$.value.map(f => f.id === fieldId ? { ...f, label } : f)
     );
   }
 
+  /**
+   * Checks whether a given stage type is already assigned to another stage in the active pipeline.
+   * The special `'-'` type is always considered available.
+   *
+   * @param type - The stage type to check.
+   * @param excludeId - The ID of the stage currently being edited, excluded from the check.
+   * @returns `true` when the type is in use by a different stage.
+   */
   public isTypeUsed(type: StageType, excludeId: string): boolean {
     return type !== '-' && this.currentStages().some(s => s.type === type && s.id !== excludeId);
   }
 
+  /**
+   * Persists a new timezone selection to state.
+   *
+   * @param tz - IANA timezone identifier (e.g. `'America/Bogota'`).
+   */
   public onTimezoneChange(tz: string): void { this.state.timezone$.next(tz); }
 
-  public readonly preventInfiniteLoops = toSignal(this.state.preventInfiniteLoops$, { initialValue: false });
+  /**
+   * Persists the infinite-loop prevention toggle value to state.
+   *
+   * @param val - `true` to enable loop detection; `false` to disable it.
+   */
   public onPreventInfiniteLoopsChange(val: boolean): void { this.state.preventInfiniteLoops$.next(val); }
 }

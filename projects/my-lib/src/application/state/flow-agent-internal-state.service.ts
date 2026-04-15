@@ -8,6 +8,18 @@ import {
 } from '../../core/model/agent-flow.model';
 import { FlowAgentDefaultsService } from './flow-agent-defaults.service';
 
+/**
+ * Central in-memory state store for a single agent flow instance.
+ *
+ * @remarks
+ * All mutable state is exposed as `BehaviorSubject` streams so consumers
+ * can react to changes via RxJS operators or Angular's `toSignal`. This service
+ * is scoped to the {@link AtomAgentBuilderComponent} provider tree — one instance
+ * per builder mounted on the page.
+ *
+ * Persistence is delegated to {@link FlowAgentActionsService}; this service only
+ * manages the in-memory representation.
+ */
 @Injectable()
 export class FlowAgentInternalStateService {
   private readonly defaults = inject(FlowAgentDefaultsService);
@@ -54,11 +66,19 @@ export class FlowAgentInternalStateService {
   readonly timezone$ = new BehaviorSubject<string>('America/Argentina/Buenos_Aires');
   readonly preventInfiniteLoops$ = new BehaviorSubject<boolean>(false);
 
+  /**
+   * Selects a node and clears any active edge selection.
+   * @param id - Node ID to select, or `null` to deselect.
+   */
   setSelectedNode(id: string | null): void {
     this.selectedNodeId$.next(id);
     this.selectedEdgeId$.next(null);
   }
 
+  /**
+   * Selects an edge and clears any active node selection.
+   * @param id - Edge ID to select, or `null` to deselect.
+   */
   setSelectedEdge(id: string | null): void {
     this.selectedEdgeId$.next(id);
     this.selectedNodeId$.next(null);
@@ -68,6 +88,13 @@ export class FlowAgentInternalStateService {
     this.nodes$.next([...this.nodes$.value, node]);
   }
 
+  /**
+   * Creates a new node of the given type as a child of the specified parent,
+   * automatically calculating its canvas position and creating the connecting edge.
+   *
+   * @param parentId - ID of the existing node to connect from.
+   * @param childType - The type of the new child node to create.
+   */
   addChildNode(parentId: string, childType: AgentNodeType): void {
     const nodes = this.nodes$.value;
     const edges = this.edges$.value;
@@ -84,12 +111,22 @@ export class FlowAgentInternalStateService {
     this.edges$.next([...edges, newEdge]);
   }
 
+  /**
+   * Merges partial data into an existing node's data payload.
+   * @param nodeId - Target node ID.
+   * @param data - Partial data fields to merge.
+   */
   updateNodeData(nodeId: string, data: Partial<any>): void {
     this.nodes$.next(
       this.nodes$.value.map(n => n.id === nodeId ? { ...n, data: { ...n.data, ...data } } : n)
     );
   }
 
+  /**
+   * Removes a node and all its connected edges from the graph.
+   * The start node (`'start-node'`) cannot be deleted and this call is silently ignored.
+   * @param nodeId - ID of the node to remove.
+   */
   deleteNode(nodeId: string): void {
     if (nodeId === 'start-node') return;
     this.nodes$.next(this.nodes$.value.filter(n => n.id !== nodeId));
@@ -97,6 +134,11 @@ export class FlowAgentInternalStateService {
     if (this.selectedNodeId$.value === nodeId) this.selectedNodeId$.next(null);
   }
 
+  /**
+   * Creates a shallow copy of a node, offset 50px right and down from the original.
+   * The duplicate is added to the graph without any connecting edges.
+   * @param nodeId - ID of the node to duplicate.
+   */
   duplicateNode(nodeId: string): void {
     const node = this.nodes$.value.find(n => n.id === nodeId);
     if (!node) return;
@@ -113,12 +155,21 @@ export class FlowAgentInternalStateService {
     this.edges$.next([...this.edges$.value, edge]);
   }
 
+  /**
+   * Merges partial data into an existing edge's data payload.
+   * @param edgeId - Target edge ID.
+   * @param data - Partial edge data fields to merge.
+   */
   updateEdgeData(edgeId: string, data: Partial<ConditionEdgeData>): void {
     this.edges$.next(
       this.edges$.value.map(e => e.id === edgeId ? { ...e, data: { ...e.data, ...data } } : e)
     );
   }
 
+  /**
+   * Removes an edge from the graph. Clears the selection if this edge was selected.
+   * @param edgeId - ID of the edge to remove.
+   */
   deleteEdge(edgeId: string): void {
     this.edges$.next(this.edges$.value.filter(e => e.id !== edgeId));
     if (this.selectedEdgeId$.value === edgeId) this.selectedEdgeId$.next(null);
@@ -147,6 +198,13 @@ export class FlowAgentInternalStateService {
   updateFlowName(name: string): void { this.currentFlowName$.next(name); }
   updateBaseSystemPrompt(prompt: string): void { this.baseSystemPrompt$.next(prompt); }
 
+  /**
+   * Hydrates the entire internal state from a persisted {@link FlowAgentData} snapshot.
+   * Handles legacy data (translation keys stored as values) and falls back gracefully
+   * to translated defaults when required fields are missing or empty.
+   *
+   * @param data - The flow data returned from the persistence layer.
+   */
   setFlowData(data: FlowAgentData): void {
     this.nodes$.next(data.nodes);
     this.edges$.next(data.edges);
@@ -174,6 +232,10 @@ export class FlowAgentInternalStateService {
     this.preventInfiniteLoops$.next(data.preventInfiniteLoops ?? false);
   }
 
+  /**
+   * Resets all state back to its initial default values.
+   * Called on component destroy and when opening a new (create-mode) flow.
+   */
   resetToDefaults(): void {
     this.nodes$.next(this.defaults.createInitialNodes());
     this.edges$.next([]);
@@ -191,6 +253,12 @@ export class FlowAgentInternalStateService {
     this.preventInfiniteLoops$.next(false);
   }
 
+  /**
+   * Builds a serializable snapshot of the current in-memory state.
+   * Used by {@link FlowAgentActionsService.saveFlow} to persist the flow.
+   *
+   * @returns A complete {@link FlowAgentData} object ready for serialization.
+   */
   getFlowSnapshot(): FlowAgentData {
     return {
       id: this.currentFlowId$.value!,

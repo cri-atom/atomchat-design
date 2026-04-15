@@ -15,13 +15,26 @@ import { FlowAgentEdge, ReturnTransitionConfig } from '../../../../core/model/ag
   styleUrl: './return-transition-tab.component.scss',
 })
 export class ReturnTransitionTabComponent {
+  /** The edge whose return-transition configuration is displayed and edited in this tab. */
   public readonly edge = input.required<FlowAgentEdge>();
+
   private readonly state = inject(FlowAgentInternalStateService);
 
+  /**
+   * Safe accessor for the edge's return-transition configuration.
+   * Returns a disabled default object when no return transition has been set yet.
+   *
+   * @returns The current {@link ReturnTransitionConfig}, or a disabled default.
+   */
   public get rt(): ReturnTransitionConfig {
     return this.edge().data.returnTransition || { enabled: false, label: '', conditionExpression: '' };
   }
 
+  /**
+   * Merges a partial update into the edge's return-transition config and persists it to state.
+   *
+   * @param partial - The fields to update. Only the provided keys are overwritten.
+   */
   public updateRT(partial: Partial<ReturnTransitionConfig>): void {
     this.state.updateEdgeData(this.edge().id, { returnTransition: { ...this.rt, ...partial } });
   }

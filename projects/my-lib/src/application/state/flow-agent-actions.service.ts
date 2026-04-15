@@ -5,6 +5,14 @@ import { TranslocoService } from '@jsverse/transloco';
 import { FlowAgentInternalStateService } from './flow-agent-internal-state.service';
 import { FlowAgentStateService } from '../../core/services/flow-agent-state.service';
 
+/**
+ * Orchestrates high-level user actions on the agent flow: loading, saving, and tracking unsaved changes.
+ *
+ * @remarks
+ * Acts as a bridge between {@link FlowAgentInternalStateService} (in-memory state)
+ * and {@link FlowAgentStateService} (persistence layer). Provided at the
+ * {@link AtomAgentBuilderComponent} level — one instance per builder instance.
+ */
 @Injectable()
 export class FlowAgentActionsService {
   private readonly destroyRef = inject(DestroyRef);
@@ -12,6 +20,10 @@ export class FlowAgentActionsService {
   private readonly flowStateService = inject(FlowAgentStateService);
   private readonly transloco = inject(TranslocoService);
 
+  /**
+   * Emits `true` when the in-memory state has diverged from the last saved state.
+   * Resets to `false` after a successful save.
+   */
   readonly unsavedChanges$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
@@ -25,6 +37,13 @@ export class FlowAgentActionsService {
     });
   }
 
+  /**
+   * Loads a flow by ID into the internal state.
+   * If `id` is blank, `'start'`, `'undefined'`, or `'null'`, the state is reset to defaults
+   * instead of making a network request.
+   *
+   * @param id - The raw flow ID as received from the router or host application.
+   */
   loadFlow(id: string): void {
     const flowId = this.getValidFlowId(id);
     if (!flowId) {
@@ -43,6 +62,10 @@ export class FlowAgentActionsService {
     });
   }
 
+  /**
+   * Persists the current in-memory flow snapshot to the backend.
+   * No-ops if there is no active flow ID or the flow has not finished loading.
+   */
   saveFlow(): void {
     if (!this.state.currentFlowId$.value || !this.state.isFlowLoaded$.value) return;
     this.flowStateService.saveFlow(this.state.getFlowSnapshot()).subscribe({

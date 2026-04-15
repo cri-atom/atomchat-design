@@ -20,12 +20,39 @@ import { AgentBuilderAgentChatServiceImpl } from '../../infrastructure/services/
 import { AgentBuilderComposioToolServiceImpl } from '../../infrastructure/services/composio-tool.service.impl';
 import { AgentBuilderAppConfigServiceImpl } from '../../infrastructure/services/app-config.service.impl';
 
+/**
+ * Root Angular module for the Atom Agent Builder library.
+ *
+ * @remarks
+ * Import this module in your application's root module and call `forRoot()` to register
+ * service implementations. Exposes {@link AtomAgentBuilderComponent} for use in templates.
+ *
+ * @example
+ * ```ts
+ * // app.module.ts
+ * \@NgModule({
+ *   imports: [
+ *     AtomAgentBuilderModule.forRoot({
+ *       services: {
+ *         authService: MyAuthService,
+ *         flowAgentStateService: MyFlowStateService,
+ *       },
+ *     }),
+ *   ],
+ * })
+ * export class AppModule {}
+ * ```
+ */
 @NgModule({
   imports: [CommonModule, AtomAgentBuilderComponent],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [AtomAgentBuilderComponent],
 })
 export class AtomAgentBuilderModule {
+  /**
+   * @param environmentConfig - Runtime environment overrides injected by the host app.
+   * @param injector - The host application's root injector; stored for out-of-DI-tree access.
+   */
   constructor(
     @Inject('environment') environmentConfig: Record<string, unknown>,
     @Inject('injector') injector: Injector,
@@ -34,6 +61,14 @@ export class AtomAgentBuilderModule {
     setInjector(injector);
   }
 
+  /**
+   * Registers the module with service overrides.
+   * Call this once in the application root module.
+   *
+   * @param config - Optional service overrides. Omitted services use the library's defaults.
+   * @returns A `ModuleWithProviders` that Angular uses to wire DI tokens.
+   * @throws When the legacy array signature has a count other than 5.
+   */
   static forRoot(config: AtomAgentBuilderConfig = {}): ModuleWithProviders<AtomAgentBuilderModule> {
     let normalizedConfig = config;
 

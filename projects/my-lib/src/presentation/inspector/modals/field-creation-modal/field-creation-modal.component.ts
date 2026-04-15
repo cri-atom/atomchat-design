@@ -15,18 +15,35 @@ import { InfoCollectionItem } from '../../../../core/model/agent-flow.model';
   styleUrl: './field-creation-modal.component.scss',
 })
 export class FieldCreationModalComponent {
+  /** Emits when the modal is dismissed without creating a field. */
   public readonly closed = output<void>();
+  /** Emits the newly created {@link InfoCollectionItem} when the user confirms. */
   public readonly created = output<InfoCollectionItem>();
 
+  /** Current value of the field-name input. */
   public name = signal('');
+  /** Current value of the field-description input. */
   public description = signal('');
+  /** Selected data type for the field (e.g. `'Texto'`, `'Número'`, `'Email'`, `'Fecha'`). */
   public dataType = signal('Texto');
+  /** Optional maximum character length for the field. `null` when not set. */
   public length = signal<number | null>(null);
 
+  /**
+   * `true` when both `name` and `description` contain non-whitespace content,
+   * meaning the form is valid and the create action can proceed.
+   *
+   * @returns `true` when the form is valid.
+   */
   public get canCreate(): boolean {
     return !!this.name().trim() && !!this.description().trim();
   }
 
+  /**
+   * Validates the form, emits the new {@link InfoCollectionItem} via `created`,
+   * dismisses the modal via `closed`, and resets all form signals to their initial values.
+   * No-ops when `canCreate` is `false`.
+   */
   public create(): void {
     if (!this.canCreate) return;
     this.created.emit({
