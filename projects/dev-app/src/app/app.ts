@@ -18,8 +18,7 @@ import { AtomAgentBuilderComponent, FlowAgentModeData } from '../../../../projec
 })
 export class App {
   modeData: FlowAgentModeData = {
-    flowId: 'dev-flow-1',
-    mode: 'edit',
+    mode: 'create',
     sourceRoute: '/',
   };
 
