@@ -26,8 +26,15 @@ export class FlowAgentActionsService {
   }
 
   loadFlow(id: string): void {
-    this.state.setCurrentFlowId(id);
-    this.flowStateService.loadFlow(id).subscribe({
+    const flowId = this.getValidFlowId(id);
+    if (!flowId) {
+      this.state.resetToDefaults();
+      this.state.isFlowLoaded$.next(true);
+      return;
+    }
+
+    this.state.setCurrentFlowId(flowId);
+    this.flowStateService.loadFlow(flowId).subscribe({
       next: (data) => this.state.setFlowData(data),
       error: () => {
         this.state.resetToDefaults();
@@ -42,6 +49,15 @@ export class FlowAgentActionsService {
       next: () => this.unsavedChanges$.next(false),
       error: (err) => console.error(this.transloco.translate('errors.save_failed'), err),
     });
+  }
+
+  private getValidFlowId(flowId: string): string | null {
+    const normalized = flowId?.trim();
+    if (!normalized) return null;
+    const lowered = normalized.toLowerCase();
+    return lowered === 'start' || lowered === 'undefined' || lowered === 'null'
+      ? null
+      : normalized;
   }
 
 }

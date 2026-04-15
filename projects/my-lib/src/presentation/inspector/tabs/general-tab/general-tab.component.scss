@@ -38,7 +38,7 @@
     display: inline-flex;
     align-items: center;
     gap: $spacing-2xs;
-    padding: 2px $spacing-sm;
+    padding: $spacing-2xs $spacing-sm;
     background: transparent;
     color: $color-text-muted;
     border: none;
@@ -62,7 +62,7 @@
     height: 120px;
     padding: $spacing-sm $spacing-md;
     padding-right: $spacing-2xl;
-    background: white;
+    background: $color-white;
     border: 1px solid $color-border;
     border-radius: $radius-sm;
     cursor: pointer;
@@ -226,9 +226,9 @@
     color: $color-primary-light;
     border-radius: $radius-pill;
     fill: $color-warning-text;
-    padding: 2px;
+    padding: $spacing-2xs;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: $spacing-3xs;
   }
 
   &__field-list {
@@ -539,7 +539,7 @@
       height: 16px;
       border: 2px solid currentColor;
       border-radius: 50%;
-      padding: 2px;
+      padding: $spacing-2xs;
       flex-shrink: 0;
     }
   }
@@ -557,8 +557,8 @@
     }
 
     .mat-mdc-form-field-infix {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: $spacing-sm;
+      padding-bottom: $spacing-sm;
       min-height: 36px;
     }
 

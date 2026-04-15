@@ -16,6 +16,7 @@ describe('GlobalSettingsViewComponent', () => {
     stagesServicio$: new BehaviorSubject([]),
     saveFields$: new BehaviorSubject([]),
     timezone$: new BehaviorSubject('America/Argentina/Buenos_Aires'),
+    preventInfiniteLoops$: new BehaviorSubject(false),
     updateBaseSystemPrompt: jasmine.createSpy('updateBaseSystemPrompt'),
   };
 
@@ -30,10 +31,12 @@ describe('GlobalSettingsViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('toggles collapsed state', () => {
-    expect(component.isCollapsed()).toBeFalse();
+  it('emits collapsed change on toggle', () => {
+    const emitSpy = spyOn(component.isCollapsedChange, 'emit');
+
     component.toggleCollapsed();
-    expect(component.isCollapsed()).toBeTrue();
+
+    expect(emitSpy).toHaveBeenCalledWith(true);
   });
 
   it('switches pipeline type in state', () => {
@@ -58,11 +61,10 @@ describe('GlobalSettingsViewComponent', () => {
     component.addSaveField();
     const fieldId = stateMock.saveFields$.value[0].id;
 
-    component.openFieldDropdown(fieldId);
-    component.selectFieldOption(fieldId, 'Email');
+    component.onSaveFieldChange(fieldId, 'Email');
 
     expect(stateMock.saveFields$.value[0].label).toBe('Email');
-    expect(component.isFieldDropdownOpen()).toBeNull();
+    expect(component.saveFieldOptions(fieldId)).toContain('Nombre');
   });
 
   it('changes timezone in state', () => {

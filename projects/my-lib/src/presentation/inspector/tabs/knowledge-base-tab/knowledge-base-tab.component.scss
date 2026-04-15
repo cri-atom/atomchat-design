@@ -99,7 +99,7 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: $spacing-2xs;
   }
 
   &__file-name {
@@ -135,7 +135,7 @@
 
     &:hover {
       color: $color-error;
-      background: #FFF0F0;
+      background: $color-danger-bg;
     }
   }
 
@@ -160,8 +160,8 @@
     }
 
     .mat-mdc-form-field-infix {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: $spacing-sm;
+      padding-bottom: $spacing-sm;
       min-height: 36px;
     }
 

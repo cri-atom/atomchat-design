@@ -53,8 +53,8 @@ describe('GeneralTabComponent', () => {
 
     component.onInput({ target: textarea } as unknown as Event);
 
-    expect(component.showMentions).toBeTrue();
-    expect(component.filteredItems.some(item => item.name === 'helloWorld')).toBeTrue();
+    expect(component.showMentions()).toBeTrue();
+    expect(component.filteredItems().some(item => item.name === 'helloWorld')).toBeTrue();
   });
 
   it('inserts mention and persists updated text', () => {
@@ -71,6 +71,6 @@ describe('GeneralTabComponent', () => {
       conversationGoal: 'Hola @[helloWorld]',
       description: 'Hola @[helloWorld]',
     });
-    expect(component.showMentions).toBeFalse();
+    expect(component.showMentions()).toBeFalse();
   });
 });

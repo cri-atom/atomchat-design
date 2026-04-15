@@ -53,14 +53,14 @@ export class FlowAgentDefaultsService {
 
     if (targetType === AgentNodeType.End) {
       data.label = this.transloco.translate('defaults.edge.end_condition');
-      data.conditionExpression = this.transloco.translate('defaults.edge.end_condition');
+      data.conditionExpression = '';
       data.overrideEndCondition = false;
     }
 
     if (sourceType === AgentNodeType.Agent && targetType === AgentNodeType.Agent) {
       data.returnTransition = {
         enabled: true, label: '',
-        conditionExpression: this.transloco.translate('defaults.edge.return_condition'),
+        conditionExpression: '',
       };
     }
 

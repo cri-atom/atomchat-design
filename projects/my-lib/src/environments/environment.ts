@@ -11,7 +11,7 @@ export const environment: {
   agentBuilderConfig: AgentBuilderAppConfigData;
   [key: string]: unknown;
 } = {
-  testingMode: true,
+  testingMode: false,
   agentBuilderConfig: {
     apiBaseUrl: '/api/agentbuilder',
     environment: 'development',

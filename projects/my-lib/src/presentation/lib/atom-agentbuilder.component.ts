@@ -51,8 +51,9 @@ export class AtomAgentBuilderComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const modeData = this.flowAgentModeData();
-    if (modeData?.flowId) {
-      this.actions.loadFlow(modeData.flowId);
+    const validFlowId = this.getValidFlowId(modeData?.flowId);
+    if (modeData?.mode !== 'create' && validFlowId) {
+      this.actions.loadFlow(validFlowId);
     } else {
       this.state.resetToDefaults();
       this.state.isFlowLoaded$.next(true);
@@ -133,5 +134,15 @@ export class AtomAgentBuilderComponent implements OnInit, OnDestroy {
     this.editor?.focusOnTarget(id, type);
     this.showValidationMenu = false;
     this.cdr.markForCheck();
+  }
+
+  private getValidFlowId(flowId?: string): string | null {
+    if (!flowId) return null;
+    const normalized = flowId.trim();
+    if (!normalized) return null;
+    const lowered = normalized.toLowerCase();
+    return lowered === 'start' || lowered === 'undefined' || lowered === 'null'
+      ? null
+      : normalized;
   }
 }

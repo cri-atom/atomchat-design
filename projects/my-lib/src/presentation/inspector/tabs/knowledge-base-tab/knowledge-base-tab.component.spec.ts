@@ -38,16 +38,13 @@ describe('KnowledgeBaseTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('filters out already-added knowledge bases', () => {
-    expect(component.availableKbs.some(kb => kb.id === 'kb-1')).toBeFalse();
-    expect(component.availableKbs.length).toBe(2);
-  });
-
-  it('adds KB to node and closes dropdown', () => {
-    component.dropdownOpen.set(true);
+  it('adds only non-duplicated KBs to node', () => {
     const kb: KnowledgeBase = { id: 'kb-2', name: 'Billing Guide', description: 'Billing and payment info' };
 
-    component.addToNode(kb);
+    component.onFilesSaved([
+      { id: 'kb-1', name: 'Product FAQ', description: 'Frequently asked questions' },
+      kb,
+    ]);
 
     expect(stateMock.updateNodeData).toHaveBeenCalledWith('agent-kb', {
       knowledgeBases: [
@@ -55,7 +52,6 @@ describe('KnowledgeBaseTabComponent', () => {
         kb,
       ],
     });
-    expect(component.dropdownOpen()).toBeFalse();
   });
 
   it('removes KB from node', () => {

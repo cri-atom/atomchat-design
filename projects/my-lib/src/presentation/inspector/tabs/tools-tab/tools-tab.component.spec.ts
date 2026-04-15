@@ -11,6 +11,7 @@ describe('ToolsTabComponent', () => {
     nodes$: new BehaviorSubject([]),
     addToolToNode: jasmine.createSpy('addToolToNode'),
     removeToolFromNode: jasmine.createSpy('removeToolFromNode'),
+    updateNodeData: jasmine.createSpy('updateNodeData'),
   };
 
   const node: FlowAgentNode = {
@@ -37,21 +38,27 @@ describe('ToolsTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('adds mock tool to current node', () => {
-    component.addMockTool();
+  it('adds tools to current node on modal save', () => {
+    component.onToolsSaved([
+      { id: 'tool-1', name: 'Send email', description: 'desc', toolkitSlug: 'gmail', toolSlug: 'gmail-1' },
+      { id: 'tool-2', name: 'Create draft', description: 'desc', toolkitSlug: 'gmail', toolSlug: 'gmail-2' },
+    ]);
 
-    expect(stateMock.addToolToNode).toHaveBeenCalled();
-    const [nodeId, payload] = stateMock.addToolToNode.calls.mostRecent().args;
-    expect(nodeId).toBe('agent-2');
-    expect(payload).toEqual(jasmine.objectContaining({
-      name: 'Hello World',
-      toolkitSlug: 'mock',
-      toolSlug: 'hello_world',
-    }));
+    expect(stateMock.addToolToNode).toHaveBeenCalledTimes(2);
+    expect(stateMock.addToolToNode).toHaveBeenCalledWith('agent-2', jasmine.objectContaining({ id: 'tool-1' }));
+    expect(stateMock.addToolToNode).toHaveBeenCalledWith('agent-2', jasmine.objectContaining({ id: 'tool-2' }));
   });
 
   it('removes tool by id', () => {
     component.remove('tool-1');
     expect(stateMock.removeToolFromNode).toHaveBeenCalledWith('agent-2', 'tool-1');
+  });
+
+  it('adds or updates http config', () => {
+    component.onHttpSaved({ id: 'http-1', name: 'Req', description: 'd', method: 'GET', url: 'https://a.com' });
+
+    expect(stateMock.updateNodeData).toHaveBeenCalledWith('agent-2', {
+      httpTools: [{ id: 'http-1', name: 'Req', description: 'd', method: 'GET', url: 'https://a.com' }],
+    });
   });
 });

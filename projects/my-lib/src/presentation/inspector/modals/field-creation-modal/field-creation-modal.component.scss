@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   padding: $spacing-lg;
-  background: rgba(0, 0, 0, 0.4);
+  background: $color-overlay-40;
   backdrop-filter: blur(4px);
   animation: modal-overlay-enter 0.2s ease-out;
 }
@@ -159,8 +159,8 @@
     }
 
     .mat-mdc-form-field-infix {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: $spacing-sm;
+      padding-bottom: $spacing-sm;
       min-height: 36px;
     }
 

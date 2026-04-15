@@ -92,12 +92,10 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     }
 
     const isToolResult = data.conditionType === 'tool_result';
-    const hasConditionExpression = typeof data.conditionExpression === 'string';
-    const hasError = !isToolResult && hasConditionExpression && !data.conditionExpression.trim();
-
     let lineColor = EDGE_DEFAULT;
     let bodyFill = BODY_BG;
     let bodyStroke = BODY_BORDER;
+    let bodyStyle: { filter: string } = { filter: 'none' };
     const textFill = TEXT_PRIMARY;
 
     if (isToolResult) {
@@ -110,9 +108,6 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
         bodyFill = ERROR_BG;
         bodyStroke = EDGE_FAILURE;
       }
-    } else if (hasError) {
-      bodyFill = ERROR_BG;
-      bodyStroke = EDGE_FAILURE;
     }
 
     this.attr('line/stroke', lineColor);
@@ -122,7 +117,7 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
 
     this.labels([{
       attrs: {
-        labelBody: { fill: bodyFill, stroke: bodyStroke },
+        labelBody: { fill: bodyFill, stroke: bodyStroke, style: bodyStyle },
         labelIcon: { fill: textFill },
         labelText: {
           fill: textFill,

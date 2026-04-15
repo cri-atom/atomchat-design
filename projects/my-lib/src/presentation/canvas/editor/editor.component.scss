@@ -17,9 +17,9 @@
     background-color: $color-canvas-bg;
     background-image: -webkit-repeating-radial-gradient(
       center center,
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0.1) 1px,
-      transparent 1px,
+      rgba($color-black, 0.1),
+      rgba($color-black, 0.1) $spacing-3xs,
+      transparent $spacing-3xs,
       transparent 100%
     );
     background-size: 16px 16px;
@@ -106,21 +106,21 @@
     }
 
     &--gray {
-      background: #D4D4D8;
-      color: #52525C;
+      background: $color-input-border;
+      color: $color-text-muted;
 
       &:hover {
-        background: #C4C4C8;
-        color: #3A3A3A;
+        background: $color-btn-disabled-bg;
+        color: $color-btn-disabled-text;
       }
     }
 
     &--error {
-      background: #FB2C37;
-      color: white;
+      background: $color-error;
+      color: $color-white;
 
       &:hover {
-        background: #e01e28;
+        background: $color-error-dark;
       }
     }
   }
@@ -238,7 +238,7 @@
     color: $color-text-light;
     font-style: normal;
     background: $color-bg-tertiary;
-    padding: 1px 6px;
+    padding: $spacing-3xs $spacing-6;
     border-radius: $radius-xs;
   }
 
@@ -308,7 +308,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5);
+    background: $color-overlay-50;
     backdrop-filter: blur(4px);
   }
 
@@ -359,7 +359,7 @@
     padding: $spacing-lg;
     border: 1px solid $color-border;
     border-radius: $radius-md;
-    font-family: var(--font-mono, monospace) !important;
+    font-family: var(--font-mono, inherit) !important;
     font-size: $font-size-sm;
     color: $color-text;
     resize: none;
@@ -398,11 +398,11 @@
     }
 
     &--primary {
-      background: #18181B;
+      background: $color-bg-inverse;
       color: $color-white;
 
       &:hover {
-        background: #09090B;
+        background: $color-bg-inverse-deep;
       }
     }
   }

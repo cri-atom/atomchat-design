@@ -19,12 +19,6 @@ export class FlowAgentInternalStateService {
     });
   }
 
-  private setDefaultPromptFromTranslations(force = false): void {
-    this.transloco.selectTranslate('state.default_prompt').pipe(take(1)).subscribe(text => {
-      if (force || !this.isFlowLoaded$.value) this.baseSystemPrompt$.next(text);
-    });
-  }
-
   private setDefaultStartNodeLabel(force = false): void {
     this.transloco.selectTranslate('defaults.node.start').pipe(take(1)).subscribe(text => {
       if (force || !this.isFlowLoaded$.value) {
@@ -50,7 +44,6 @@ export class FlowAgentInternalStateService {
 
   constructor() {
     this.setDefaultFlowNameFromTranslations();
-    this.setDefaultPromptFromTranslations();
     this.setDefaultStartNodeLabel();
   }
 
@@ -166,7 +159,7 @@ export class FlowAgentInternalStateService {
 
     const basePrompt = data.baseSystemPrompt?.trim();
     if (!basePrompt || basePrompt === 'state.default_prompt') {
-      this.setDefaultPromptFromTranslations(true);
+      this.baseSystemPrompt$.next('');
     } else {
       this.baseSystemPrompt$.next(basePrompt);
     }
@@ -186,7 +179,7 @@ export class FlowAgentInternalStateService {
     this.edges$.next([]);
     this.isFlowLoaded$.next(false);
     this.setDefaultFlowNameFromTranslations(true);
-    this.setDefaultPromptFromTranslations(true);
+    this.baseSystemPrompt$.next('');
     this.setDefaultStartNodeLabel(true);
     this.selectedNodeId$.next(null);
     this.selectedEdgeId$.next(null);

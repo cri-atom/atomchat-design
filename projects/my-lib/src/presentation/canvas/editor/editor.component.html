@@ -62,13 +62,15 @@
       (mouseenter)="onNodeActionsMouseEnter()"
       (mouseleave)="onNodeActionsMouseLeave()"
       (click)="$event.stopPropagation()">
-      <button class="editor__node-action-btn editor__node-action-btn--copy"
-        [title]="'editor.actions.duplicate' | transloco"
-        (click)="duplicateNode(nodeActionsNodeId); $event.stopPropagation()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-      </button>
+      @if (!isEndNode(nodeActionsNodeId)) {
+        <button class="editor__node-action-btn editor__node-action-btn--copy"
+          [title]="'editor.actions.duplicate' | transloco"
+          (click)="duplicateNode(nodeActionsNodeId); $event.stopPropagation()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      }
       <button class="editor__node-action-btn editor__node-action-btn--delete"
         [title]="'editor.actions.delete_branch' | transloco"
         (click)="deleteNode(nodeActionsNodeId); $event.stopPropagation()">
@@ -89,16 +91,38 @@
       (mouseenter)="onHoverNodeActionsMouseEnter(hoverNodeActionsNodeId)"
       (mouseleave)="onHoverNodeActionsMouseLeave(hoverNodeActionsNodeId)"
       (click)="$event.stopPropagation()">
-      <button class="editor__node-action-btn editor__node-action-btn--copy"
-        [title]="'editor.actions.duplicate' | transloco"
-        (click)="duplicateNode(hoverNodeActionsNodeId); $event.stopPropagation()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-      </button>
+      @if (!isEndNode(hoverNodeActionsNodeId)) {
+        <button class="editor__node-action-btn editor__node-action-btn--copy"
+          [title]="'editor.actions.duplicate' | transloco"
+          (click)="duplicateNode(hoverNodeActionsNodeId); $event.stopPropagation()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      }
       <button class="editor__node-action-btn editor__node-action-btn--delete"
         [title]="'editor.actions.delete_branch' | transloco"
         (click)="deleteNode(hoverNodeActionsNodeId); $event.stopPropagation()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+        </svg>
+      </button>
+    </div>
+  }
+
+  @if (edgeActionsPos && edgeActionsEdgeId) {
+    <div class="editor__node-actions"
+      [class.editor__node-actions--visible]="edgeActionsVisible"
+      [style.left.px]="edgeActionsPos.x"
+      [style.top.px]="edgeActionsPos.y"
+      [style.transform]="'scale(' + currentScale + ')'"
+      [style.transform-origin]="'top left'"
+      (mouseenter)="onEdgeActionsMouseEnter()"
+      (mouseleave)="onEdgeActionsMouseLeave()"
+      (click)="$event.stopPropagation()">
+      <button class="editor__node-action-btn editor__node-action-btn--delete"
+        [title]="'editor.actions.delete_edge' | transloco"
+        (click)="deleteSelectedEdge(); $event.stopPropagation()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
           <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
         </svg>

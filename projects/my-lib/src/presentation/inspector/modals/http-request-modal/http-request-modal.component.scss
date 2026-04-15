@@ -1,6 +1,6 @@
 @use '../../../../styles' as *;
 
-$http-green: #34A853;
+$http-green: $color-success-http;
 
 @keyframes modal-overlay-enter {
   from { opacity: 0; }
@@ -26,7 +26,7 @@ $http-green: #34A853;
   align-items: center;
   justify-content: center;
   padding: $spacing-lg;
-  background: rgba(0, 0, 0, 0.6);
+  background: $color-overlay-60;
   backdrop-filter: blur(4px);
   animation: modal-overlay-enter 0.2s ease-out;
 }
@@ -66,7 +66,7 @@ $http-green: #34A853;
   color: $http-green;
   background: rgba($http-green, 0.1);
   border-radius: $radius-xs;
-  padding: 2px $spacing-sm;
+  padding: $spacing-2xs $spacing-sm;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -123,15 +123,15 @@ $http-green: #34A853;
   justify-content: space-between;
   width: 100%;
   padding: $spacing-lg $spacing-xl;
-  background: rgba(#EFF6FF, 0.3);
+  background: rgba($color-link-bg, 0.3);
   border: none;
   cursor: pointer;
   font-size: $font-size-base;
   font-weight: 600;
-  color: #193CB9;
+  color: $color-link;
   transition: background 0.15s;
 
-  &:hover { background: rgba(#EFF6FF, 0.5); }
+  &:hover { background: rgba($color-link-bg, 0.5); }
 }
 
 .http-info-header-left {
@@ -139,17 +139,17 @@ $http-green: #34A853;
   align-items: center;
   gap: $spacing-sm;
 
-  svg { color: #193CB9; flex-shrink: 0; }
+  svg { color: $color-link; flex-shrink: 0; }
 }
 
 .http-info-title {
   font-size: $font-size-xl;
   font-weight: 600;
-  color: #193CB9;
+  color: $color-link;
 }
 
 .http-info-chevron {
-  color: #193CB9;
+  color: $color-link;
   flex-shrink: 0;
   transition: transform 0.2s;
 }
@@ -200,8 +200,8 @@ $http-green: #34A853;
     }
 
     .mat-mdc-form-field-infix {
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding-top: $spacing-10;
+      padding-bottom: $spacing-10;
       min-height: 40px;
     }
 
@@ -306,7 +306,7 @@ $http-green: #34A853;
   border-radius: 50%;
   background: $color-white;
   transition: transform 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: $shadow-xs;
 
   &--on { transform: translateX(20px); }
 }
@@ -350,7 +350,7 @@ $http-green: #34A853;
 .http-toggle-card-info {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: $spacing-6;
 }
 
 .rotate-180 { transform: rotate(180deg); }

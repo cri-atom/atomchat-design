@@ -34,6 +34,7 @@
       "simulate": "Simular",
       "menu": "Más",
       "delete_branch": "Eliminar rama",
+      "delete_edge": "Eliminar conexión",
       "duplicate": "Duplicar",
       "undo": "Deshacer",
       "redo": "Rehacer",

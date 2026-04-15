@@ -170,7 +170,7 @@ export interface FlowAgentData {
 }
 
 export interface FlowAgentModeData {
-  flowId: string;
+  flowId?: string;
   mode: 'create' | 'edit' | 'view';
   sourceRoute?: string;
 }

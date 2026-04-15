@@ -17,7 +17,7 @@ describe('StartNodeViewComponent', () => {
 
   it('renders workflow entry guidance text', () => {
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('entry point of the workflow');
-    expect(text).toContain('All conversations begin here');
+    expect(text).toContain('views.start.entry_point');
+    expect(text).toContain('views.start.hint');
   });
 });

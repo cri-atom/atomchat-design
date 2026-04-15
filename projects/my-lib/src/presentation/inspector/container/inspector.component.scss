@@ -103,7 +103,7 @@
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
+    margin-bottom: -$spacing-3xs;
     cursor: pointer;
     font-size: $font-size-md;
     font-weight: 500;
@@ -130,7 +130,7 @@
     font-size: $font-size-2xs;
     background: $color-bg-tertiary;
     color: $color-text-light;
-    padding: 1px 5px;
+    padding: $spacing-3xs $spacing-5;
     border-radius: $radius-xs;
     margin-left: $spacing-2xs;
     text-transform: uppercase;

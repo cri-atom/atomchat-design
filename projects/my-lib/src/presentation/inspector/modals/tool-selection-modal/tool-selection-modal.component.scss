@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   padding: $spacing-lg;
-  background: rgba(0, 0, 0, 0.6);
+  background: $color-overlay-60;
   backdrop-filter: blur(4px);
   animation: modal-overlay-enter 0.2s ease-out;
 }
@@ -101,8 +101,8 @@
     }
 
     .mat-mdc-form-field-infix {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: $spacing-sm;
+      padding-bottom: $spacing-sm;
       min-height: 36px;
     }
 
@@ -168,7 +168,7 @@
   font-size: $font-size-base;
   font-weight: 700;
   color: $color-text;
-  margin: 0 0 2px;
+  margin: 0 0 $spacing-2xs;
 }
 
 .tool-item__desc {
@@ -276,14 +276,14 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: $spacing-2xs;
   background: $color-white;
   transition: all 0.15s;
 
   &--active {
     background: $color-primary;
     border-color: $color-primary;
-    color: white;
+    color: $color-white;
   }
 }
 

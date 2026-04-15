@@ -119,8 +119,8 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding-top: 2px;
+    gap: $spacing-3;
+    padding-top: $spacing-2xs;
   }
 
   &__card-name {
@@ -171,7 +171,7 @@
 
   &__card-delete:hover {
     color: $color-error;
-    background: #FFF0F0;
+    background: $color-danger-bg;
   }
 
   &__card-chevron {
@@ -211,7 +211,7 @@
     font-weight: 700;
     color: $color-text-muted;
     background: $color-bg-tertiary;
-    padding: 2px $spacing-sm;
+    padding: $spacing-2xs $spacing-sm;
     border-radius: $radius-xs;
 
     &--method {
