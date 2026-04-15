@@ -2,25 +2,15 @@
   <div class="general-tab__objective-header">
     <span class="general-tab__section-title">{{ 'tabs.general.conversation_goal' | transloco }}</span>
   </div>
-  <button class="general-tab__prompt-preview" type="button" (click)="showPromptModal.set(true)">
-    @if (agentData.conversationGoal) {
-      <span class="general-tab__prompt-preview-text">{{ agentData.conversationGoal }}</span>
-    } @else {
-      <span class="general-tab__prompt-preview-placeholder">{{ 'tabs.general.goal_placeholder' | transloco }}</span>
-    }
-    <span class="general-tab__prompt-expand">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
-        <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
-      </svg>
-    </span>
-  </button>
+  <mat-form-field appearance="outline" class="general-tab__field general-tab__prompt-field" subscriptSizing="dynamic">
+    <textarea
+      matInput
+      rows="4"
+      [ngModel]="agentData.conversationGoal || ''"
+      (ngModelChange)="update({ conversationGoal: $event, description: $event })"
+      [placeholder]="'tabs.general.goal_placeholder' | transloco"></textarea>
+  </mat-form-field>
 </div>
-
-@if (showPromptModal()) {
-  <flowagent-prompt-editor-modal
-    [node]="node()"
-    (closed)="showPromptModal.set(false)" />
-}
 
 <hr class="general-tab__divider">
 
@@ -47,35 +37,15 @@
             <span class="general-tab__col-del"></span>
           </div>
           @for (field of infoCollection; track field.id) {
-            <div class="general-tab__field-row">
-              <div class="general-tab__field-dropdown-wrap">
-                <button class="general-tab__field-dropdown-btn" type="button" (click)="openDropdown(field.id)">
-                  <span class="general-tab__field-dropdown-label">{{ field.label }}</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-                @if (openDropdownId() === field.id) {
-                  <div class="general-tab__field-backdrop" (click)="openDropdownId.set(null)"></div>
-                  <div class="general-tab__field-panel">
-                    <div class="general-tab__field-search-row">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                      <input class="general-tab__field-search-input" type="text"
-                        [ngModel]="fieldSearch()"
-                        (ngModelChange)="fieldSearch.set($event)"
-                        placeholder="Buscar campo..."
-                        autofocus />
-                    </div>
-                    <div class="general-tab__field-options">
-                      @for (opt of filteredPredefined(); track opt) {
-                        <button class="general-tab__field-option" type="button" (mousedown)="setFieldLabel(field.id, opt)">{{ opt }}</button>
-                      }
-                      @if (filteredPredefined().length === 0) {
-                        <p class="general-tab__field-no-results">Sin resultados</p>
-                      }
-                    </div>
-                  </div>
-                }
-              </div>
-              <button class="general-tab__field-delete" type="button" (click)="removeField(field.id)" [title]="'common.delete' | transloco">
+            <div class="general-tab__save-field-row">
+              <mat-form-field appearance="outline" class="general-tab__field general-tab__field--grow" subscriptSizing="dynamic">
+                <mat-select [ngModel]="field.label" (ngModelChange)="setFieldLabel(field.id, $event)">
+                  @for (option of infoFieldOptions(field.id); track option) {
+                    <mat-option [value]="option">{{ option }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <button type="button" class="general-tab__field-delete" (click)="removeField(field.id)" [attr.aria-label]="'common.delete' | transloco" [title]="'common.delete' | transloco">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
                   <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                 </svg>
@@ -91,7 +61,7 @@
           </svg>
           {{ 'tabs.general.create_field' | transloco }}
         </button>
-        <button type="button" class="general-tab__add-btn" (click)="addPredefinedField()">
+        <button type="button" class="general-tab__secondary-btn" (click)="addPredefinedField()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>

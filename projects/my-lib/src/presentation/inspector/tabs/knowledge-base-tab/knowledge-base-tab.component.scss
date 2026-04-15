@@ -28,7 +28,6 @@
     font-size: $font-size-md;
     font-weight: 500;
     color: $color-text;
-    letter-spacing: 0.04em;
   }
 
   &__upload-btn {
@@ -43,13 +42,14 @@
     border-radius: $radius-md;
     font-size: $font-size-base;
     font-weight: 500;
-    color: $color-white;
-    background: $color-text;
+    color: $color-text;
+    background: $color-white;
+    border: 1px solid $color-input-border;
     margin-bottom: $spacing-sm;
     transition: background 0.2s;
 
     &:hover {
-      background: $color-text-secondary;
+      background: $color-bg-secondary;
     }
   }
 

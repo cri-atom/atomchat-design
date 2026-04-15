@@ -100,18 +100,19 @@
   display: inline-flex;
   align-items: center;
   gap: $spacing-sm;
-  min-height: 36px;
-  padding: $spacing-sm $spacing-md;
-  border-radius: $radius-sm;
+  min-height: 40px;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-md;
   font-size: $font-size-base;
   font-weight: 500;
-  color: $color-white;
-  background: $color-text;
+  color: $color-text;
+  background: $color-white;
+  border: 1px solid $color-input-border;
   white-space: nowrap;
   flex-shrink: 0;
   transition: background 0.2s;
 
-  &:hover { background: $color-text-secondary; }
+  &:hover { background: $color-bg-secondary; }
 }
 
 .modal-search-prefix {

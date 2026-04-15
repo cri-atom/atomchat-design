@@ -2,11 +2,11 @@ import { Component, ChangeDetectionStrategy, inject, input, signal, computed } f
 import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FlowAgentInternalStateService } from '../../../../application/state/flow-agent-internal-state.service';
 import { FlowAgentNode, AgentNodeData, InfoCollectionItem } from '../../../../core/model/agent-flow.model';
 import { FieldCreationModalComponent } from '../../modals/field-creation-modal/field-creation-modal.component';
-import { PromptEditorModalComponent } from '../../modals/prompt-editor-modal/prompt-editor-modal.component';
 
 const PREDEFINED_FIELDS = ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Empresa', 'Dirección', 'Ciudad', 'País'];
 
@@ -14,7 +14,7 @@ const PREDEFINED_FIELDS = ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Empresa'
   selector: 'flowagent-general-tab',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatSelectModule, FieldCreationModalComponent, PromptEditorModalComponent],
+  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatSelectModule, FieldCreationModalComponent],
   templateUrl: './general-tab.component.html',
   styleUrl: './general-tab.component.scss',
 })
@@ -30,8 +30,6 @@ export class GeneralTabComponent {
   public readonly showAdvancedSection = signal(false);
   /** Controls visibility of the field-creation modal overlay. */
   public readonly showFieldModal = signal(false);
-  /** Controls visibility of the prompt-editor modal overlay. */
-  public readonly showPromptModal = signal(false);
 
   /** Whether the inline mention dropdown is currently visible. */
   public readonly showMentions = signal(false);
@@ -44,19 +42,6 @@ export class GeneralTabComponent {
   public readonly mentionPrefix = signal('@');
   /** Character index in the textarea where the current mention trigger was detected. */
   private mentionStart = -1;
-
-  /** ID of the info-collection field row whose label dropdown is currently open. `null` when all closed. */
-  public readonly openDropdownId = signal<string | null>(null);
-  /** Current search string typed inside an open field-label dropdown. */
-  public readonly fieldSearch = signal('');
-
-  /**
-   * Predefined field names filtered by `fieldSearch`.
-   * Used to populate the field-label dropdown in real time.
-   */
-  public readonly filteredPredefined = computed(() =>
-    PREDEFINED_FIELDS.filter(f => f.toLowerCase().includes(this.fieldSearch().toLowerCase()))
-  );
 
   /**
    * `true` when every info-collection field on this node is marked as `'required'`
@@ -143,19 +128,23 @@ export class GeneralTabComponent {
   }
 
   /**
-   * Toggles the field-label dropdown for a specific info-collection row.
-   * If the dropdown for `fieldId` is already open, it is closed; otherwise it opens
-   * and the search input is cleared.
+   * Returns selectable labels for a specific info-field row.
+   * Excludes predefined labels already selected by other rows while preserving
+   * the current row value (including custom labels).
    *
-   * @param fieldId - The ID of the info-collection row to toggle.
+   * @param fieldId - The ID of the info-field row requesting options.
+   * @returns An array of label strings available for this row.
    */
-  public openDropdown(fieldId: string): void {
-    if (this.openDropdownId() === fieldId) {
-      this.openDropdownId.set(null);
-    } else {
-      this.openDropdownId.set(fieldId);
-      this.fieldSearch.set('');
-    }
+  public infoFieldOptions(fieldId: string): string[] {
+    const current = this.infoCollection.find(field => field.id === fieldId)?.label;
+    const selectedByOthers = new Set(
+      this.infoCollection
+        .filter(field => field.id !== fieldId)
+        .map(field => field.label)
+        .filter(label => PREDEFINED_FIELDS.includes(label))
+    );
+    const options = PREDEFINED_FIELDS.filter(option => !selectedByOthers.has(option));
+    return current && !options.includes(current) ? [current, ...options] : options;
   }
 
   /**
@@ -171,8 +160,6 @@ export class GeneralTabComponent {
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/\s+/g, '_');
     this.state.updateInfoCollectionInNode(this.node().id, fieldId, { label, targetField });
-    this.openDropdownId.set(null);
-    this.fieldSearch.set('');
   }
 
   /**

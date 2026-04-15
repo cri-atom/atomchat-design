@@ -293,7 +293,6 @@
     font-size: $font-size-md;
     font-weight: 500;
     color: $color-text;
-    letter-spacing: 0.04em;
     margin: 0;
   }
 
@@ -372,7 +371,6 @@
     font-size: $font-size-md;
     font-weight: 500;
     color: $color-text-muted;
-    letter-spacing: 0.04em;
   }
 
   &__fields-header {
@@ -392,7 +390,6 @@
     font-size: $font-size-sm;
     font-weight: 500;
     color: $color-text;
-    letter-spacing: 0.04em;
 
     &--header {
       display: block;
