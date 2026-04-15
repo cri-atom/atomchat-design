@@ -57,7 +57,7 @@
 }
 
 .modal-title {
-  font-size: $font-size-4xl;
+  font-size: $font-size-3xl;
   font-weight: 700;
   color: $color-text;
   margin: 0 0 $spacing-2xs;
@@ -102,7 +102,7 @@
   gap: $spacing-sm;
   min-height: 36px;
   padding: $spacing-sm $spacing-md;
-  border-radius: $radius-md;
+  border-radius: $radius-sm;
   font-size: $font-size-base;
   font-weight: 500;
   color: $color-white;
@@ -139,12 +139,12 @@
     }
 
     .mdc-notched-outline__leading {
-      border-radius: $radius-xl 0 0 $radius-xl;
-      min-width: $radius-xl;
+      border-radius: $radius-sm 0 0 $radius-sm;
+      min-width: $radius-sm;
     }
 
     .mdc-notched-outline__trailing {
-      border-radius: 0 $radius-xl $radius-xl 0;
+      border-radius: 0 $radius-sm $radius-sm 0;
     }
   }
 }

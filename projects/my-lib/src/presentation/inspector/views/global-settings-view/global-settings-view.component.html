@@ -1,25 +1,7 @@
-<aside class="global-settings" [class.global-settings--collapsed]="isCollapsed()">
-  <button
-    class="global-settings__collapse-btn"
-    type="button"
-    [attr.aria-label]="(isCollapsed() ? 'global.expand' : 'global.collapse') | transloco"
-    (click)="toggleCollapsed()"
-  >
-    <svg
-      class="global-settings__collapse-icon"
-      [class.global-settings__collapse-icon--flipped]="isCollapsed()"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  </button>
-
+<aside
+  class="global-settings"
+  [class.global-settings--collapsed]="isCollapsed()"
+  (transitionend)="onContainerTransitionEnd($event)">
   <div class="global-settings__panel">
     <header class="global-settings__header">
       <h2 class="global-settings__title">{{ 'global.title' | transloco }}</h2>

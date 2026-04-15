@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
@@ -33,7 +33,9 @@ export class GlobalSettingsViewComponent {
   public readonly state = inject(FlowAgentInternalStateService);
   private readonly transloco = inject(TranslocoService);
 
-  public readonly isCollapsed = signal(false);
+  public readonly isCollapsed = input(false);
+  public readonly isCollapsedChange = output<boolean>();
+  public readonly collapsedTransitionDone = output<void>();
   public readonly isFieldsOpen = signal(true);
 
   public readonly pipelineType = toSignal(this.state.pipelineType$, { initialValue: 'venta' as PipelineType });
@@ -83,7 +85,14 @@ export class GlobalSettingsViewComponent {
     { value: 'UTC', label: 'UTC' },
   ];
 
-  public toggleCollapsed(): void { this.isCollapsed.update(v => !v); }
+  public onContainerTransitionEnd(event: TransitionEvent): void {
+    if (event.propertyName !== 'width') return;
+    if (this.isCollapsed()) {
+      this.collapsedTransitionDone.emit();
+    }
+  }
+
+  public toggleCollapsed(): void { this.isCollapsedChange.emit(!this.isCollapsed()); }
   public setPipeline(type: PipelineType): void { this.state.pipelineType$.next(type); }
 
   public addStage(): void {

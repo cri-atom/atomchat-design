@@ -26,7 +26,7 @@ export const StartNodeShape = dia.Element.define('agentApp.StartNode', {
   },
   attrs: {
     body: { fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, rx: 8, ry: 8, refWidth: '100%', refHeight: '100%' },
-    icon: { d: ICONS.messageSquare, stroke: TEXT_MUTED, strokeWidth: 2, fill: 'none', refX: 20, refY: 13, transform: 'scale(0.6)' },
+    icon: { d: ICONS.fin, stroke: 'none', fill: TEXT_MUTED, refX: 20, refY: 13, transform: 'scale(1)' },
     label: { text: 'INICIO', refX: '58%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 12, fontWeight: '600' },
     addButtonBg: { width: 24, height: 24, rx: 4, ry: 4, fill: BODY_BG, stroke: BODY_BORDER, refX: '50%', refDy: 8, x: -12, cursor: 'pointer', event: 'cell:addChild' },
     addButtonIcon: { d: ICONS.plus, stroke: TEXT_SECONDARY, strokeWidth: 2, fill: 'none', refX: '50%', refDy: 8, transform: 'translate(-6, 6) scale(0.5)', pointerEvents: 'none' },

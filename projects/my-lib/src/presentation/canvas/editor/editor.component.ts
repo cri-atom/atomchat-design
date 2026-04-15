@@ -77,9 +77,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private _resizeObserver: ResizeObserver | null = null;
   private readonly _agentAddHideDelayMs = 450;
   private readonly _nodeActionsFadeMs = 180;
+  private readonly _focusAnimationDurationMs = 320;
   private readonly _agentAddHideTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
   private _nodeActionsFadeOutTimeout: ReturnType<typeof setTimeout> | null = null;
   private _hoverNodeActionsFadeOutTimeout: ReturnType<typeof setTimeout> | null = null;
+  private _focusAnimationFrameId: number | null = null;
 
   ngAfterViewInit(): void {
     this.initGraph();
@@ -115,6 +117,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.cancelFocusAnimation();
     this._panCleanup?.();
     this._resizeObserver?.disconnect();
     for (const timeoutId of this._agentAddHideTimeouts.values()) {
@@ -441,6 +444,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([nodes, edges]) => {
         this.validationErrors = this.validation.validate(nodes, edges);
+        if (this.validationErrors.length === 0) {
+          this.showErrorPanel = false;
+        }
         this.cdr.markForCheck();
       });
   }
@@ -912,6 +918,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   public closeMenu(): void {
     this.menuParentId = null;
     this.showFabMenu = false;
+    this.showErrorPanel = false;
     this.cdr.detectChanges();
   }
 
@@ -926,6 +933,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   private wheelZoom(delta: number, localX: number, localY: number): void {
+    this.cancelFocusAnimation();
     const step = delta > 0 ? 0.1 : -0.1;
     const { sx } = this.paper.scale();
     const newScale = Math.min(Math.max(sx + step, ZOOM_MIN), ZOOM_MAX);
@@ -950,6 +958,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   zoomIn(): void {
+    this.cancelFocusAnimation();
     const s = Math.min(this.paper.scale().sx + 0.1, ZOOM_MAX);
     this.paper.scale(s);
     this.zoomPercent.set(Math.round(s * 100));
@@ -957,6 +966,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   zoomOut(): void {
+    this.cancelFocusAnimation();
     const s = Math.max(this.paper.scale().sx - 0.1, ZOOM_MIN);
     this.paper.scale(s);
     this.zoomPercent.set(Math.round(s * 100));
@@ -964,6 +974,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   fitToScreen(): void {
+    this.cancelFocusAnimation();
     const elements = this.graph.getElements();
     if (elements.length === 0) return;
 
@@ -997,6 +1008,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   centerOnStart(): void {
+    this.cancelFocusAnimation();
     const start = this.graph.getElements().find(e => e.id === 'start-node');
     if (!start) { this.fitToScreen(); return; }
     const { x, y } = start.position();
@@ -1010,7 +1022,87 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  public focusOnTarget(id: string, type: 'node' | 'edge'): void {
+    if (!id || !this.paper || !this.graph) return;
+
+    if (type === 'node') {
+      const nodeCell = this.graph.getCell(id);
+      if (nodeCell instanceof dia.Element) {
+        const pos = nodeCell.position();
+        const size = nodeCell.size();
+        this.centerViewportOnPoint(pos.x + size.width / 2, pos.y + size.height / 2);
+      }
+      return;
+    }
+
+    const edge = this.state.edges$.value.find(e => e.id === id);
+    if (edge) {
+      const sourceEl = this.graph.getCell(edge.source);
+      const targetEl = this.graph.getCell(edge.target);
+      if (sourceEl instanceof dia.Element && targetEl instanceof dia.Element) {
+        const sp = sourceEl.position();
+        const ss = sourceEl.size();
+        const tp = targetEl.position();
+        const ts = targetEl.size();
+        const mx = (sp.x + ss.width / 2 + tp.x + ts.width / 2) / 2;
+        const my = (sp.y + ss.height / 2 + tp.y + ts.height / 2) / 2;
+        this.centerViewportOnPoint(mx, my);
+      }
+    }
+  }
+
+  private centerViewportOnPoint(localX: number, localY: number): void {
+    const scale = this.paper.scale().sx;
+    const cw = this.paperContainer.nativeElement.clientWidth;
+    const ch = this.paperContainer.nativeElement.clientHeight;
+    const targetTx = cw / 2 - localX * scale;
+    const targetTy = ch / 2 - localY * scale;
+    this.animateViewportTo(targetTx, targetTy);
+  }
+
+  private animateViewportTo(targetTx: number, targetTy: number): void {
+    this.cancelFocusAnimation();
+
+    const { tx: startTx, ty: startTy } = this.paper.translate();
+    const deltaX = targetTx - startTx;
+    const deltaY = targetTy - startTy;
+
+    if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) {
+      this.paper.translate(targetTx, targetTy);
+      this.refreshFloatingButtons();
+      this.cdr.markForCheck();
+      return;
+    }
+
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const raw = Math.min(elapsed / this._focusAnimationDurationMs, 1);
+      const eased = 1 - (1 - raw) ** 3;
+      this.paper.translate(startTx + deltaX * eased, startTy + deltaY * eased);
+
+      if (raw < 1) {
+        this._focusAnimationFrameId = requestAnimationFrame(step);
+        return;
+      }
+
+      this._focusAnimationFrameId = null;
+      this.refreshFloatingButtons();
+      this.cdr.markForCheck();
+    };
+
+    this._focusAnimationFrameId = requestAnimationFrame(step);
+  }
+
+  private cancelFocusAnimation(): void {
+    if (this._focusAnimationFrameId === null) return;
+    cancelAnimationFrame(this._focusAnimationFrameId);
+    this._focusAnimationFrameId = null;
+  }
+
   toggleErrorPanel(): void {
+    this.menuParentId = null;
+    this.showFabMenu = false;
     this.showErrorPanel = !this.showErrorPanel;
     this.cdr.markForCheck();
   }

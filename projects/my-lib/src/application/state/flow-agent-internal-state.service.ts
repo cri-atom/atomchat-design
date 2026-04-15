@@ -81,8 +81,9 @@ export class FlowAgentInternalStateService {
     const parent = nodes.find(n => n.id === parentId);
     if (!parent) return;
 
-    const siblingCount = edges.filter(e => e.source === parentId).length;
-    const position = this.defaults.getChildPosition(parent, siblingCount, childType);
+    const siblingIds = new Set(edges.filter(e => e.source === parentId).map(e => e.target));
+    const siblings = nodes.filter(n => siblingIds.has(n.id));
+    const position = this.defaults.getChildPosition(parent, siblings, childType);
     const newNode = this.defaults.createNode(childType, position);
     const newEdge = this.defaults.createEdge(parentId, newNode.id, parent.type as AgentNodeType, childType);
 

@@ -75,22 +75,27 @@ export class FlowAgentDefaultsService {
     return [];
   }
 
-  getChildPosition(parent: FlowAgentNode, siblingCount: number, childType?: AgentNodeType): { x: number; y: number } {
+  getChildPosition(parent: FlowAgentNode, siblings: FlowAgentNode[], childType?: AgentNodeType): { x: number; y: number } {
     const widths: Record<string, number> = {
-      [AgentNodeType.Agent]: 300, [AgentNodeType.Start]: 140,
-      [AgentNodeType.Tool]: 200, [AgentNodeType.End]: 140,
+      [AgentNodeType.Agent]: 300, [AgentNodeType.Start]: 100,
+      [AgentNodeType.Tool]: 200, [AgentNodeType.End]: 100,
       [AgentNodeType.SelectAgent]: 180,
     };
     const heights: Record<string, number> = {
-      [AgentNodeType.Agent]: 132, [AgentNodeType.Start]: 48,
-      [AgentNodeType.Tool]: 72, [AgentNodeType.End]: 48,
+      [AgentNodeType.Agent]: 132, [AgentNodeType.Start]: 40,
+      [AgentNodeType.Tool]: 72, [AgentNodeType.End]: 40,
       [AgentNodeType.SelectAgent]: 48,
     };
     const pw = widths[parent.type] || 150;
     const ph = heights[parent.type] || 80;
     const cw = widths[childType!] || 150;
+    const baseX = parent.position.x + (pw - cw) / 2;
+    const rightmostSiblingX = siblings.length > 0
+      ? Math.max(...siblings.map(s => s.position.x))
+      : null;
+
     return {
-      x: parent.position.x + (pw - cw) / 2 + siblingCount * 320,
+      x: rightmostSiblingX === null ? baseX : rightmostSiblingX + 320,
       y: parent.position.y + ph + 120,
     };
   }

@@ -16,9 +16,9 @@
       "end": "Fin"
     },
     "edge": {
-      "new_condition": "Nueva condición",
-      "end_condition": "Condición de fin",
-      "return_condition": "Condición de retorno"
+      "new_condition": "Condición",
+      "end_condition": "Condición",
+      "return_condition": "Condición"
     }
   },
   "editor": {
@@ -43,7 +43,8 @@
     },
     "validation": {
       "title": "Validación",
-      "errors_title": "Errores"
+      "errors_title": "Errores",
+      "errors_detected": "Errores detectados"
     },
     "add_menu": {
       "agent_title": "Agente",
@@ -267,7 +268,7 @@
       "create_field": "Crear campo",
       "add_field": "Agregar campo",
       "advanced_config": "Configuración avanzada",
-      "llm_model": "Modelo",
+      "llm_model": "Modelo LLM",
       "thinking_level": "Nivel de razonamiento",
       "level": {
         "auto": "Automático",

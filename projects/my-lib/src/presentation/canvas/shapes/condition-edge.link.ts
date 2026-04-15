@@ -7,10 +7,21 @@ import {
   EDGE_SUCCESS,
   ERROR_BG,
   FONT_FAMILY,
+  ICONS,
   PORT_COLOR,
   SUCCESS_BG,
   TEXT_PRIMARY,
 } from '../theme';
+
+const DEFAULT_CONDITION_LABEL = 'Condición';
+const MAX_CONDITION_LABEL_CHARS = 12;
+
+function getRenderableConditionLabel(value: unknown): string {
+  const label = typeof value === 'string' ? value.trim() : '';
+  if (!label) return DEFAULT_CONDITION_LABEL;
+  if (label.length <= MAX_CONDITION_LABEL_CHARS) return label;
+  return `${label.slice(0, MAX_CONDITION_LABEL_CHARS - 3)}...`;
+}
 
 export const ConditionEdgeLinkView = (dia.LinkView as any).extend({
   render(this: any) {
@@ -32,7 +43,7 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
   z: -1,
   connector: { name: 'curve', args: { sourceDirection: 'down', targetDirection: 'up' } },
   attrs: {
-    line: { connection: true, fill: 'none', stroke: EDGE_DEFAULT, strokeWidth: 2, targetMarker: { type: 'path', d: 'M 12 -6 0 0 12 6 z', fill: PORT_COLOR, stroke: 'none' } },
+    line: { connection: true, fill: 'none', stroke: EDGE_DEFAULT, strokeWidth: 2, targetMarker: { type: 'path', d: 'M 8 -4 0 0 8 4 z', fill: PORT_COLOR, stroke: 'none' } },
     wrapper: { connection: true, strokeWidth: 20, fill: 'none', stroke: 'none', 'pointer-events': 'all' },
   },
   markup: [
@@ -43,7 +54,6 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     markup: [
       { tagName: 'rect', selector: 'labelBody' },
       { tagName: 'path', selector: 'labelIcon' },
-      { tagName: 'path', selector: 'labelIconHole' },
       { tagName: 'text', selector: 'labelText' },
     ],
     attrs: {
@@ -52,22 +62,10 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
         x: -74, y: -20, width: 128, height: 40,
       },
       labelIcon: {
-        d: 'M6 9v6 M9 6h6a3 3 0 0 1 3 3v6',
-        fill: 'none',
-        stroke: TEXT_PRIMARY,
-        strokeWidth: 1.8,
-        strokeLinecap: 'round',
-        strokeLinejoin: 'round',
-        transform: 'translate(-60 -6) scale(0.65)',
-      },
-      labelIconHole: {
-        d: 'M6 3a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z M6 15a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z M18 15a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z',
-        fill: 'none',
-        stroke: TEXT_PRIMARY,
-        strokeWidth: 1.8,
-        strokeLinecap: 'round',
-        strokeLinejoin: 'round',
-        transform: 'translate(-60 -6) scale(0.65)',
+        d: ICONS.condition,
+        fill: TEXT_PRIMARY,
+        stroke: 'none',
+        transform: 'translate(-60 -6) scale(1)',
       },
       labelText: {
         fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 14, fontWeight: '500',
@@ -120,12 +118,16 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     this.attr('line/stroke', lineColor);
     this.attr('line/targetMarker/fill', lineColor === EDGE_DEFAULT ? PORT_COLOR : lineColor);
 
+    const conditionLabel = getRenderableConditionLabel(data.label);
+
     this.labels([{
       attrs: {
         labelBody: { fill: bodyFill, stroke: bodyStroke },
-        labelIcon: { stroke: textFill },
-        labelIconHole: { stroke: textFill },
-        labelText: { fill: textFill, text: data.label || 'Condición' },
+        labelIcon: { fill: textFill },
+        labelText: {
+          fill: textFill,
+          text: conditionLabel,
+        },
       },
       position: { distance: 0.5, offset: -14 },
     }]);

@@ -43,7 +43,8 @@
     },
     "validation": {
       "title": "Validación",
-      "errors_title": "Errores"
+      "errors_title": "Errores",
+      "errors_detected": "Errores detectados"
     },
     "add_menu": {
       "agent_title": "Agente",

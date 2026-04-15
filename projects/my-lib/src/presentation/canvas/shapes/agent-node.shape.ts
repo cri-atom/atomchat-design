@@ -8,13 +8,13 @@ import {
   PORT_COLOR,
   PORT_STROKE,
   SURFACE_MUTED,
-  TEXT_MUTED,
+  TEXT_LIGHT,
   TEXT_PRIMARY,
   TEXT_SECONDARY,
 } from '../theme';
 
 export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
-  size: { width: 300, height: 100 },
+  size: { width: 300, height: 112 },
   ports: {
     groups: {
       in: {
@@ -43,31 +43,45 @@ export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
       refHeight: '100%',
     },
     iconBg: { x: 12, y: 10, width: 40, height: 40, rx: 12, ry: 12, fill: SURFACE_MUTED, stroke: 'none' },
-    icon: { d: ICONS.bot, stroke: TEXT_MUTED, strokeWidth: 1.5, fill: 'none', refX: 23, refY: 18, transform: 'scale(0.9)' },
-    label: { text: 'Nuevo Agente', refX: 62, refY: 22, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 16, fontWeight: '700' },
+    icon: { d: ICONS.bot, stroke: 'none', fill: TEXT_LIGHT, refX: 23, refY: 22, transform: 'scale(1)' },
+    label: {
+      text: 'Nuevo Agente',
+      refX: 62,
+      refY: 22,
+      textAnchor: 'start',
+      textVerticalAnchor: 'middle',
+      fill: TEXT_PRIMARY,
+      fontFamily: FONT_FAMILY,
+      fontSize: 16,
+      fontWeight: '700',
+      textWrap: { width: 220, maxLineCount: 1, ellipsis: true },
+    },
     subtitle: {
       text: '',
       refX: 62,
       refY: 36,
       textAnchor: 'start',
       textVerticalAnchor: 'top',
-      fill: TEXT_MUTED,
+      fill: TEXT_PRIMARY,
       fontFamily: FONT_FAMILY,
+      fontWeight: '500',
       fontSize: 12,
       textWrap: { width: 220, maxLineCount: 1, ellipsis: true },
     },
     // Badge: Tools
-    badgeToolsBg: { x: 12, y: 72, width: 48, height: 20, rx: 10, ry: 10, fill: BODY_BORDER, stroke: 'none' },
-    badgeToolsIcon: { d: ICONS.wrench, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 17, refY: 74, transform: 'scale(0.6)' },
-    badgeToolsText: { text: '+0', refX: 38, refY: 83, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
+    badgeToolsBg: { x: 12, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
+    badgeToolsIcon: { d: ICONS.wrench, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 17, refY: 84, transform: 'scale(0.6)' },
+    badgeToolsText: { text: '+0', refX: 38, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
     // Badge: Knowledge Base
-    badgeKbBg: { x: 64, y: 72, width: 48, height: 20, rx: 10, ry: 10, fill: BODY_BORDER, stroke: 'none' },
-    badgeKbIcon: { d: ICONS.database, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 69, refY: 74, transform: 'scale(0.6)' },
-    badgeKbText: { text: '+0', refX: 90, refY: 83, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
+    badgeKbBg: { x: 64, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
+    badgeKbIcon: { d: ICONS.database, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 69, refY: 84, transform: 'scale(0.6)' },
+    badgeKbText: { text: '+0', refX: 90, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
     // Badge: Info Collection
-    badgeInfoBg: { x: 116, y: 72, width: 48, height: 20, rx: 10, ry: 10, fill: BODY_BORDER, stroke: 'none' },
-    badgeInfoIcon: { d: ICONS.bookmark, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 121, refY: 74, transform: 'scale(0.6)' },
-    badgeInfoText: { text: '+0', refX: 142, refY: 83, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
+    badgeInfoBg: { x: 116, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
+    badgeInfoIcon: { d: ICONS.bookmark, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 121, refY: 84, transform: 'scale(0.6)' },
+    badgeInfoText: { text: '+0', refX: 142, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
+    // Hover hotspot to reveal add button when cursor is near its expected area
+    addButtonHoverZone: { width: 40, height: 40, rx: 8, ry: 8, fill: 'transparent', stroke: 'none', refX: '50%', refDy: 8, x: -20, y: -8, pointerEvents: 'auto' },
     // Add child button
     addButtonBg: { width: 24, height: 24, rx: 4, ry: 4, fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, refX: '50%', refDy: 8, x: -12, cursor: 'pointer', event: 'cell:addChild', magnet: true, visibility: 'visible', opacity: 0, pointerEvents: 'none', style: 'transition: opacity 180ms ease;' },
     addButtonIcon: { d: ICONS.plus, stroke: TEXT_SECONDARY, strokeWidth: 2, fill: 'none', refX: '50%', refDy: 8, transform: 'translate(-6, 6) scale(0.5)', pointerEvents: 'none', visibility: 'visible', opacity: 0, style: 'transition: opacity 180ms ease;' },
@@ -88,6 +102,7 @@ export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
     { tagName: 'rect', selector: 'badgeInfoBg' },
     { tagName: 'path', selector: 'badgeInfoIcon' },
     { tagName: 'text', selector: 'badgeInfoText' },
+    { tagName: 'rect', selector: 'addButtonHoverZone' },
     { tagName: 'rect', selector: 'addButtonBg' },
     { tagName: 'path', selector: 'addButtonIcon' },
     { tagName: 'circle', selector: 'avatarErrorDot' },

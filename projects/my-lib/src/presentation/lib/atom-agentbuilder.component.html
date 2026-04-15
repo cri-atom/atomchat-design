@@ -1,4 +1,4 @@
-<div class="agentbuilder">
+<div class="agentbuilder" (click)="closeValidationMenu()">
 
   <div class="agentbuilder__navbar">
     <div class="agentbuilder__navbar-left">
@@ -19,6 +19,40 @@
         [placeholder]="'editor.node.flow_name_placeholder' | transloco" />
     </div>
     <div class="agentbuilder__navbar-right">
+      @if (validationErrors.length > 0) {
+        <div class="agentbuilder__validation-wrap" (click)="$event.stopPropagation()">
+          @if (showValidationMenu && validationErrors.length > 0) {
+            <div class="agentbuilder__validation-menu">
+              <div class="agentbuilder__validation-menu-header">
+                <span>{{ 'editor.validation.errors_detected' | transloco }}</span>
+                <span class="agentbuilder__validation-count">{{ validationErrors.length }}</span>
+              </div>
+              @for (err of validationErrors; track err.id) {
+                <button class="agentbuilder__validation-item" (click)="selectErrorTarget(err.id, err.type)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="agentbuilder__validation-item-icon">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  <span>{{ err.message }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          <button
+            class="agentbuilder__navbar-btn agentbuilder__navbar-btn--validation"
+            [class.agentbuilder__navbar-btn--validation-error]="validationErrors.length > 0"
+            [title]="'editor.validation.title' | transloco"
+            (click)="toggleValidationMenu($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            @if (validationErrors.length > 0) {
+              <span class="agentbuilder__validation-badge">{{ validationErrors.length }}</span>
+            }
+          </button>
+        </div>
+      }
+
       <button class="agentbuilder__navbar-btn" [title]="'editor.actions.save' | transloco">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
           <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7H7v7"/><path d="M7 3v4h7"/>
@@ -45,7 +79,27 @@
   </div>
 
   <div class="agentbuilder__body">
-    <flowagent-global-settings-view class="agentbuilder__global-settings"></flowagent-global-settings-view>
+    <flowagent-global-settings-view
+      class="agentbuilder__global-settings"
+      [isCollapsed]="isGlobalSettingsCollapsed()"
+      (isCollapsedChange)="onGlobalSettingsCollapsedChange($event)"
+      (collapsedTransitionDone)="onGlobalSettingsCollapsedTransitionDone()">
+    </flowagent-global-settings-view>
+
+    @if (showGlobalSettingsOpenButton()) {
+      <button
+        type="button"
+        class="agentbuilder__global-settings-open-btn"
+        [title]="'global.expand' | transloco"
+        [attr.aria-label]="'global.expand' | transloco"
+        (click)="openGlobalSettings()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </button>
+    }
+
     <flowagent-editor class="agentbuilder__canvas"></flowagent-editor>
     <flowagent-inspector></flowagent-inspector>
   </div>

@@ -112,27 +112,106 @@
   &__navbar-right {
     display: flex;
     align-items: center;
-    gap: $spacing-2xs;
+    gap: $spacing-sm;
     height: 40px;
     background: $color-white;
     border-radius: $radius-sm;
-    padding: 0 $spacing-xs;
+    padding: 0 $spacing-sm;
     box-shadow: $shadow-lg;
+  }
+
+  &__validation-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__validation-menu {
+    position: absolute;
+    top: calc(100% + #{$spacing-sm});
+    right: 0;
+    width: min(15rem, calc(100vw - #{$spacing-2xl * 2}));
+    max-height: 20rem;
+    overflow-y: auto;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-xl;
+    z-index: 60;
+  }
+
+  &__validation-menu-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-lg;
+    background: $color-white;
+    border-bottom: 1px solid $color-border;
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__validation-count {
+    background: rgba($color-error, 0.12);
+    color: $color-error;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    min-width: $spacing-lg + $spacing-2xs;
+    height: $spacing-lg + $spacing-2xs;
+    border-radius: $radius-pill;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $spacing-xs;
+  }
+
+  &__validation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-sm;
+    width: 100%;
+    padding: $spacing-sm $spacing-lg;
+    background: none;
+    border: none;
+    border-bottom: 1px solid $color-border;
+    cursor: pointer;
+    text-align: left;
+    font-size: $font-size-sm;
+    color: $color-text;
+    transition: background 0.15s;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: $color-hover-bg;
+    }
+  }
+
+  &__validation-item-icon {
+    color: $color-error;
+    flex-shrink: 0;
+    margin-top: 1px;
   }
 
   &__navbar-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: $spacing-2xs;
-    height: 28px;
-    padding: 0 $spacing-sm;
+    gap: $spacing-xs;
+    height: 32px;
+    padding: 0 $spacing-md;
     background: none;
     border: none;
     border-radius: $radius-sm;
     cursor: pointer;
     color: $color-text-muted;
-    font-size: $font-size-base;
+    font-size: $font-size-lg;
     font-weight: 500;
     transition: background 0.15s, color 0.15s;
     white-space: nowrap;
@@ -151,6 +230,40 @@
         color: $color-white;
       }
     }
+
+    &--validation {
+      position: relative;
+      width: $spacing-2xl + $spacing-xs;
+      padding: 0;
+      color: $color-text-light;
+    }
+
+    &--validation-error {
+      color: $color-error;
+      background: rgba($color-error, 0.12);
+
+      &:hover {
+        color: $color-error;
+        background: rgba($color-error, 0.2);
+      }
+    }
+  }
+
+  &__validation-badge {
+    position: absolute;
+    top: -$spacing-xs;
+    right: -$spacing-xs;
+    min-width: $spacing-lg;
+    height: $spacing-lg;
+    padding: 0 $spacing-xs;
+    border-radius: $radius-pill;
+    background: $color-error;
+    color: $color-white;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    line-height: $spacing-lg;
+    text-align: center;
+    pointer-events: none;
   }
 
   &__body {
@@ -168,6 +281,35 @@
     z-index: 20;
     pointer-events: none;
     overflow: visible;
+  }
+
+  &__global-settings-open-btn {
+    position: absolute;
+    left: $spacing-sm;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: $radius-sm;
+    background: #0f1115;
+    color: $color-white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: $shadow-xl;
+    z-index: 110;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+
+    &:hover {
+      background: #1a1d24;
+      transform: translateY(-1px);
+      box-shadow: $shadow-2xl;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 
   &__canvas {
