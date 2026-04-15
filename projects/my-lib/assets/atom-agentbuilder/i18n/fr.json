@@ -224,7 +224,10 @@
       "condition_label_placeholder": "Ex. client a accepté",
       "override_end_condition": "Remplacer la condition de fin",
       "condition_expression": "Expression de condition",
-      "condition_expression_placeholder": "Écrivez l'expression de condition"
+      "condition_expression_placeholder": "Écrivez l'expression de condition",
+      "condition_expression_placeholder_example_1": "Ex. Le client est contrarie",
+      "condition_expression_placeholder_example_2": "Ex. Le client veut parler au support",
+      "condition_expression_placeholder_example_3": "Ex. Le client confirme qu'il veut acheter"
     },
     "general": {
       "conversation_goal": "Objectif de la conversation",

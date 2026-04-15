@@ -173,14 +173,19 @@
 .pem-textarea {
   flex: 1;
   width: 100%;
+  min-width: 0;
   padding: $spacing-xl;
   background: $color-white;
   border: 1px solid $color-border;
   border-radius: $radius-2xl;
+  box-sizing: border-box;
   font-size: $font-size-base;
   font-family: inherit;
   color: $color-text;
   line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   resize: none;
   outline: none;
   transition: border-color 0.15s;

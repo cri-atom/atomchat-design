@@ -819,14 +819,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     this.hideEdgeActions();
   }
 
-  private getAllowedTargetType(sourceId: string): 'agent' | 'end' | null {
-    const outgoing = this.state.edges$.value.filter(e => e.source === sourceId);
-    if (outgoing.length === 0) return null;
-    const firstTarget = this.state.nodes$.value.find(n => n.id === outgoing[0].target);
-    if (!firstTarget) return null;
-    return firstTarget.type === AgentNodeType.End ? 'end' : 'agent';
-  }
-
   private isValidDragTarget(sourceId: string, targetId: string): boolean {
     const sourceNode = this.state.nodes$.value.find(n => n.id === sourceId);
     const targetNode = this.state.nodes$.value.find(n => n.id === targetId);
@@ -834,9 +826,15 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     if (targetNode.type === AgentNodeType.Start) return false;
     if (sourceNode.type === AgentNodeType.End) return false;
     if (this.state.edges$.value.some(e => e.source === sourceId && e.target === targetId)) return false;
-    const allowed = this.getAllowedTargetType(sourceId);
-    if (allowed === 'agent' && targetNode.type === AgentNodeType.End) return false;
-    if (allowed === 'end') return false;
+
+    if (targetNode.type === AgentNodeType.End) {
+      const alreadyHasEndChild = this.state.edges$.value.some(edge => {
+        if (edge.source !== sourceId) return false;
+        return this.state.nodes$.value.find(node => node.id === edge.target)?.type === AgentNodeType.End;
+      });
+      if (alreadyHasEndChild) return false;
+    }
+
     return true;
   }
 

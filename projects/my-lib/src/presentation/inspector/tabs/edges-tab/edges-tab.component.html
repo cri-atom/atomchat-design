@@ -9,6 +9,6 @@
   <h3 class="edges-tab__section-title">{{ 'tabs.edges.condition_expression' | transloco }}</h3>
   <mat-form-field appearance="outline" class="edges-tab__field" subscriptSizing="dynamic">
     <textarea matInput rows="4" [ngModel]="edge().data.conditionExpression" (ngModelChange)="update({ conditionExpression: $event })"
-      [placeholder]="'tabs.edges.condition_expression_placeholder' | transloco"></textarea>
+      [placeholder]="conditionExpressionPlaceholder"></textarea>
   </mat-form-field>
 </div>

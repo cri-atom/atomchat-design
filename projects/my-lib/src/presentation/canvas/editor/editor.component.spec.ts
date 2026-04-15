@@ -67,4 +67,32 @@ describe('EditorComponent', () => {
     stateMock.edges$.next([{ id: 'e2', source: 'parent', target: 'agent-2', data: { label: '', conditionType: null } }]);
     expect(component.canAddEnd()).toBeTrue();
   });
+
+  it('allows connecting a parent to another agent child (e.g. duplicated node)', () => {
+    stateMock.nodes$.next([
+      { id: 'parent', type: AgentNodeType.Agent, position: { x: 0, y: 0 }, data: { label: 'P' } },
+      { id: 'agent-1', type: AgentNodeType.Agent, position: { x: 100, y: 120 }, data: { label: 'A1' } },
+      { id: 'agent-2', type: AgentNodeType.Agent, position: { x: 220, y: 120 }, data: { label: 'A2' } },
+      { id: 'end-1', type: AgentNodeType.End, position: { x: 340, y: 120 }, data: { label: 'E1' } },
+    ]);
+    stateMock.edges$.next([
+      { id: 'e1', source: 'parent', target: 'agent-1', data: { label: '', conditionType: null } },
+      { id: 'e2', source: 'parent', target: 'end-1', data: { label: '', conditionType: null } },
+    ]);
+
+    expect((component as any).isValidDragTarget('parent', 'agent-2')).toBeTrue();
+  });
+
+  it('prevents connecting to a second end child from the same source', () => {
+    stateMock.nodes$.next([
+      { id: 'parent', type: AgentNodeType.Agent, position: { x: 0, y: 0 }, data: { label: 'P' } },
+      { id: 'end-1', type: AgentNodeType.End, position: { x: 120, y: 120 }, data: { label: 'E1' } },
+      { id: 'end-2', type: AgentNodeType.End, position: { x: 240, y: 120 }, data: { label: 'E2' } },
+    ]);
+    stateMock.edges$.next([
+      { id: 'e1', source: 'parent', target: 'end-1', data: { label: '', conditionType: null } },
+    ]);
+
+    expect((component as any).isValidDragTarget('parent', 'end-2')).toBeFalse();
+  });
 });
