@@ -46,16 +46,16 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   public isChatOpen = false;
   public showErrorPanel = false;
   public validationErrors: ValidationError[] = [];
-  public nodeActionsPos: { x: number; y: number } | null = null;
-  public nodeActionsNodeId: string | null = null;
-  public nodeActionsVisible = false;
-  public hoverNodeActionsPos: { x: number; y: number } | null = null;
-  public hoverNodeActionsNodeId: string | null = null;
-  public hoverNodeActionsVisible = false;
-  public edgeActionsPos: { x: number; y: number } | null = null;
-  public edgeActionsEdgeId: string | null = null;
-  public edgeActionsVisible = false;
-  public currentScale = 1;
+  public readonly nodeActionsPos = signal<{ x: number; y: number } | null>(null);
+  public readonly nodeActionsNodeId = signal<string | null>(null);
+  public readonly nodeActionsVisible = signal(false);
+  public readonly hoverNodeActionsPos = signal<{ x: number; y: number } | null>(null);
+  public readonly hoverNodeActionsNodeId = signal<string | null>(null);
+  public readonly hoverNodeActionsVisible = signal(false);
+  public readonly edgeActionsPos = signal<{ x: number; y: number } | null>(null);
+  public readonly edgeActionsEdgeId = signal<string | null>(null);
+  public readonly edgeActionsVisible = signal(false);
+  public readonly currentScale = signal(1);
   public readonly testingMode = (environment.testingMode ?? false) || localStorage.getItem('debug-mode') !== null;
   public readonly showDebugDialog = signal(false);
   public readonly debugJson = signal('');
@@ -184,7 +184,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       drawGrid: false,
       background: { color: 'transparent' },
       interactive: { linkMove: false, labelMove: false },
-      defaultLink: () => new (shapes as any).agentApp.Link(),
+      defaultLink: () => new (shapes as any).agentApp.Link(), // JointJS shapes namespace not fully typed
       defaultConnectionPoint: { name: 'boundary' },
       clickThreshold: 5,
       moveThreshold: 2,
@@ -194,7 +194,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         connecting: { name: 'stroke', options: { attrs: { stroke: SELECTED_BORDER, 'stroke-width': 1 } } },
         magnetAvailability: { name: 'stroke', options: { attrs: { stroke: SELECTED_BORDER, 'stroke-width': 1 } } },
         embedding: { name: 'stroke', options: { attrs: { stroke: SELECTED_BORDER, 'stroke-width': 1 } } },
-      } as any,
+      } as any, // JointJS Paper highlighting config not fully typed
       validateConnection: (sv: dia.CellView, _sm: unknown, tv: dia.CellView) => {
         if (sv === tv) return false;
         return this.isValidDragTarget(sv.model.id as string, tv.model.id as string);
@@ -271,11 +271,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
     this.paper.on('link:mouseleave', (linkView: dia.LinkView) => {
       const edgeId = linkView.model.id as string;
-      if (this.edgeActionsEdgeId !== edgeId) return;
+      if (this.edgeActionsEdgeId() !== edgeId) return;
       if (this.state.selectedEdgeId$.value === edgeId) return;
       this._edgeActionsHoverHideTimeout = setTimeout(() => {
         this._edgeActionsHoverHideTimeout = null;
-        if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId) return;
+        if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId()) return;
         this.zone.run(() => this.hideEdgeActions());
       }, this._edgeActionsHoverHideDelayMs);
     });
@@ -333,18 +333,18 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     this.paper.on('element:pointermove', (cellView: dia.ElementView) => {
       const id = cellView.model.id as string;
       this._draggingNodeId = id;
-      if (id === this.nodeActionsNodeId) {
-        this.nodeActionsPos = this.getNodeActionsPos(id);
+      if (id === this.nodeActionsNodeId()) {
+        this.nodeActionsPos.set(this.getNodeActionsPos(id));
         this.cdr.detectChanges();
       }
-      if (id === this.hoverNodeActionsNodeId) {
-        this.hoverNodeActionsPos = this.getNodeActionsPos(id);
+      if (id === this.hoverNodeActionsNodeId()) {
+        this.hoverNodeActionsPos.set(this.getNodeActionsPos(id));
         this.cdr.detectChanges();
       }
-      if (this.edgeActionsEdgeId) {
-        const edge = this.state.edges$.value.find(e => e.id === this.edgeActionsEdgeId);
+      if (this.edgeActionsEdgeId()) {
+        const edge = this.state.edges$.value.find(e => e.id === this.edgeActionsEdgeId());
         if (edge && (edge.source === id || edge.target === id)) {
-          this.computeEdgeActions(this.edgeActionsEdgeId);
+          this.computeEdgeActions(this.edgeActionsEdgeId());
           this.cdr.detectChanges();
         }
       }
@@ -365,32 +365,32 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       this._syncing = false;
       this._draggingNodeId = null;
       this.zone.run(() => {
-        if (id === this.nodeActionsNodeId) {
-          this.computeNodeActions(this.nodeActionsNodeId);
+        if (id === this.nodeActionsNodeId()) {
+          this.computeNodeActions(this.nodeActionsNodeId());
         }
-        if (id === this.hoverNodeActionsNodeId) {
-          this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
+        if (id === this.hoverNodeActionsNodeId()) {
+          this.computeHoverNodeActions(this.hoverNodeActionsNodeId());
         }
-        if (this.edgeActionsEdgeId) {
-          const edge = this.state.edges$.value.find(e => e.id === this.edgeActionsEdgeId);
+        if (this.edgeActionsEdgeId()) {
+          const edge = this.state.edges$.value.find(e => e.id === this.edgeActionsEdgeId());
           if (edge && (edge.source === id || edge.target === id)) {
-            this.computeEdgeActions(this.edgeActionsEdgeId);
+            this.computeEdgeActions(this.edgeActionsEdgeId());
           }
         }
       });
     });
 
     this.paper.on('blank:mousewheel', (_evt: dia.Event, x: number, y: number, delta: number) => {
-      (_evt as any).preventDefault?.();
+      (_evt as any).preventDefault?.(); // JointJS dia.Event does not expose preventDefault in its type definitions
       this.wheelZoom(delta, x, y);
     });
     this.paper.on('cell:mousewheel', (_cv: dia.CellView, _evt: dia.Event, x: number, y: number, delta: number) => {
-      (_evt as any).preventDefault?.();
+      (_evt as any).preventDefault?.(); // JointJS dia.Event does not expose preventDefault in its type definitions
       this.wheelZoom(delta, x, y);
     });
 
     this.paper.on('blank:contextmenu', (evt: dia.Event) => {
-      (evt as any).preventDefault?.();
+      (evt as any).preventDefault?.(); // JointJS dia.Event does not expose preventDefault in its type definitions
       this.zone.run(() => this.centerOnStart());
     });
 
@@ -406,9 +406,12 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         const t = this.paper.translate();
         this.paper.translate(t.tx + dx, t.ty + dy);
         lastX = e.clientX; lastY = e.clientY;
-        if (this.nodeActionsPos) this.nodeActionsPos = { x: this.nodeActionsPos.x + dx, y: this.nodeActionsPos.y + dy };
-        if (this.hoverNodeActionsPos) this.hoverNodeActionsPos = { x: this.hoverNodeActionsPos.x + dx, y: this.hoverNodeActionsPos.y + dy };
-        if (this.edgeActionsPos) this.edgeActionsPos = { x: this.edgeActionsPos.x + dx, y: this.edgeActionsPos.y + dy };
+        const nap = this.nodeActionsPos();
+        if (nap) this.nodeActionsPos.set({ x: nap.x + dx, y: nap.y + dy });
+        const hnap = this.hoverNodeActionsPos();
+        if (hnap) this.hoverNodeActionsPos.set({ x: hnap.x + dx, y: hnap.y + dy });
+        const eap = this.edgeActionsPos();
+        if (eap) this.edgeActionsPos.set({ x: eap.x + dx, y: eap.y + dy });
         this.cdr.detectChanges();
       };
       const onUp = () => {
@@ -416,9 +419,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         window.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
         this.zone.run(() => {
-          if (this.nodeActionsNodeId) this.computeNodeActions(this.nodeActionsNodeId);
-          if (this.hoverNodeActionsNodeId) this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
-          if (this.edgeActionsEdgeId) this.computeEdgeActions(this.edgeActionsEdgeId);
+          if (this.nodeActionsNodeId()) this.computeNodeActions(this.nodeActionsNodeId());
+          if (this.hoverNodeActionsNodeId()) this.computeHoverNodeActions(this.hoverNodeActionsNodeId());
+          if (this.edgeActionsEdgeId()) this.computeEdgeActions(this.edgeActionsEdgeId());
         });
       };
       window.addEventListener('pointermove', onMove);
@@ -517,8 +520,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       }
       this.zone.run(() => {
         if (!selectedId) {
-          this.hideNodeActions(this.nodeActionsNodeId);
-          this.hideHoverNodeActions(this.hoverNodeActionsNodeId);
+          this.hideNodeActions(this.nodeActionsNodeId());
+          this.hideHoverNodeActions(this.hoverNodeActionsNodeId());
           return;
         }
         const selectedNode = this.state.nodes$.value.find(n => n.id === selectedId);
@@ -526,8 +529,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
           this.showNodeActions(selectedId);
           return;
         }
-        if (this.nodeActionsNodeId) {
-          this.hideNodeActions(this.nodeActionsNodeId);
+        if (this.nodeActionsNodeId()) {
+          this.hideNodeActions(this.nodeActionsNodeId());
         }
       });
     });
@@ -577,74 +580,76 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       this._nodeActionsFadeOutTimeout = null;
     }
     this.computeNodeActions(nodeId);
-    this.nodeActionsVisible = true;
+    this.nodeActionsVisible.set(true);
     this.cdr.markForCheck();
   }
 
   private showHoverNodeActions(nodeId: string): void {
     const node = this.state.nodes$.value.find(n => n.id === nodeId);
     if (node?.type !== AgentNodeType.Agent && node?.type !== AgentNodeType.End) return;
-    if (this.nodeActionsNodeId === nodeId) return;
+    if (this.nodeActionsNodeId() === nodeId) return;
     if (this._hoverNodeActionsFadeOutTimeout) {
       clearTimeout(this._hoverNodeActionsFadeOutTimeout);
       this._hoverNodeActionsFadeOutTimeout = null;
     }
     this.computeHoverNodeActions(nodeId);
-    this.hoverNodeActionsVisible = true;
+    this.hoverNodeActionsVisible.set(true);
     this.cdr.markForCheck();
   }
 
-  private hideNodeActions(nodeId: string): void {
-    if (this.nodeActionsNodeId !== nodeId) return;
-    this.nodeActionsVisible = false;
+  private hideNodeActions(nodeId: string | null): void {
+    if (this.nodeActionsNodeId() !== nodeId) return;
+    this.nodeActionsVisible.set(false);
     this.cdr.markForCheck();
 
     if (this._nodeActionsFadeOutTimeout) {
       clearTimeout(this._nodeActionsFadeOutTimeout);
     }
     this._nodeActionsFadeOutTimeout = setTimeout(() => {
-      if (this.nodeActionsVisible) return;
-      if (this.nodeActionsNodeId !== nodeId) return;
+      if (this.nodeActionsVisible()) return;
+      if (this.nodeActionsNodeId() !== nodeId) return;
       if (this.state.selectedNodeId$.value === nodeId) return;
-      this.nodeActionsNodeId = null;
-      this.nodeActionsPos = null;
+      this.nodeActionsNodeId.set(null);
+      this.nodeActionsPos.set(null);
       this._nodeActionsFadeOutTimeout = null;
       this.cdr.markForCheck();
     }, this._nodeActionsFadeMs);
   }
 
   private hideHoverNodeActions(nodeId: string | null): void {
-    if (!nodeId || this.hoverNodeActionsNodeId !== nodeId) return;
-    this.hoverNodeActionsVisible = false;
+    if (!nodeId || this.hoverNodeActionsNodeId() !== nodeId) return;
+    this.hoverNodeActionsVisible.set(false);
     this.cdr.markForCheck();
 
     if (this._hoverNodeActionsFadeOutTimeout) {
       clearTimeout(this._hoverNodeActionsFadeOutTimeout);
     }
     this._hoverNodeActionsFadeOutTimeout = setTimeout(() => {
-      if (this.hoverNodeActionsVisible) return;
-      if (this.hoverNodeActionsNodeId !== nodeId) return;
-      this.hoverNodeActionsNodeId = null;
-      this.hoverNodeActionsPos = null;
+      if (this.hoverNodeActionsVisible()) return;
+      if (this.hoverNodeActionsNodeId() !== nodeId) return;
+      this.hoverNodeActionsNodeId.set(null);
+      this.hoverNodeActionsPos.set(null);
       this._hoverNodeActionsFadeOutTimeout = null;
       this.cdr.markForCheck();
     }, this._nodeActionsFadeMs);
   }
 
   public onNodeActionsMouseEnter(): void {
-    if (!this.nodeActionsNodeId) return;
-    const node = this.state.nodes$.value.find(n => n.id === this.nodeActionsNodeId);
+    const nodeId = this.nodeActionsNodeId();
+    if (!nodeId) return;
+    const node = this.state.nodes$.value.find(n => n.id === nodeId);
     if (node?.type === AgentNodeType.Agent) {
-      this.showAgentControls(this.nodeActionsNodeId);
+      this.showAgentControls(nodeId);
     } else {
-      this.showNodeActions(this.nodeActionsNodeId);
+      this.showNodeActions(nodeId);
     }
   }
 
   public onNodeActionsMouseLeave(): void {
-    if (!this.nodeActionsNodeId) return;
-    if (this.state.selectedNodeId$.value === this.nodeActionsNodeId) return;
-    this.scheduleAgentAddHide(this.nodeActionsNodeId);
+    const nodeId = this.nodeActionsNodeId();
+    if (!nodeId) return;
+    if (this.state.selectedNodeId$.value === nodeId) return;
+    this.scheduleAgentAddHide(nodeId);
   }
 
   public onHoverNodeActionsMouseEnter(nodeId: string): void {
@@ -669,26 +674,26 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   private computeNodeActions(nodeId: string | null): void {
-    this.nodeActionsNodeId = nodeId;
-    if (!nodeId) { this.nodeActionsPos = null; this.cdr.markForCheck(); return; }
-    this.nodeActionsPos = this.getNodeActionsPos(nodeId);
-    if (!this.nodeActionsPos) {
-      this.nodeActionsNodeId = null;
+    this.nodeActionsNodeId.set(nodeId);
+    if (!nodeId) { this.nodeActionsPos.set(null); this.cdr.markForCheck(); return; }
+    this.nodeActionsPos.set(this.getNodeActionsPos(nodeId));
+    if (!this.nodeActionsPos()) {
+      this.nodeActionsNodeId.set(null);
       this.cdr.markForCheck();
       return;
     }
-    if (this.hoverNodeActionsNodeId === nodeId) {
+    if (this.hoverNodeActionsNodeId() === nodeId) {
       this.hideHoverNodeActions(nodeId);
     }
     this.cdr.markForCheck();
   }
 
   private computeHoverNodeActions(nodeId: string | null): void {
-    this.hoverNodeActionsNodeId = nodeId;
-    if (!nodeId) { this.hoverNodeActionsPos = null; this.cdr.markForCheck(); return; }
-    this.hoverNodeActionsPos = this.getNodeActionsPos(nodeId);
-    if (!this.hoverNodeActionsPos) {
-      this.hoverNodeActionsNodeId = null;
+    this.hoverNodeActionsNodeId.set(nodeId);
+    if (!nodeId) { this.hoverNodeActionsPos.set(null); this.cdr.markForCheck(); return; }
+    this.hoverNodeActionsPos.set(this.getNodeActionsPos(nodeId));
+    if (!this.hoverNodeActionsPos()) {
+      this.hoverNodeActionsNodeId.set(null);
       this.cdr.markForCheck();
       return;
     }
@@ -703,15 +708,15 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   public deleteNode(nodeId: string): void {
     if (!nodeId || nodeId === 'start-node') return;
     this.state.deleteNode(nodeId);
-    if (this.nodeActionsNodeId === nodeId) {
-      this.nodeActionsPos = null;
-      this.nodeActionsNodeId = null;
-      this.nodeActionsVisible = false;
+    if (this.nodeActionsNodeId() === nodeId) {
+      this.nodeActionsPos.set(null);
+      this.nodeActionsNodeId.set(null);
+      this.nodeActionsVisible.set(false);
     }
-    if (this.hoverNodeActionsNodeId === nodeId) {
-      this.hoverNodeActionsPos = null;
-      this.hoverNodeActionsNodeId = null;
-      this.hoverNodeActionsVisible = false;
+    if (this.hoverNodeActionsNodeId() === nodeId) {
+      this.hoverNodeActionsPos.set(null);
+      this.hoverNodeActionsNodeId.set(null);
+      this.hoverNodeActionsVisible.set(false);
     }
     this.cdr.markForCheck();
   }
@@ -719,7 +724,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private syncEdgeSelectionVisual(): void {
     this.state.selectedEdgeId$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(edgeId => {
       for (const link of this.graph.getLinks()) {
-        (link as any).updateAppearance?.();
+        (link as any).updateAppearance?.(); // custom method added via define(), not present in dia.Link types
       }
       if (edgeId) {
         const link = this.graph.getCell(edgeId);
@@ -770,22 +775,22 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       clearTimeout(this._edgeActionsFadeOutTimeout);
       this._edgeActionsFadeOutTimeout = null;
     }
-    this.edgeActionsEdgeId = edgeId;
-    this.edgeActionsPos = {
+    this.edgeActionsEdgeId.set(edgeId);
+    this.edgeActionsPos.set({
       x: labelRect.right - wrapperRect.left + 8,
       y: labelRect.top - wrapperRect.top + labelRect.height / 2 - 12,
-    };
-    this.edgeActionsVisible = true;
+    });
+    this.edgeActionsVisible.set(true);
     this.cdr.markForCheck();
   }
 
   private hideEdgeActions(): void {
-    this.edgeActionsVisible = false;
+    this.edgeActionsVisible.set(false);
     this.cdr.markForCheck();
     if (this._edgeActionsFadeOutTimeout) clearTimeout(this._edgeActionsFadeOutTimeout);
     this._edgeActionsFadeOutTimeout = setTimeout(() => {
-      this.edgeActionsEdgeId = null;
-      this.edgeActionsPos = null;
+      this.edgeActionsEdgeId.set(null);
+      this.edgeActionsPos.set(null);
       this._edgeActionsFadeOutTimeout = null;
       this.cdr.markForCheck();
     }, this._nodeActionsFadeMs);
@@ -799,10 +804,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   public onEdgeActionsMouseLeave(): void {
-    if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId) return;
+    if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId()) return;
     this._edgeActionsHoverHideTimeout = setTimeout(() => {
       this._edgeActionsHoverHideTimeout = null;
-      if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId) return;
+      if (this.state.selectedEdgeId$.value === this.edgeActionsEdgeId()) return;
       this.zone.run(() => this.hideEdgeActions());
     }, this._edgeActionsHoverHideDelayMs);
   }
@@ -813,8 +818,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   public deleteSelectedEdge(): void {
-    if (!this.edgeActionsEdgeId) return;
-    this.state.deleteEdge(this.edgeActionsEdgeId);
+    const edgeId = this.edgeActionsEdgeId();
+    if (!edgeId) return;
+    this.state.deleteEdge(edgeId);
     this.state.setSelectedEdge(null);
     this.hideEdgeActions();
   }
@@ -892,7 +898,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   private isAgentNodeError(node: FlowAgentNode): boolean {
     if (node.type !== AgentNodeType.Agent) return false;
-    const data = node.data as any;
+    const data = node.data as any; // node.data is a union type; cast needed to access AgentNode-specific properties
     const edges = this.state.edges$.value;
     return !data.conversationGoal?.trim()
       || !edges.some(e => e.source === node.id)
@@ -908,7 +914,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   private applyNodeAttrs(shape: dia.Element, node: FlowAgentNode): void {
     if (node.type === AgentNodeType.Tool) {
-      const data = node.data as any;
+      const data = node.data as any; // node.data is a union type; cast needed to access ToolNode-specific properties
       const tools: any[] = data.tools ?? [];
       const hasError = tools.length === 0;
       shape.attr('errorCircle/visibility', hasError ? 'visible' : 'hidden');
@@ -918,7 +924,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       return;
     }
     if (node.type !== AgentNodeType.Agent) return;
-    const data = node.data as any;
+    const data = node.data as any; // node.data is a union type; cast needed to access AgentNode-specific properties
     const toolsCount = data.tools?.length ?? 0;
     const kbCount = data.knowledgeBases?.length ?? 0;
     const infoCount = data.infoCollection?.length ?? 0;
@@ -958,7 +964,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
     for (const edge of edges) {
       if (!graphLinks.has(edge.id)) {
-        const link = new (shapes as any).agentApp.Link({
+        const link = new (shapes as any).agentApp.Link({ // JointJS shapes namespace not fully typed
           id: edge.id,
           source: { id: edge.source, port: 'out-port' },
           target: { id: edge.target, port: 'in-port' },
@@ -973,6 +979,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   private getShapeClass(type: AgentNodeType): (new (...args: unknown[]) => dia.Element) | undefined {
     const map: Record<string, (new (...args: unknown[]) => dia.Element) | undefined> = {
+      // JointJS shapes namespace not fully typed — custom shape classes are registered at runtime
       [AgentNodeType.Start]: (shapes as any).agentApp.StartNode,
       [AgentNodeType.Agent]: (shapes as any).agentApp.AgentNode,
       [AgentNodeType.Tool]: (shapes as any).agentApp.ToolNode,
@@ -1025,18 +1032,18 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     this.paper.scale(newScale);
     this.zone.run(() => {
       this.zoomPercent.set(Math.round(newScale * 100));
-      this.currentScale = newScale;
-      if (this.nodeActionsNodeId) this.computeNodeActions(this.nodeActionsNodeId);
-      if (this.edgeActionsEdgeId) this.computeEdgeActions(this.edgeActionsEdgeId);
+      this.currentScale.set(newScale);
+      if (this.nodeActionsNodeId()) this.computeNodeActions(this.nodeActionsNodeId());
+      if (this.edgeActionsEdgeId()) this.computeEdgeActions(this.edgeActionsEdgeId());
       this.cdr.markForCheck();
     });
   }
 
   private refreshFloatingButtons(): void {
-    this.currentScale = this.paper.scale().sx;
-    if (this.nodeActionsNodeId) this.computeNodeActions(this.nodeActionsNodeId);
-    if (this.hoverNodeActionsNodeId) this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
-    if (this.edgeActionsEdgeId) this.computeEdgeActions(this.edgeActionsEdgeId);
+    this.currentScale.set(this.paper.scale().sx);
+    if (this.nodeActionsNodeId()) this.computeNodeActions(this.nodeActionsNodeId());
+    if (this.hoverNodeActionsNodeId()) this.computeHoverNodeActions(this.hoverNodeActionsNodeId());
+    if (this.edgeActionsEdgeId()) this.computeEdgeActions(this.edgeActionsEdgeId());
     this.cdr.markForCheck();
   }
 

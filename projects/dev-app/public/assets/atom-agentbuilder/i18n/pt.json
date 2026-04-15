@@ -49,6 +49,11 @@
     },
     "node": {
       "goal_placeholder": "O que este nó deve alcançar?"
+    },
+    "debug": {
+      "title": "Debug JSON do fluxo",
+      "download": "Baixar JSON",
+      "apply": "Aplicar JSON"
     }
   },
   "errors": {

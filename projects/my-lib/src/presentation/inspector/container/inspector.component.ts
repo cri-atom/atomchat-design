@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +31,6 @@ interface TabConfig { id: TabId; label: string; }
     ]),
   ],
   imports: [
-    CommonModule,
     MatInputModule,
     TranslocoModule,
     StartNodeViewComponent, EndNodeViewComponent,

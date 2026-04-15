@@ -125,7 +125,7 @@ export class FlowAgentInternalStateService {
   }
 
   private updateArrayField(nodeId: string, field: string, updater: (arr: any[]) => any[]): void {
-    this.updateNodeData(nodeId, { [field]: updater((this.getNodeData(nodeId) as any)?.[field] || []) });
+    this.updateNodeData(nodeId, { [field]: updater((this.getNodeData(nodeId) as any)?.[field] || []) }); // node data is a union type; cast needed to access dynamic field by string key
   }
 
   private getNodeData(nodeId: string): any {

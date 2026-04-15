@@ -43,7 +43,6 @@ export class FlowAgentDefaultsService {
   }
 
   createEdge(source: string, target: string, sourceType?: AgentNodeType, targetType?: AgentNodeType): FlowAgentEdge {
-    console.log(this.transloco.translate('defaults.edge.new_condition'));
     const data: ConditionEdgeData = { label: this.transloco.translate('defaults.edge.new_condition'), conditionType: ConditionType.LLMCondition };
 
     if (sourceType === AgentNodeType.Start) {

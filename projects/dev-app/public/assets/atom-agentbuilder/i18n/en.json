@@ -55,6 +55,11 @@
 		"node": {
 			"goal_placeholder": "Add the instructions for the agent.",
 			"flow_name_placeholder": "Flow name"
+		},
+		"debug": {
+			"title": "Debug Flow JSON",
+			"download": "Download JSON",
+			"apply": "Apply JSON"
 		}
 	},
 	"errors": {

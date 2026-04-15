@@ -49,6 +49,11 @@
     },
     "node": {
       "goal_placeholder": "Que doit accomplir ce nœud ?"
+    },
+    "debug": {
+      "title": "Debug JSON du flux",
+      "download": "Télécharger JSON",
+      "apply": "Appliquer JSON"
     }
   },
   "errors": {
