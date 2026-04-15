@@ -6,7 +6,7 @@
 
 .kb-tab {
   &__section {
-    padding: $spacing-md $spacing-lg;
+    padding: 0 $spacing-lg $spacing-md;
   }
 
   &__divider {
@@ -20,7 +20,7 @@
     align-items: center;
     gap: $spacing-sm;
     min-height: 34px;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-2xs;
     color: $color-text-muted;
   }
 
@@ -38,14 +38,14 @@
     align-items: center;
     justify-content: center;
     gap: $spacing-sm;
-    min-height: 40px;
+    min-height: 42px;
     padding: $spacing-md $spacing-lg;
     border-radius: $radius-md;
-    font-size: $font-size-lg;
+    font-size: $font-size-base;
     font-weight: 500;
     color: $color-white;
     background: $color-text;
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-sm;
     transition: background 0.2s;
 
     &:hover {
@@ -55,7 +55,7 @@
 
   &__empty-text {
     font-size: $font-size-md;
-    color: $color-text-quaternary;
+    color: $color-text-muted;
     font-style: italic;
     margin: 0;
     padding: 0 $spacing-2xs;
@@ -113,7 +113,7 @@
 
   &__file-size {
     font-size: $font-size-xs;
-    color: $color-text-quaternary;
+    color: $color-text-muted;
   }
 
   &__delete-btn {
@@ -141,8 +141,8 @@
 
   &__hint {
     font-size: $font-size-md;
-    color: $color-text-quaternary;
-    margin: 0 0 $spacing-lg;
+    color: $color-text-muted;
+    margin: 0 0 $spacing-xl;
     line-height: 1.5;
   }
 

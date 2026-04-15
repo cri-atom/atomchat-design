@@ -1,13 +1,22 @@
 import { dia } from '@joint/plus';
-import { BODY_BG, BODY_BORDER, FONT_FAMILY, PORT_COLOR, ICONS } from '../theme';
+import {
+  BODY_BG,
+  BODY_BORDER,
+  FONT_FAMILY,
+  ICONS,
+  PORT_COLOR,
+  PORT_STROKE,
+  TEXT_MUTED,
+  TEXT_PRIMARY,
+} from '../theme';
 
 export const EndNodeShape = dia.Element.define('agentApp.EndNode', {
-  size: { width: 140, height: 48 },
+  size: { width: 100, height: 40 },
   ports: {
     groups: {
       in: {
         position: { name: 'top' },
-        attrs: { portBody: { fill: PORT_COLOR, stroke: '#F5F5F5', strokeWidth: 4, magnet: 'passive', r: 5, opacity: 0 } },
+        attrs: { portBody: { fill: PORT_COLOR, stroke: PORT_STROKE, strokeWidth: 4, magnet: true, r: 5, opacity: 0 } },
         size: { width: 10, height: 10 },
         markup: [{ tagName: 'circle', selector: 'portBody' }],
       },
@@ -15,9 +24,9 @@ export const EndNodeShape = dia.Element.define('agentApp.EndNode', {
     items: [{ id: 'in-port', group: 'in' }],
   },
   attrs: {
-    body: { fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, rx: 24, ry: 24, refWidth: '100%', refHeight: '100%' },
-    icon: { d: ICONS.checkCircle, stroke: '#52525C', strokeWidth: 2, fill: 'none', refX: 50, refY: 17, transform: 'scale(0.6)' },
-    label: { text: 'FIN', refX: '58%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: '#18181B', fontFamily: FONT_FAMILY, fontSize: 11, fontWeight: '700' },
+    body: { fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, rx: 8, ry: 8, refWidth: '100%', refHeight: '100%' },
+    icon: { d: ICONS.checkCircle, stroke: TEXT_MUTED, strokeWidth: 2, fill: 'none', refX: 20, refY: 12, transform: 'scale(0.6)' },
+    label: { text: 'FIN', refX: '58%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 12, fontWeight: '600' },
   },
   markup: [
     { tagName: 'rect', selector: 'body' },

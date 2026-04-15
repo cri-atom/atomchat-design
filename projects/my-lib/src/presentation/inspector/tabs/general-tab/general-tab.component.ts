@@ -23,7 +23,7 @@ export class GeneralTabComponent {
   private readonly state = inject(FlowAgentInternalStateService);
 
   public readonly showInfoSection = signal(true);
-  public readonly showAdvancedSection = signal(true);
+  public readonly showAdvancedSection = signal(false);
   public readonly showFieldModal = signal(false);
   public readonly showPromptModal = signal(false);
 

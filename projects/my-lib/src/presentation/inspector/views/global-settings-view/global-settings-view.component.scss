@@ -197,7 +197,7 @@
   }
 
   &__header {
-    padding: $spacing-2xs $spacing-lg;
+    padding: $spacing-sm $spacing-lg;
     border-bottom: 1px solid $color-border;
     display: flex;
     align-items: center;
@@ -211,8 +211,8 @@
     border: none;
     background: transparent;
     color: $color-text-muted;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -241,7 +241,7 @@
     padding: $spacing-md $spacing-lg $spacing-3xl;
     display: flex;
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: $spacing-md;
   }
 
   &__section {
@@ -251,7 +251,7 @@
 
     &--divider {
       border-top: 1px solid $color-border;
-      padding-top: $spacing-lg;
+      margin: 0 -16px;
     }
 
     &__stages-header {
@@ -268,7 +268,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-sm;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-xs;
 
     &--between {
       justify-content: space-between;
@@ -308,13 +308,13 @@
   &__tab {
     border: none;
     background: transparent;
-    border-radius: $radius-lg;
+    border-radius: $radius-sm;
     color: $color-text-secondary;
     font-size: $font-size-md;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.16s ease;
-    padding: $spacing-md $spacing-sm;
+    padding: $spacing-sm $spacing-sm;
 
     &--active {
       color: $color-text;
@@ -329,7 +329,7 @@
   &__empty-box {
     padding: $spacing-xl;
     color: $color-text-muted;
-    font-size: $font-size-md;
+    font-size: $font-size-sm;
     line-height: 1.5;
     text-align: center;
     display: flex;
@@ -369,10 +369,9 @@
   }
 
   &__stage-label {
-    font-size: $font-size-sm;
+    font-size: $font-size-md;
     font-weight: 500;
     color: $color-text-muted;
-    text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
@@ -383,8 +382,8 @@
   }
 
   &__helper-text {
-    font-size: $font-size-md;
-    color: $color-text-quaternary;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
     margin: 0 0 $spacing-xs;
     line-height: 1.5;
   }
@@ -393,7 +392,6 @@
     font-size: $font-size-sm;
     font-weight: 500;
     color: $color-text;
-    text-transform: uppercase;
     letter-spacing: 0.04em;
 
     &--header {

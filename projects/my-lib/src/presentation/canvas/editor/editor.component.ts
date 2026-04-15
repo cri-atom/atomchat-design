@@ -12,7 +12,16 @@ import { FlowAgentInternalStateService } from '../../../application/state/flow-a
 import { FlowAgentDefaultsService } from '../../../application/state/flow-agent-defaults.service';
 import { FlowAgentValidationService } from '../../../application/state/flow-agent-validation.service';
 import { AgentNodeType, FlowAgentNode, FlowAgentEdge, ValidationError } from '../../../core/model/agent-flow.model';
-import { ZOOM_INITIAL, ZOOM_MAX, ZOOM_MIN, BODY_BG, BODY_BORDER, SELECTED_BORDER, EDGE_SELECTED, ERROR_COLOR } from '../theme';
+import {
+  BODY_BG,
+  BODY_BORDER,
+  EDGE_SELECTED,
+  ERROR_COLOR,
+  SELECTED_BORDER,
+  ZOOM_INITIAL,
+  ZOOM_MAX,
+  ZOOM_MIN,
+} from '../theme';
 import { environment } from '../../../environments/environment';
 
 import '../shapes/app.shapes';
@@ -39,6 +48,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   public validationErrors: ValidationError[] = [];
   public nodeActionsPos: { x: number; y: number } | null = null;
   public nodeActionsNodeId: string | null = null;
+  public nodeActionsVisible = false;
+  public hoverNodeActionsPos: { x: number; y: number } | null = null;
+  public hoverNodeActionsNodeId: string | null = null;
+  public hoverNodeActionsVisible = false;
   public edgeActionsPos: { x: number; y: number } | null = null;
   public edgeActionsEdgeId: string | null = null;
   public currentScale = 1;
@@ -62,6 +75,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private _pendingMenuParentId: string | null = null;
   private _pendingMenuPos: { x: number; y: number } = { x: 0, y: 0 };
   private _resizeObserver: ResizeObserver | null = null;
+  private readonly _agentAddHideDelayMs = 450;
+  private readonly _nodeActionsFadeMs = 180;
+  private readonly _agentAddHideTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+  private _nodeActionsFadeOutTimeout: ReturnType<typeof setTimeout> | null = null;
+  private _hoverNodeActionsFadeOutTimeout: ReturnType<typeof setTimeout> | null = null;
 
   ngAfterViewInit(): void {
     this.initGraph();
@@ -99,6 +117,18 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this._panCleanup?.();
     this._resizeObserver?.disconnect();
+    for (const timeoutId of this._agentAddHideTimeouts.values()) {
+      clearTimeout(timeoutId);
+    }
+    this._agentAddHideTimeouts.clear();
+    if (this._nodeActionsFadeOutTimeout) {
+      clearTimeout(this._nodeActionsFadeOutTimeout);
+      this._nodeActionsFadeOutTimeout = null;
+    }
+    if (this._hoverNodeActionsFadeOutTimeout) {
+      clearTimeout(this._hoverNodeActionsFadeOutTimeout);
+      this._hoverNodeActionsFadeOutTimeout = null;
+    }
     this._pendingMenuParentId = null;
     this.paper?.remove();
   }
@@ -135,8 +165,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       width: '100%',
       height: '100%',
       gridSize: 1,
-      drawGrid: { name: 'dot', args: { color: '#E5E7EB', scaleFactor: 10 } },
-      background: { color: '#FAFAFA' },
+      drawGrid: false,
+      background: { color: 'transparent' },
       interactive: { linkMove: false, labelMove: false },
       defaultLink: () => new (shapes as any).agentApp.Link(),
       defaultConnectionPoint: { name: 'boundary' },
@@ -183,6 +213,28 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         }
         this.closeMenu();
       }
+    });
+
+    this.paper.on('element:mouseenter', (cellView: dia.ElementView) => {
+      const nodeId = cellView.model.id as string;
+      const node = this.state.nodes$.value.find(n => n.id === nodeId);
+      if (node?.type !== AgentNodeType.Agent) return;
+      const selectedNodeId = this.state.selectedNodeId$.value;
+      if (selectedNodeId && selectedNodeId !== nodeId) {
+        this.clearAgentAddHideTimer(nodeId);
+        this.setAgentAddButtonVisibility(nodeId, true);
+        this.showHoverNodeActions(nodeId);
+        return;
+      }
+      this.showAgentControls(nodeId);
+    });
+
+    this.paper.on('element:mouseleave', (cellView: dia.ElementView) => {
+      const nodeId = cellView.model.id as string;
+      const node = this.state.nodes$.value.find(n => n.id === nodeId);
+      if (node?.type !== AgentNodeType.Agent) return;
+      if (this.state.selectedNodeId$.value === nodeId) return;
+      this.scheduleAgentAddHide(nodeId);
     });
 
     this.paper.on('link:pointerclick', (linkView: dia.LinkView) => {
@@ -239,11 +291,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       const id = cellView.model.id as string;
       this._draggingNodeId = id;
       if (id === this.nodeActionsNodeId) {
-        const pos = (cellView.model as dia.Element).position();
-        const size = (cellView.model as dia.Element).size();
-        const pagePoint = this.paper.localToPagePoint(pos.x + size.width, pos.y);
-        const wrapperRect = this.paperContainer.nativeElement.parentElement!.getBoundingClientRect();
-        this.nodeActionsPos = { x: pagePoint.x - wrapperRect.left + 12, y: pagePoint.y - wrapperRect.top };
+        this.nodeActionsPos = this.getNodeActionsPos(id);
+        this.cdr.detectChanges();
+      }
+      if (id === this.hoverNodeActionsNodeId) {
+        this.hoverNodeActionsPos = this.getNodeActionsPos(id);
         this.cdr.detectChanges();
       }
       if (this.edgeActionsEdgeId) {
@@ -272,6 +324,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       this.zone.run(() => {
         if (id === this.nodeActionsNodeId) {
           this.computeNodeActions(this.nodeActionsNodeId);
+        }
+        if (id === this.hoverNodeActionsNodeId) {
+          this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
         }
         if (this.edgeActionsEdgeId) {
           const edge = this.state.edges$.value.find(e => e.id === this.edgeActionsEdgeId);
@@ -309,6 +364,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         this.paper.translate(t.tx + dx, t.ty + dy);
         lastX = e.clientX; lastY = e.clientY;
         if (this.nodeActionsPos) this.nodeActionsPos = { x: this.nodeActionsPos.x + dx, y: this.nodeActionsPos.y + dy };
+        if (this.hoverNodeActionsPos) this.hoverNodeActionsPos = { x: this.hoverNodeActionsPos.x + dx, y: this.hoverNodeActionsPos.y + dy };
         if (this.edgeActionsPos) this.edgeActionsPos = { x: this.edgeActionsPos.x + dx, y: this.edgeActionsPos.y + dy };
         this.cdr.detectChanges();
       };
@@ -318,6 +374,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         window.removeEventListener('pointerup', onUp);
         this.zone.run(() => {
           if (this.nodeActionsNodeId) this.computeNodeActions(this.nodeActionsNodeId);
+          if (this.hoverNodeActionsNodeId) this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
           if (this.edgeActionsEdgeId) this.computeEdgeActions(this.edgeActionsEdgeId);
         });
       };
@@ -391,45 +448,220 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private syncSelectionVisual(): void {
     this.state.selectedNodeId$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(selectedId => {
       for (const el of this.graph.getElements()) {
+        const node = this.state.nodes$.value.find(n => n.id === el.id);
         if (el.id === selectedId) {
-          el.attr('body/stroke', SELECTED_BORDER);
+          const selectedBorderColor = this.getSelectedNodeBorderColor(node);
+          el.attr('body/stroke', selectedBorderColor);
           el.attr('body/strokeOpacity', 1);
           el.attr('body/strokeWidth', 1);
+          el.attr('body/style', `filter: drop-shadow(0 0 1px ${selectedBorderColor});`);
+          if (node?.type === AgentNodeType.Agent) {
+            this.showAgentControls(el.id as string);
+          }
         } else {
-          const node = this.state.nodes$.value.find(n => n.id === el.id);
           const hasError = node ? this.isAgentNodeError(node) : false;
           el.attr('body/stroke', hasError ? ERROR_COLOR : BODY_BORDER);
           el.attr('body/strokeOpacity', hasError ? 0.5 : 1);
           el.attr('body/strokeWidth', 1);
+          el.attr('body/style', hasError ? `filter: drop-shadow(0 0 1px ${ERROR_COLOR});` : '');
+          if (node?.type === AgentNodeType.Agent) {
+            this.scheduleAgentAddHide(el.id as string);
+          }
         }
       }
-      this.zone.run(() => this.computeNodeActions(selectedId));
+      this.zone.run(() => {
+        if (!selectedId) {
+          this.hideNodeActions(this.nodeActionsNodeId);
+          this.hideHoverNodeActions(this.hoverNodeActionsNodeId);
+          return;
+        }
+        const selectedNode = this.state.nodes$.value.find(n => n.id === selectedId);
+        if (selectedNode?.type === AgentNodeType.Agent) {
+          this.showNodeActions(selectedId);
+          return;
+        }
+        if (this.nodeActionsNodeId) {
+          this.hideNodeActions(this.nodeActionsNodeId);
+        }
+      });
     });
+  }
+
+  private setAgentAddButtonVisibility(nodeId: string, visible: boolean): void {
+    const cell = this.graph.getCell(nodeId);
+    if (!(cell instanceof dia.Element)) return;
+    const opacity = visible ? 1 : 0;
+    cell.attr('addButtonBg/visibility', 'visible');
+    cell.attr('addButtonIcon/visibility', 'visible');
+    cell.attr('addButtonBg/opacity', opacity);
+    cell.attr('addButtonIcon/opacity', opacity);
+    cell.attr('addButtonBg/pointerEvents', visible ? 'auto' : 'none');
+  }
+
+  private showAgentControls(nodeId: string): void {
+    this.clearAgentAddHideTimer(nodeId);
+    this.setAgentAddButtonVisibility(nodeId, true);
+    this.showNodeActions(nodeId);
+  }
+
+  private clearAgentAddHideTimer(nodeId: string): void {
+    const timer = this._agentAddHideTimeouts.get(nodeId);
+    if (!timer) return;
+    clearTimeout(timer);
+    this._agentAddHideTimeouts.delete(nodeId);
+  }
+
+  private scheduleAgentAddHide(nodeId: string): void {
+    this.clearAgentAddHideTimer(nodeId);
+    const timer = setTimeout(() => {
+      if (this.state.selectedNodeId$.value === nodeId) return;
+      this.setAgentAddButtonVisibility(nodeId, false);
+      this.hideNodeActions(nodeId);
+      this.hideHoverNodeActions(nodeId);
+      this._agentAddHideTimeouts.delete(nodeId);
+    }, this._agentAddHideDelayMs);
+    this._agentAddHideTimeouts.set(nodeId, timer);
+  }
+
+  private showNodeActions(nodeId: string): void {
+    const node = this.state.nodes$.value.find(n => n.id === nodeId);
+    if (node?.type !== AgentNodeType.Agent) return;
+    if (this._nodeActionsFadeOutTimeout) {
+      clearTimeout(this._nodeActionsFadeOutTimeout);
+      this._nodeActionsFadeOutTimeout = null;
+    }
+    this.computeNodeActions(nodeId);
+    this.nodeActionsVisible = true;
+    this.cdr.markForCheck();
+  }
+
+  private showHoverNodeActions(nodeId: string): void {
+    const node = this.state.nodes$.value.find(n => n.id === nodeId);
+    if (node?.type !== AgentNodeType.Agent) return;
+    if (this.nodeActionsNodeId === nodeId) return;
+    if (this._hoverNodeActionsFadeOutTimeout) {
+      clearTimeout(this._hoverNodeActionsFadeOutTimeout);
+      this._hoverNodeActionsFadeOutTimeout = null;
+    }
+    this.computeHoverNodeActions(nodeId);
+    this.hoverNodeActionsVisible = true;
+    this.cdr.markForCheck();
+  }
+
+  private hideNodeActions(nodeId: string): void {
+    if (this.nodeActionsNodeId !== nodeId) return;
+    this.nodeActionsVisible = false;
+    this.cdr.markForCheck();
+
+    if (this._nodeActionsFadeOutTimeout) {
+      clearTimeout(this._nodeActionsFadeOutTimeout);
+    }
+    this._nodeActionsFadeOutTimeout = setTimeout(() => {
+      if (this.nodeActionsVisible) return;
+      if (this.nodeActionsNodeId !== nodeId) return;
+      if (this.state.selectedNodeId$.value === nodeId) return;
+      this.nodeActionsNodeId = null;
+      this.nodeActionsPos = null;
+      this._nodeActionsFadeOutTimeout = null;
+      this.cdr.markForCheck();
+    }, this._nodeActionsFadeMs);
+  }
+
+  private hideHoverNodeActions(nodeId: string | null): void {
+    if (!nodeId || this.hoverNodeActionsNodeId !== nodeId) return;
+    this.hoverNodeActionsVisible = false;
+    this.cdr.markForCheck();
+
+    if (this._hoverNodeActionsFadeOutTimeout) {
+      clearTimeout(this._hoverNodeActionsFadeOutTimeout);
+    }
+    this._hoverNodeActionsFadeOutTimeout = setTimeout(() => {
+      if (this.hoverNodeActionsVisible) return;
+      if (this.hoverNodeActionsNodeId !== nodeId) return;
+      this.hoverNodeActionsNodeId = null;
+      this.hoverNodeActionsPos = null;
+      this._hoverNodeActionsFadeOutTimeout = null;
+      this.cdr.markForCheck();
+    }, this._nodeActionsFadeMs);
+  }
+
+  public onNodeActionsMouseEnter(): void {
+    if (!this.nodeActionsNodeId) return;
+    this.showAgentControls(this.nodeActionsNodeId);
+  }
+
+  public onNodeActionsMouseLeave(): void {
+    if (!this.nodeActionsNodeId) return;
+    if (this.state.selectedNodeId$.value === this.nodeActionsNodeId) return;
+    this.scheduleAgentAddHide(this.nodeActionsNodeId);
+  }
+
+  public onHoverNodeActionsMouseEnter(nodeId: string): void {
+    this.clearAgentAddHideTimer(nodeId);
+    this.setAgentAddButtonVisibility(nodeId, true);
+    this.showHoverNodeActions(nodeId);
+  }
+
+  public onHoverNodeActionsMouseLeave(nodeId: string): void {
+    if (this.state.selectedNodeId$.value === nodeId) return;
+    this.scheduleAgentAddHide(nodeId);
+  }
+
+  private getNodeActionsPos(nodeId: string): { x: number; y: number } | null {
+    const el = this.graph.getCell(nodeId);
+    if (!(el instanceof dia.Element)) return null;
+    const pos = (el as dia.Element).position();
+    const size = (el as dia.Element).size();
+    const pagePoint = this.paper.localToPagePoint(pos.x + size.width, pos.y);
+    const wrapperRect = this.paperContainer.nativeElement.parentElement!.getBoundingClientRect();
+    return { x: pagePoint.x - wrapperRect.left + 12, y: pagePoint.y - wrapperRect.top };
   }
 
   private computeNodeActions(nodeId: string | null): void {
     this.nodeActionsNodeId = nodeId;
     if (!nodeId) { this.nodeActionsPos = null; this.cdr.markForCheck(); return; }
-    const el = this.graph.getCell(nodeId);
-    if (!(el instanceof dia.Element)) { this.nodeActionsPos = null; this.cdr.markForCheck(); return; }
-    const pos = (el as dia.Element).position();
-    const size = (el as dia.Element).size();
-    const pagePoint = this.paper.localToPagePoint(pos.x + size.width, pos.y);
-    const wrapperRect = this.paperContainer.nativeElement.parentElement!.getBoundingClientRect();
-    this.nodeActionsPos = { x: pagePoint.x - wrapperRect.left + 12, y: pagePoint.y - wrapperRect.top };
+    this.nodeActionsPos = this.getNodeActionsPos(nodeId);
+    if (!this.nodeActionsPos) {
+      this.nodeActionsNodeId = null;
+      this.cdr.markForCheck();
+      return;
+    }
+    if (this.hoverNodeActionsNodeId === nodeId) {
+      this.hideHoverNodeActions(nodeId);
+    }
     this.cdr.markForCheck();
   }
 
-  public duplicateSelectedNode(): void {
-    if (!this.nodeActionsNodeId) return;
-    this.state.duplicateNode(this.nodeActionsNodeId);
+  private computeHoverNodeActions(nodeId: string | null): void {
+    this.hoverNodeActionsNodeId = nodeId;
+    if (!nodeId) { this.hoverNodeActionsPos = null; this.cdr.markForCheck(); return; }
+    this.hoverNodeActionsPos = this.getNodeActionsPos(nodeId);
+    if (!this.hoverNodeActionsPos) {
+      this.hoverNodeActionsNodeId = null;
+      this.cdr.markForCheck();
+      return;
+    }
+    this.cdr.markForCheck();
   }
 
-  public deleteSelectedNode(): void {
-    if (!this.nodeActionsNodeId || this.nodeActionsNodeId === 'start-node') return;
-    this.state.deleteNode(this.nodeActionsNodeId);
-    this.nodeActionsPos = null;
-    this.nodeActionsNodeId = null;
+  public duplicateNode(nodeId: string): void {
+    if (!nodeId || nodeId === 'start-node') return;
+    this.state.duplicateNode(nodeId);
+  }
+
+  public deleteNode(nodeId: string): void {
+    if (!nodeId || nodeId === 'start-node') return;
+    this.state.deleteNode(nodeId);
+    if (this.nodeActionsNodeId === nodeId) {
+      this.nodeActionsPos = null;
+      this.nodeActionsNodeId = null;
+      this.nodeActionsVisible = false;
+    }
+    if (this.hoverNodeActionsNodeId === nodeId) {
+      this.hoverNodeActionsPos = null;
+      this.hoverNodeActionsNodeId = null;
+      this.hoverNodeActionsVisible = false;
+    }
     this.cdr.markForCheck();
   }
 
@@ -441,9 +673,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       if (edgeId) {
         const link = this.graph.getCell(edgeId);
         if (link) {
-          link.attr('line/stroke', EDGE_SELECTED);
-          link.attr('line/targetMarker/fill', EDGE_SELECTED);
-
           const labels = (link as dia.Link).labels();
           if (labels.length > 0) {
             const firstLabel = labels[0] || {};
@@ -456,20 +685,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
                   ...labelAttrs,
                   labelBody: {
                     ...labelAttrs['labelBody'],
-                    fill: EDGE_SELECTED,
-                    stroke: EDGE_SELECTED,
-                  },
-                  labelText: {
-                    ...labelAttrs['labelText'],
-                    fill: BODY_BG,
-                  },
-                  labelIcon: {
-                    ...labelAttrs['labelIcon'],
-                    stroke: BODY_BG,
-                  },
-                  labelIconHole: {
-                    ...labelAttrs['labelIconHole'],
-                    stroke: BODY_BG,
+                    stroke: SELECTED_BORDER,
+                    strokeWidth: 2,
+                    style: {
+                      filter: `drop-shadow(0 0 1px ${SELECTED_BORDER})`,
+                    },
                   },
                 },
               },
@@ -564,8 +784,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         if (node.data.label) shape.attr('label/text', node.data.label);
         this.applyNodeAttrs(shape, node);
         if (node.id === selectedId) {
-          shape.attr('body/stroke', SELECTED_BORDER);
+          const selectedBorderColor = this.getSelectedNodeBorderColor(node);
+          shape.attr('body/stroke', selectedBorderColor);
           shape.attr('body/strokeWidth', 2);
+          shape.attr('body/style', `filter: drop-shadow(0 0 1px ${selectedBorderColor});`);
         }
         this.graph.addCell(shape);
       } else {
@@ -588,6 +810,13 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       || !edges.some(e => e.target === node.id);
   }
 
+  private getSelectedNodeBorderColor(node: FlowAgentNode | undefined): string {
+    if (node?.type === AgentNodeType.Agent && this.isAgentNodeError(node)) {
+      return ERROR_COLOR;
+    }
+    return SELECTED_BORDER;
+  }
+
   private applyNodeAttrs(shape: dia.Element, node: FlowAgentNode): void {
     if (node.type === AgentNodeType.Tool) {
       const data = node.data as any;
@@ -607,14 +836,17 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     shape.attr('badgeToolsText/text', `+${toolsCount}`);
     shape.attr('badgeKbText/text', `+${kbCount}`);
     shape.attr('badgeInfoText/text', `+${infoCount}`);
-    shape.attr('subtitle/text', data.conversationGoal ?? '');
+    const promptPreview = data.conversationGoal?.trim()
+      || data.description?.trim()
+      || this.transloco.translate('tabs.general.goal_placeholder');
+    shape.attr('subtitle/text', promptPreview);
 
     const hasError = this.isAgentNodeError(node);
-    shape.attr('errorCircle/visibility', hasError ? 'visible' : 'hidden');
-    shape.attr('errorBang/visibility', hasError ? 'visible' : 'hidden');
+    shape.attr('avatarErrorDot/visibility', hasError ? 'visible' : 'hidden');
     if (node.id !== this.state.selectedNodeId$.value) {
       shape.attr('body/stroke', hasError ? ERROR_COLOR : BODY_BORDER);
       shape.attr('body/strokeOpacity', hasError ? 0.5 : 1);
+      shape.attr('body/style', hasError ? `filter: drop-shadow(0 0 1px ${ERROR_COLOR});` : '');
     }
   }
 
@@ -712,6 +944,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private refreshFloatingButtons(): void {
     this.currentScale = this.paper.scale().sx;
     if (this.nodeActionsNodeId) this.computeNodeActions(this.nodeActionsNodeId);
+    if (this.hoverNodeActionsNodeId) this.computeHoverNodeActions(this.hoverNodeActionsNodeId);
     if (this.edgeActionsEdgeId) this.computeEdgeActions(this.edgeActionsEdgeId);
     this.cdr.markForCheck();
   }

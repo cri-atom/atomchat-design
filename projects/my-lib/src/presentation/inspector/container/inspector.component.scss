@@ -23,7 +23,7 @@
   pointer-events: auto;
 
   &__header {
-    padding: $spacing-2xs $spacing-lg;
+    padding: $spacing-sm $spacing-lg;
     border-bottom: 1px solid $color-border;
     display: flex;
     align-items: center;
@@ -69,8 +69,8 @@
   }
 
   &__close-btn {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -108,8 +108,9 @@
     font-size: $font-size-md;
     font-weight: 500;
     letter-spacing: 0.04em;
-    color: $color-text-quaternary;
+    color: $color-text-light;
     transition: color 0.15s;
+    letter-spacing: 0.05em;
 
     &:hover {
       color: $color-text;

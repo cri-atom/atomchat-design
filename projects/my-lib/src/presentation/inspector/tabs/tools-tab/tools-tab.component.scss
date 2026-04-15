@@ -6,7 +6,7 @@
 
 .tools-tab {
   &__section {
-    padding: $spacing-md $spacing-lg;
+    padding: 0 $spacing-lg;
   }
 
   &__divider {
@@ -20,7 +20,7 @@
     align-items: center;
     gap: $spacing-sm;
     min-height: 34px;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-xs;
     color: $color-text-muted;
   }
 
@@ -45,7 +45,7 @@
     font-weight: 500;
     color: $color-white;
     background: $color-text;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-sm;
     transition: background 0.2s;
 
     &:hover {
@@ -57,7 +57,8 @@
     font-size: $font-size-md;
     color: $color-text-quaternary;
     font-style: italic;
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: $spacing-sm;
     padding: 0 $spacing-2xs;
   }
 

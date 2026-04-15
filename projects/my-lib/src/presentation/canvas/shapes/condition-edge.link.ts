@@ -1,5 +1,16 @@
 import { dia } from '@joint/plus';
-import { EDGE_DEFAULT, EDGE_SELECTED, EDGE_SUCCESS, EDGE_FAILURE, FONT_FAMILY } from '../theme';
+import {
+  BODY_BG,
+  BODY_BORDER,
+  EDGE_DEFAULT,
+  EDGE_FAILURE,
+  EDGE_SUCCESS,
+  ERROR_BG,
+  FONT_FAMILY,
+  PORT_COLOR,
+  SUCCESS_BG,
+  TEXT_PRIMARY,
+} from '../theme';
 
 export const ConditionEdgeLinkView = (dia.LinkView as any).extend({
   render(this: any) {
@@ -21,7 +32,7 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
   z: -1,
   connector: { name: 'curve', args: { sourceDirection: 'down', targetDirection: 'up' } },
   attrs: {
-    line: { connection: true, fill: 'none', stroke: EDGE_DEFAULT, strokeWidth: 2, targetMarker: { type: 'path', d: 'M 12 -6 0 0 12 6 z', fill: '#71717B', stroke: 'none' } },
+    line: { connection: true, fill: 'none', stroke: EDGE_DEFAULT, strokeWidth: 2, targetMarker: { type: 'path', d: 'M 12 -6 0 0 12 6 z', fill: PORT_COLOR, stroke: 'none' } },
     wrapper: { connection: true, strokeWidth: 20, fill: 'none', stroke: 'none', 'pointer-events': 'all' },
   },
   markup: [
@@ -37,29 +48,29 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     ],
     attrs: {
       labelBody: {
-        fill: '#FFFFFF', stroke: '#E4E4E7', rx: 10, ry: 10,
-        x: -74, y: -10, width: 128, height: 20,
+        fill: BODY_BG, stroke: BODY_BORDER, rx: 10, ry: 10,
+        x: -74, y: -20, width: 128, height: 40,
       },
       labelIcon: {
-        d: 'M20.59 13.41 11 3.83V2H9.17L2 9.17V11h1.83l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z',
+        d: 'M6 9v6 M9 6h6a3 3 0 0 1 3 3v6',
         fill: 'none',
-        stroke: '#52525C',
+        stroke: TEXT_PRIMARY,
         strokeWidth: 1.8,
         strokeLinecap: 'round',
         strokeLinejoin: 'round',
-        transform: 'translate(-68 -6) scale(0.55)',
+        transform: 'translate(-60 -6) scale(0.65)',
       },
       labelIconHole: {
-        d: 'M7 7h.01',
+        d: 'M6 3a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z M6 15a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z M18 15a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z',
         fill: 'none',
-        stroke: '#52525C',
-        strokeWidth: 2.6,
+        stroke: TEXT_PRIMARY,
+        strokeWidth: 1.8,
         strokeLinecap: 'round',
         strokeLinejoin: 'round',
-        transform: 'translate(-68 -6) scale(0.55)',
+        transform: 'translate(-60 -6) scale(0.65)',
       },
       labelText: {
-        fill: '#52525C', fontFamily: FONT_FAMILY, fontSize: 11, fontWeight: '600',
+        fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 14, fontWeight: '500',
         textAnchor: 'middle', textVerticalAnchor: 'middle', x: -4,
       },
     },
@@ -77,7 +88,7 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
 
     if (data.conditionType === null || data.conditionType === undefined) {
       this.attr('line/stroke', EDGE_DEFAULT);
-      this.attr('line/targetMarker/fill', '#71717B');
+      this.attr('line/targetMarker/fill', PORT_COLOR);
       this.labels([]);
       return;
     }
@@ -87,30 +98,27 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     const hasError = !isToolResult && hasConditionExpression && !data.conditionExpression.trim();
 
     let lineColor = EDGE_DEFAULT;
-    let bodyFill = '#FFFFFF';
-    let bodyStroke = '#E4E4E7';
-    let textFill = '#52525C';
+    let bodyFill = BODY_BG;
+    let bodyStroke = BODY_BORDER;
+    const textFill = TEXT_PRIMARY;
 
     if (isToolResult) {
       if (data.isSuccess === true) {
         lineColor = EDGE_SUCCESS;
-        bodyFill = '#F0FDF4';
-        bodyStroke = '#86EFAC';
-        textFill = '#166534';
+        bodyFill = SUCCESS_BG;
+        bodyStroke = EDGE_SUCCESS;
       } else if (data.isSuccess === false) {
         lineColor = EDGE_FAILURE;
-        bodyFill = '#FEF3F3';
-        bodyStroke = '#FCA5A5';
-        textFill = '#991B1B';
+        bodyFill = ERROR_BG;
+        bodyStroke = EDGE_FAILURE;
       }
     } else if (hasError) {
-      bodyFill = '#FEF3F3';
+      bodyFill = ERROR_BG;
       bodyStroke = EDGE_FAILURE;
-      textFill = EDGE_FAILURE;
     }
 
     this.attr('line/stroke', lineColor);
-    this.attr('line/targetMarker/fill', lineColor === EDGE_DEFAULT ? '#71717B' : lineColor);
+    this.attr('line/targetMarker/fill', lineColor === EDGE_DEFAULT ? PORT_COLOR : lineColor);
 
     this.labels([{
       attrs: {

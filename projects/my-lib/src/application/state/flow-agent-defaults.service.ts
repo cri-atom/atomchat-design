@@ -77,12 +77,12 @@ export class FlowAgentDefaultsService {
 
   getChildPosition(parent: FlowAgentNode, siblingCount: number, childType?: AgentNodeType): { x: number; y: number } {
     const widths: Record<string, number> = {
-      [AgentNodeType.Agent]: 280, [AgentNodeType.Start]: 140,
+      [AgentNodeType.Agent]: 300, [AgentNodeType.Start]: 140,
       [AgentNodeType.Tool]: 200, [AgentNodeType.End]: 140,
       [AgentNodeType.SelectAgent]: 180,
     };
     const heights: Record<string, number> = {
-      [AgentNodeType.Agent]: 148, [AgentNodeType.Start]: 48,
+      [AgentNodeType.Agent]: 132, [AgentNodeType.Start]: 48,
       [AgentNodeType.Tool]: 72, [AgentNodeType.End]: 48,
       [AgentNodeType.SelectAgent]: 48,
     };

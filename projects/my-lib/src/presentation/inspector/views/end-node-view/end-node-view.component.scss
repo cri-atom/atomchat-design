@@ -1,7 +1,7 @@
 @use '../../../../styles' as *;
 
 :host {
-  padding: $spacing-lg $spacing-xl;
+  padding: $spacing-sm $spacing-md;
   display: block;
 }
 
@@ -9,17 +9,18 @@
   &__field-wrap {
     display: flex;
     flex-direction: column;
-    gap: $spacing-2xs;
   }
 
   &__field-label {
     font-size: $font-size-base;
     font-weight: 500;
-    color: $color-text-muted;
+    color: $color-text;
+    margin-bottom: $spacing-md;
   }
 
   &__input {
     @include form-input;
+    width: auto;
     background: $color-bg-secondary;
   }
 }

@@ -16,9 +16,9 @@
       "end": "Fin"
     },
     "edge": {
-      "new_condition": "Nueva condición",
-      "end_condition": "Condición de fin",
-      "return_condition": "Condición de retorno"
+      "new_condition": "Condición",
+      "end_condition": "Condición",
+      "return_condition": "Condición"
     }
   },
   "editor": {

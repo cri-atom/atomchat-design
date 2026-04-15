@@ -14,13 +14,11 @@ html {
   @include mat.all-component-themes($theme);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
   /* Typography */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-  --font-family-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-family-primary: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
 
   /* Atom DS — Semantic colors (light) */
   --color-bg-primary:               #FFFFFF;

@@ -171,7 +171,8 @@
   }
 
   &__canvas {
-    position: absolute;
+    position: fixed;
+    top: 0;
     inset: 0;
     overflow: hidden;
   }

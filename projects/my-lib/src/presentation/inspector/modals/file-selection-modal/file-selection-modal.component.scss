@@ -53,12 +53,11 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: $spacing-2xl $spacing-3xl;
-  border-bottom: 1px solid $color-border;
   flex-shrink: 0;
 }
 
 .modal-title {
-  font-size: $font-size-2xl;
+  font-size: $font-size-4xl;
   font-weight: 700;
   color: $color-text;
   margin: 0 0 $spacing-2xs;
@@ -172,17 +171,15 @@
 }
 
 .modal-th {
-  padding: $spacing-md $spacing-lg;
-  background: $color-bg-secondary;
+  padding: $spacing-sm $spacing-lg;
   border-bottom: 1px solid $color-border;
   font-size: $font-size-sm;
-  font-weight: 700;
-  color: $color-text-muted;
+  font-weight: 500;
+  color: $color-text;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   text-align: left;
 
-  &--check { width: 48px; }
+  &--check { width: 32px; }
 }
 
 .modal-tr {
@@ -196,11 +193,11 @@
 }
 
 .modal-td {
-  padding: $spacing-md $spacing-lg;
-  font-size: $font-size-base;
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-md;
   color: $color-text;
 
-  &--check { width: 48px; }
+  &--check { width: 32px; }
   &--muted { color: $color-text-muted; }
 }
 
@@ -220,7 +217,6 @@
 .modal-file-icon { color: $color-text-muted; flex-shrink: 0; }
 
 .modal-file-name {
-  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -240,8 +236,8 @@
 }
 
 .modal-pagination-text {
-  font-size: $font-size-base;
-  color: $color-text-muted;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
 }
 
 .modal-pagination-select {
@@ -266,7 +262,7 @@
 .modal-cancel-btn {
   @include button-reset;
   min-height: 32px;
-  padding: $spacing-xs $spacing-sm;
+  padding: $spacing-md $spacing-md;
   border-radius: $radius-sm;
   font-size: $font-size-lg;
   font-weight: 500;
@@ -282,7 +278,7 @@
   align-items: center;
   gap: $spacing-sm;
   min-height: 32px;
-  padding: $spacing-xs $spacing-md;
+  padding: $spacing-md $spacing-md;
   border-radius: $radius-sm;
   font-size: $font-size-lg;
   font-weight: 500;
