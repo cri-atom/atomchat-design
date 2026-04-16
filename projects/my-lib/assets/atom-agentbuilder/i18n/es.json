@@ -270,7 +270,7 @@
       "info_hint": "Define qué información debe solicitar el agente al cliente.",
       "info_warning_prefix": "Marca como",
       "required": "obligatorio",
-      "info_warning_suffix": "los campos que el cliente debe proporcionar para avanzar.",
+      "info_warning_suffix": "Todos los campos que el cliente debe proporcionar serán requeridos para avanzar.",
       "select_all": "Seleccionar todos",
       "field_header": "Campo",
       "required_header": "Obligatorio",

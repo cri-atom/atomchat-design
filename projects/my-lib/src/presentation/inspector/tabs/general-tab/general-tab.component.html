@@ -2,14 +2,17 @@
   <div class="general-tab__objective-header">
     <span class="general-tab__section-title">{{ 'tabs.general.conversation_goal' | transloco }}</span>
   </div>
-  <mat-form-field appearance="outline" class="general-tab__field general-tab__prompt-field" subscriptSizing="dynamic">
+  <div class="general-tab__prompt-wrap">
     <textarea
-      matInput
+      #goalTextarea
+      class="general-tab__textarea"
       rows="4"
       [ngModel]="agentData.conversationGoal || ''"
-      (ngModelChange)="update({ conversationGoal: $event, description: $event })"
+      (ngModelChange)="false"
+      (input)="onGoalInput($event)"
+      (keydown.escape)="closeDropdowns()"
       [placeholder]="'tabs.general.goal_placeholder' | transloco"></textarea>
-  </mat-form-field>
+  </div>
 </div>
 
 <hr class="general-tab__divider">
@@ -28,7 +31,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" class="general-tab__warning-icon">
           <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
         </svg>
-        <span>{{ 'tabs.general.info_warning_prefix' | transloco }} <strong class="general-tab__warning-emphasis">{{ 'tabs.general.required' | transloco }}</strong> {{ 'tabs.general.info_warning_suffix' | transloco }}</span>
+        <span>{{ 'tabs.general.info_warning_suffix' | transloco }}</span>
       </div>
       @if (infoCollection.length > 0) {
         <div class="general-tab__field-list">

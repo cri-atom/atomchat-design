@@ -6,6 +6,7 @@ import {
   EDGE_FAILURE,
   EDGE_SUCCESS,
   ERROR_BG,
+  ERROR_COLOR,
   FONT_FAMILY,
   ICONS,
   PORT_COLOR,
@@ -92,13 +93,17 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
     }
 
     const isToolResult = data.conditionType === 'tool_result';
+    const isLLMError = !isToolResult && !data.conditionExpression?.trim();
     let lineColor = EDGE_DEFAULT;
     let bodyFill = BODY_BG;
     let bodyStroke = BODY_BORDER;
     let bodyStyle: { filter: string } = { filter: 'none' };
     const textFill = TEXT_PRIMARY;
 
-    if (isToolResult) {
+    if (isLLMError) {
+      bodyStroke = ERROR_COLOR;
+      bodyStyle = { filter: `drop-shadow(0 0 2px ${ERROR_COLOR})` };
+    } else if (isToolResult) {
       if (data.isSuccess === true) {
         lineColor = EDGE_SUCCESS;
         bodyFill = SUCCESS_BG;

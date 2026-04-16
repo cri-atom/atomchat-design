@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, inject, input, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, inject, input, signal, computed, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,11 +18,15 @@ const PREDEFINED_FIELDS = ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Empresa'
   templateUrl: './general-tab.component.html',
   styleUrl: './general-tab.component.scss',
 })
-export class GeneralTabComponent {
+export class GeneralTabComponent implements OnDestroy {
   /** The agent node whose general configuration (goal, fields, model) is edited in this tab. */
   public readonly node = input.required<FlowAgentNode>();
 
+  @ViewChild('goalTextarea') goalTextarea!: ElementRef<HTMLTextAreaElement>;
+
   private readonly state = inject(FlowAgentInternalStateService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly transloco = inject(TranslocoService);
 
   /** Controls visibility of the "Info fields" collapsible section. */
   public readonly showInfoSection = signal(true);
@@ -31,17 +35,14 @@ export class GeneralTabComponent {
   /** Controls visibility of the field-creation modal overlay. */
   public readonly showFieldModal = signal(false);
 
-  /** Whether the inline mention dropdown is currently visible. */
-  public readonly showMentions = signal(false);
-  /** The filtered list of items (tools or fields) shown in the active mention dropdown. */
-  public readonly filteredItems = signal<{ name: string }[]>([]);
-  /**
-   * The character that triggered the current mention session.
-   * `'@'` for tool mentions, `'/'` for field mentions.
-   */
-  public readonly mentionPrefix = signal('@');
-  /** Character index in the textarea where the current mention trigger was detected. */
   private mentionStart = -1;
+  private fieldStart = -1;
+  private dropdownEl: HTMLElement | null = null;
+
+  private readonly SYSTEM_FIELDS = [
+    { name: 'first_name' }, { name: 'last_name' }, { name: 'email' },
+    { name: 'phone' }, { name: 'company' },
+  ];
 
   /**
    * `true` when every info-collection field on this node is marked as `'required'`
@@ -51,12 +52,6 @@ export class GeneralTabComponent {
     const fields = (this.node().data as AgentNodeData).infoCollection || [];
     return fields.length > 0 && fields.every(f => f.type !== 'optional');
   });
-
-  private readonly mockTools = [{ name: 'helloWorld' }];
-  private readonly mockFields = [
-    { name: 'first_name' }, { name: 'last_name' }, { name: 'email' },
-    { name: 'phone' }, { name: 'company' },
-  ];
 
   /**
    * Typed accessor for the node's data payload narrowed to {@link AgentNodeData}.
@@ -188,50 +183,167 @@ export class GeneralTabComponent {
     this.update({ infoCollection: updated });
   }
 
-  /**
-   * Handles `input` events on the conversation-goal textarea.
-   * Detects `@` (tool mention) and `/` (field mention) triggers and populates
-   * the inline dropdown with matching items. Hides the dropdown when no trigger is active.
-   *
-   * @param event - The native DOM `input` event from the textarea.
-   */
-  public onInput(event: Event): void {
+  public onGoalInput(event: Event): void {
     const ta = event.target as HTMLTextAreaElement;
-    const pos = ta.selectionStart;
+    const pos = ta.selectionStart ?? ta.value.length;
     const text = ta.value.substring(0, pos);
     const atIdx = text.lastIndexOf('@');
     const slashIdx = text.lastIndexOf('/');
-    const triggerIdx = Math.max(atIdx, slashIdx);
+    const activeAt = atIdx >= 0 && !text.substring(atIdx + 1).includes(' ');
+    const activeSlash = slashIdx >= 0 && !text.substring(slashIdx + 1).includes(' ');
 
-    if (triggerIdx >= 0 && !text.substring(triggerIdx + 1).includes(' ')) {
-      this.mentionStart = triggerIdx;
-      const prefix = text[triggerIdx];
-      this.mentionPrefix.set(prefix);
-      const search = text.substring(triggerIdx + 1).toLowerCase();
-      const source = prefix === '@' ? this.mockTools : this.mockFields;
-      const items = source.filter(item => item.name.toLowerCase().includes(search));
-      this.filteredItems.set(items);
-      this.showMentions.set(items.length > 0);
+    if (activeAt && (!activeSlash || atIdx > slashIdx)) {
+      this.mentionStart = atIdx;
+      const search = text.substring(atIdx + 1).toLowerCase();
+      const tools = (this.agentData.tools || [])
+        .filter(t => t.name.toLowerCase().includes(search))
+        .map(t => ({ name: t.name }));
+      this.showDropdown('tools', tools, ta, atIdx);
+    } else if (activeSlash && (!activeAt || slashIdx > atIdx)) {
+      this.fieldStart = slashIdx;
+      const search = text.substring(slashIdx + 1).toLowerCase();
+      const custom = (this.agentData.infoCollection || []).map(f => ({ name: f.label }));
+      const filtered = [...this.SYSTEM_FIELDS, ...custom].filter(f => f.name.toLowerCase().includes(search));
+      this.showDropdown('fields', filtered, ta, slashIdx);
     } else {
-      this.showMentions.set(false);
+      this.destroyDropdown();
     }
+
+    this.update({ conversationGoal: ta.value, description: ta.value });
+    this.cdr.markForCheck();
   }
 
-  /**
-   * Inserts a selected mention (tool or field) into the conversation-goal textarea
-   * at the position of the trigger character, replacing the partial text typed after it.
-   * Prevents the default mouse event to avoid blurring the textarea.
-   *
-   * @param name - The tool or field name to insert.
-   * @param event - The `mousedown` event from the dropdown item; propagation is prevented.
-   */
+  public closeDropdowns(): void {
+    this.destroyDropdown();
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyDropdown();
+  }
+
+  private getCaretViewportPos(ta: HTMLTextAreaElement, cursorPos: number): { x: number; y: number } {
+    const cs = window.getComputedStyle(ta);
+    const mirror = document.createElement('div');
+    const s = mirror.style;
+    s.position = 'absolute'; s.visibility = 'hidden'; s.top = '-9999px'; s.left = '-9999px';
+    s.overflow = 'auto'; s.width = cs.width; s.fontSize = cs.fontSize;
+    s.fontFamily = cs.fontFamily; s.fontWeight = cs.fontWeight;
+    s.lineHeight = cs.lineHeight; s.paddingTop = cs.paddingTop;
+    s.paddingRight = cs.paddingRight; s.paddingBottom = cs.paddingBottom;
+    s.paddingLeft = cs.paddingLeft; s.borderTopWidth = cs.borderTopWidth;
+    s.borderRightWidth = cs.borderRightWidth; s.borderBottomWidth = cs.borderBottomWidth;
+    s.borderLeftWidth = cs.borderLeftWidth;
+    s.borderStyle = 'solid'; s.whiteSpace = 'pre-wrap'; s.wordWrap = 'break-word';
+    s.boxSizing = cs.boxSizing;
+    mirror.appendChild(document.createTextNode(ta.value.substring(0, cursorPos)));
+    const marker = document.createElement('span');
+    marker.textContent = '\u200b';
+    mirror.appendChild(marker);
+    document.body.appendChild(mirror);
+    mirror.scrollTop = ta.scrollTop;
+    const mRect = marker.getBoundingClientRect();
+    const dRect = mirror.getBoundingClientRect();
+    document.body.removeChild(mirror);
+    const taRect = ta.getBoundingClientRect();
+    const lh = cs.lineHeight === 'normal' ? parseFloat(cs.fontSize) * 1.2 : parseFloat(cs.lineHeight);
+    return {
+      x: taRect.left + (mRect.left - dRect.left),
+      y: taRect.top  + (mRect.top  - dRect.top) + lh,
+    };
+  }
+
+  private showDropdown(type: 'tools' | 'fields', items: { name: string }[], ta: HTMLTextAreaElement, triggerPos: number): void {
+    this.destroyDropdown();
+    const caret = this.getCaretViewportPos(ta, triggerPos);
+    const dH = 220;
+    let top = caret.y + 4;
+    if (top + dH > window.innerHeight) top = caret.y - 4 - dH;
+    top = Math.max(8, top);
+    let left = caret.x;
+    const width = 220;
+    if (left + width > window.innerWidth - 8) left = window.innerWidth - width - 8;
+
+    const el = document.createElement('div');
+    Object.assign(el.style, {
+      position: 'fixed', top: `${top}px`, left: `${left}px`, width: `${width}px`,
+      background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px',
+      boxShadow: '0 16px 32px rgba(9,9,11,.12)', zIndex: '99999',
+      maxHeight: '200px', overflowY: 'auto', fontFamily: 'inherit',
+    });
+
+    const hdr = document.createElement('div');
+    Object.assign(hdr.style, {
+      display: 'flex', alignItems: 'center', gap: '6px',
+      padding: '6px 12px', background: '#f9fafb', borderBottom: '1px solid #e5e7eb',
+      fontSize: '11px', fontWeight: '700', color: '#6b7280',
+      letterSpacing: '.05em', textTransform: 'uppercase',
+    });
+    hdr.textContent = this.transloco.translate(
+      type === 'tools' ? 'modals.prompt_editor.insert_tool' : 'modals.prompt_editor.insert_field'
+    );
+    el.appendChild(hdr);
+
+    const renderItems = (list: { name: string }[]) => {
+      if (list.length === 0) {
+        const empty = document.createElement('p');
+        Object.assign(empty.style, { padding: '7px 12px', fontSize: '13px', color: '#9ca3af', fontStyle: 'italic', margin: '0' });
+        empty.textContent = this.transloco.translate('modals.prompt_editor.no_results');
+        el.appendChild(empty);
+        return;
+      }
+      list.forEach(item => {
+        const btn = document.createElement('button');
+        Object.assign(btn.style, {
+          display: 'flex', alignItems: 'center', width: '100%',
+          padding: '7px 12px', background: 'none', border: 'none',
+          textAlign: 'left', fontSize: '13px', color: '#111', cursor: 'pointer', fontFamily: 'inherit',
+        });
+        btn.textContent = item.name;
+        btn.addEventListener('mouseover', () => btn.style.background = '#f4f4f5');
+        btn.addEventListener('mouseout',  () => btn.style.background = 'none');
+        btn.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          type === 'tools' ? this.insertMention(item.name, e as MouseEvent) : this.insertField(item.name, e as MouseEvent);
+        });
+        el.appendChild(btn);
+      });
+    };
+
+    renderItems(items);
+    document.body.appendChild(el);
+    this.dropdownEl = el;
+  }
+
+  private destroyDropdown(): void {
+    this.dropdownEl?.parentNode?.removeChild(this.dropdownEl);
+    this.dropdownEl = null;
+  }
+
   public insertMention(name: string, event: MouseEvent): void {
     event.preventDefault();
-    const current = this.agentData.conversationGoal || '';
-    const before = current.substring(0, this.mentionStart);
-    const after = current.substring(this.mentionStart).replace(/^[@/]\S*/, '');
-    const newValue = `${before}${this.mentionPrefix()}[${name}]${after}`;
-    this.showMentions.set(false);
+    const ta = this.goalTextarea.nativeElement;
+    const before = ta.value.substring(0, this.mentionStart);
+    const after = ta.value.substring(this.mentionStart).replace(/^@\S*/, '');
+    const inserted = `@[${name}]`;
+    const newValue = before + inserted + after;
+    ta.value = newValue;
+    ta.setSelectionRange(before.length + inserted.length, before.length + inserted.length);
+    ta.focus();
+    this.destroyDropdown();
+    this.update({ conversationGoal: newValue, description: newValue });
+  }
+
+  public insertField(name: string, event: MouseEvent): void {
+    event.preventDefault();
+    const ta = this.goalTextarea.nativeElement;
+    const before = ta.value.substring(0, this.fieldStart);
+    const after = ta.value.substring(this.fieldStart).replace(/^\/\S*/, '');
+    const inserted = `/{${name}}`;
+    const newValue = before + inserted + after;
+    ta.value = newValue;
+    ta.setSelectionRange(before.length + inserted.length, before.length + inserted.length);
+    ta.focus();
+    this.destroyDropdown();
     this.update({ conversationGoal: newValue, description: newValue });
   }
 }
