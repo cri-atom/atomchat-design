@@ -7,6 +7,7 @@
     "watch": "node ./scripts/watch.js",
     "publish": "node ./scripts/publish.js",
     "serve": "ng serve dev-app --open",
+    "build": "ng build dev-app --configuration production",
     "format": "prettier --write \"projects/**/*.{ts,html,css,scss,json}\"",
     "format:check": "prettier --check \"projects/**/*.{ts,html,css,scss,json}\""
   },
