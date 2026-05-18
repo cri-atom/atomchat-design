@@ -1,30 +1,10 @@
 import { Component } from '@angular/core';
-import { AtomAgentBuilderComponent, FlowAgentModeData } from '../../../../projects/my-lib/public-api';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AtomAgentBuilderComponent],
-  template: `
-    <div style="height: 100vh; display: flex; flex-direction: column;">
-      <atom-agentbuilder
-        style="flex: 1;"
-        [flowAgentModeData]="modeData"
-        [user]="user"
-        (unsavedChanges)="onUnsavedChanges($event)"
-      />
-    </div>
-  `,
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
 })
-export class App {
-  modeData: FlowAgentModeData = {
-    mode: 'create',
-    sourceRoute: '/',
-  };
-
-  user = { id: 'dev-user', name: 'Dev User', email: 'dev@atom.com', companyId: 'dev-company' };
-
-  onUnsavedChanges(hasChanges: boolean): void {
-    document.title = hasChanges ? '● Agent Builder (unsaved)' : 'Agent Builder';
-  }
-}
+export class App {}

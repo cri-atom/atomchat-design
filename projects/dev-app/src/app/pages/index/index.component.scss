@@ -1,0 +1,149 @@
+// New mockup — GUIDELINES-NEW.md (canvas builder, blue editor accent)
+
+.index {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #fafafa;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  box-sizing: border-box;
+}
+
+.index__header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.index__badge {
+  display: inline-block;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #00a6f5;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0;
+  box-shadow: 0 6px 7px rgba(9, 9, 11, 0.08);
+}
+
+.index__title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #18181b;
+}
+
+.index__subtitle {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #52525c;
+}
+
+.index__nav {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.index__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  background: #ffffff;
+  box-shadow: 0 6px 7px rgba(9, 9, 11, 0.08);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.index__item--active {
+  min-height: 40px;
+
+  &:hover {
+    border-color: #d4d4d8;
+    box-shadow: 0 6px 14px rgba(9, 9, 11, 0.08);
+  }
+
+  .index__item-icon {
+    color: #00a6f5;
+    background: #f4f4f5;
+  }
+
+  .index__item-label {
+    color: #18181b;
+    font-weight: 500;
+  }
+
+  .index__item-arrow {
+    color: #00a6f5;
+  }
+}
+
+.index__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  border: 1px solid #e4e4e7;
+}
+
+.index__item-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f4f4f5;
+  color: #71717b;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.index__item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.index__item-label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #18181b;
+}
+
+.index__item-desc {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #71717b;
+}
+
+.index__item-arrow {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #71717b;
+  padding-right: 4px;
+}
