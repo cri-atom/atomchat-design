@@ -1,4 +1,4 @@
-// New mockup — GUIDELINES-NEW.md (canvas builder, blue editor accent)
+// Transition mockup — DESIGN.md (inspector legacy, orange accent)
 
 .index {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 24px 16px;
   background: #fafafa;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   box-sizing: border-box;
@@ -14,28 +14,27 @@
 
 .index__header {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .index__badge {
   display: inline-block;
   padding: 4px 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #00a6f5;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  letter-spacing: 0;
-  box-shadow: 0 6px 7px rgba(9, 9, 11, 0.08);
+  margin-bottom: 12px;
+  border-radius: 4px;
+  background: #fff4ed;
+  color: #db5700;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .index__title {
-  margin: 0 0 4px;
+  margin: 0 0 8px;
   font-size: 16px;
   font-weight: 700;
-  line-height: 24px;
+  line-height: 1.2;
   color: #18181b;
 }
 
@@ -43,62 +42,62 @@
   margin: 0;
   font-size: 12px;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 1.5;
   color: #52525c;
 }
 
 .index__nav {
   width: 100%;
-  max-width: 320px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(9, 9, 11, 0.08);
+  box-sizing: border-box;
 }
 
 .index__item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
+  gap: 12px;
+  padding: 12px 16px;
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
-  background: #ffffff;
-  box-shadow: 0 6px 7px rgba(9, 9, 11, 0.08);
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease;
   border: 1px solid transparent;
-  box-sizing: border-box;
 }
 
 .index__item--active {
-  min-height: 40px;
+  border-color: #e4e4e7;
+  background: #fafafa;
 
   &:hover {
-    border-color: #d4d4d8;
-    box-shadow: 0 6px 14px rgba(9, 9, 11, 0.08);
+    background: #f4f4f5;
+    border-color: #ff6600;
   }
 
   .index__item-icon {
-    color: #00a6f5;
-    background: #f4f4f5;
+    color: #ff6600;
+    background: #fff4ed;
   }
 
   .index__item-label {
     color: #18181b;
-    font-weight: 500;
   }
 
   .index__item-arrow {
-    color: #00a6f5;
+    color: #ff6600;
   }
 }
 
 .index__item--disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
   pointer-events: none;
-  box-shadow: none;
-  border: 1px solid #e4e4e7;
 }
 
 .index__item-icon {
@@ -106,15 +105,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   background: #f4f4f5;
   color: #71717b;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -123,12 +122,12 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2px;
 }
 
 .index__item-label {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 16px;
   color: #18181b;
 }
@@ -142,8 +141,7 @@
 
 .index__item-arrow {
   flex-shrink: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #71717b;
-  padding-right: 4px;
 }

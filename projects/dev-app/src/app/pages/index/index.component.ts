@@ -9,5 +9,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './index.component.scss',
 })
 export class IndexPageComponent {
-  readonly branchLabel = 'new';
+  readonly branchLabel = 'transition';
 }
