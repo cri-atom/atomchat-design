@@ -1,0 +1,62 @@
+.atom-rail {
+  display: flex;
+  flex-direction: column;
+  width: var(--atom-rail-width);
+  height: 100%;
+  flex-shrink: 0;
+  background: var(--atom-surface-base);
+  border-right: 1px solid var(--atom-border-divider);
+}
+
+.atom-rail__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--atom-rail-width);
+  height: var(--atom-header-height);
+  flex-shrink: 0;
+  background: var(--atom-surface-data);
+  border-bottom: 1px solid var(--atom-border-divider);
+}
+
+.atom-rail__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding-top: 0;
+  overflow-y: auto;
+
+  .atom-rail__item:first-child {
+    border-bottom: 1px solid var(--atom-border-divider);
+  }
+}
+
+.atom-rail__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--atom-rail-width);
+  height: var(--atom-nav-item-rail);
+  border: none;
+  border-left: 2px solid transparent;
+  background: var(--atom-surface-base);
+  color: var(--atom-content-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  &:hover {
+    background: var(--atom-surface-data);
+  }
+
+  &--active {
+    border-left-color: var(--atom-brand);
+    color: var(--atom-brand);
+  }
+
+  &--help {
+    margin-top: auto;
+    border-top: 1px solid var(--atom-border-divider);
+  }
+}

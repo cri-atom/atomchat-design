@@ -1,0 +1,182 @@
+<mat-sidenav-container class="evaluations">
+  <mat-sidenav-content class="evaluations__main">
+    <div class="evaluations__toolbar">
+      <div class="evaluations__view-toggle" role="group" aria-label="Vista de evaluaciones">
+        <button
+          type="button"
+          class="evaluations__view-btn"
+          [class.evaluations__view-btn--active]="viewMode() === 'table'"
+          (click)="setViewMode('table')"
+        >
+          Tabla
+        </button>
+        <button
+          type="button"
+          class="evaluations__view-btn"
+          [class.evaluations__view-btn--active]="viewMode() === 'cards'"
+          (click)="setViewMode('cards')"
+        >
+          Cards
+        </button>
+      </div>
+      <input type="search" class="evaluations__search" placeholder="Buscar evaluaciones…" aria-label="Buscar" />
+      <button type="button" class="evaluations__cta" (click)="openDrawer()">+ Nueva Evaluación</button>
+    </div>
+
+    @if (viewMode() === 'table') {
+      <div class="evaluations__table-wrap">
+        <table class="evaluations__table">
+          <thead>
+            <tr>
+              <th>Nombre de la prueba</th>
+              <th>Origen</th>
+              <th>Casos evaluados</th>
+              <th>Puntaje global</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows; track row.name) {
+              <tr>
+                <td>{{ row.name }}</td>
+                <td>
+                  <app-monitor-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</app-monitor-chip>
+                </td>
+                <td>{{ row.cases }}</td>
+                <td>
+                  <div class="evaluations__score">
+                    <div class="evaluations__score-bar" [style.width.%]="row.score * 100"></div>
+                    <span>{{ row.score | number: '1.2-2' }}</span>
+                  </div>
+                </td>
+                <td>
+                  <app-monitor-chip variant="success">{{ row.status }}</app-monitor-chip>
+                </td>
+                <td>{{ row.date }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="evaluations__cards">
+        @for (row of rows; track row.name) {
+          <article class="eval-card">
+            <header class="eval-card__header">
+              <h3 class="eval-card__title">{{ row.name }}</h3>
+              <app-monitor-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</app-monitor-chip>
+            </header>
+            <dl class="eval-card__stats">
+              <div>
+                <dt>Casos</dt>
+                <dd>{{ row.cases }}</dd>
+              </div>
+              <div>
+                <dt>Puntaje</dt>
+                <dd class="eval-card__score-cell">
+                  <span class="eval-card__score-value">{{ row.score | number: '1.0%' }}</span>
+                  <span class="eval-card__score-bar" [style.width.%]="row.score * 100"></span>
+                </dd>
+              </div>
+              <div>
+                <dt>Estado</dt>
+                <dd><app-monitor-chip variant="success">{{ row.status }}</app-monitor-chip></dd>
+              </div>
+              <div>
+                <dt>Fecha</dt>
+                <dd>{{ row.date }}</dd>
+              </div>
+            </dl>
+          </article>
+        }
+      </div>
+    }
+  </mat-sidenav-content>
+
+  <mat-sidenav
+    class="evaluations__drawer"
+    position="end"
+    mode="over"
+    [opened]="drawerOpen()"
+    (closed)="closeDrawer()"
+  >
+    <div class="drawer">
+      <header class="drawer__header">
+        <h2>Configurar Evaluación</h2>
+        <button type="button" class="drawer__close" (click)="closeDrawer()" aria-label="Cerrar">×</button>
+      </header>
+
+      <section class="drawer__section">
+        <h3>Origen</h3>
+        <div class="drawer__origin-cards">
+          <button
+            type="button"
+            class="origin-card"
+            [class.origin-card--selected]="origin() === 'traffic'"
+            (click)="selectOrigin('traffic')"
+          >
+            <strong>Tráfico Real</strong>
+            <span>Conversaciones de producción</span>
+          </button>
+          <button
+            type="button"
+            class="origin-card"
+            [class.origin-card--selected]="origin() === 'ai'"
+            (click)="selectOrigin('ai')"
+          >
+            <strong>Generar con IA</strong>
+            <span>Sintetizar escenarios</span>
+          </button>
+          <button
+            type="button"
+            class="origin-card"
+            [class.origin-card--selected]="origin() === 'saved'"
+            (click)="selectOrigin('saved')"
+          >
+            <strong>Casos Guardados</strong>
+            <span>Reutilizar datasets</span>
+          </button>
+        </div>
+      </section>
+
+      @if (origin() === 'ai') {
+        <section class="drawer__section">
+          <label class="drawer__label">
+            Cantidad de conversaciones
+            <input type="number" class="drawer__input" value="10" min="1" />
+          </label>
+          <p class="drawer__label">Personalidades del cliente</p>
+          <div class="drawer__chips">
+            @for (entry of personalities() | keyvalue; track entry.key) {
+              <button
+                type="button"
+                class="personality-chip"
+                [class.personality-chip--on]="entry.value"
+                (click)="togglePersonality(entry.key)"
+              >
+                {{ entry.value ? '✓' : '' }} {{ entry.key }}
+              </button>
+            }
+          </div>
+          <label class="drawer__label">
+            Qué comportamiento quieres probar
+            <textarea class="drawer__textarea" rows="4" placeholder="Ej. Usuario pregunta saldo sin dar número de pedido…"></textarea>
+          </label>
+        </section>
+      }
+
+      <section class="drawer__section">
+        <h3>Criterios</h3>
+        <label class="drawer__check"><input type="checkbox" checked /> Alucinaciones</label>
+        <label class="drawer__check"><input type="checkbox" checked /> Relevancia contextual</label>
+        <label class="drawer__check"><input type="checkbox" checked /> Tono y empatía</label>
+      </section>
+
+      <footer class="drawer__footer">
+        <span class="drawer__cost">Costo estimado: <strong>$0.12</strong></span>
+        <button type="button" class="evaluations__cta">Iniciar Evaluación</button>
+      </footer>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

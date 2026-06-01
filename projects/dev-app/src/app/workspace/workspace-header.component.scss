@@ -1,0 +1,105 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.ws-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: var(--ab-space-sm);
+  padding: var(--ab-header-outer-pad, 8px);
+  pointer-events: none;
+}
+
+.ws-header__cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ab-space-xs);
+  min-height: var(--ab-chrome-height);
+  padding: 0 var(--ab-space-sm);
+  background: var(--ab-surface);
+  border: 1px solid var(--ab-border);
+  border-radius: var(--ab-radius-md);
+  box-shadow: var(--ab-shadow);
+  pointer-events: auto;
+
+  &--left {
+    justify-self: start;
+    max-width: 320px;
+  }
+
+  &--center {
+    justify-self: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &--right {
+    justify-self: end;
+    gap: var(--ab-space-xs);
+    flex-wrap: nowrap;
+  }
+}
+
+.ws-header__brand {
+  display: flex;
+  align-items: center;
+  padding: var(--ab-space-xs);
+}
+
+.ws-header__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--ab-space-sm);
+  border: none;
+  border-radius: var(--ab-radius-sm);
+  background: transparent;
+  color: var(--ab-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ab-surface-muted);
+    color: var(--ab-text);
+  }
+}
+
+.ws-header__title {
+  min-width: 140px;
+  max-width: 220px;
+  padding: var(--ab-space-xs) var(--ab-space-sm);
+  border: none;
+  background: transparent;
+  font: var(--ab-font-title);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--ab-text);
+}
+
+.ws-header__text-btn {
+  padding: var(--ab-space-xs) var(--ab-space-md);
+  border: 1px solid var(--ab-border);
+  border-radius: var(--ab-radius-sm);
+  background: var(--ab-surface);
+  font: var(--ab-font-label);
+  color: var(--ab-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ws-header__primary-btn {
+  padding: var(--ab-space-xs) var(--ab-space-md);
+  border: none;
+  border-radius: var(--ab-radius-sm);
+  background: var(--ab-text);
+  font: var(--ab-font-label);
+  color: var(--ab-surface);
+  cursor: not-allowed;
+  opacity: 0.5;
+}

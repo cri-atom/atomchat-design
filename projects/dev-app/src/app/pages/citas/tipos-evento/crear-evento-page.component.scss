@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+  overflow: auto;
+}
+
+.crear-evento__body {
+  display: flex;
+  justify-content: center;
+  padding: 16px 16px 24px;
+}
+
+.crear-evento__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: var(--atom-form-max-width);
+}
+
+.crear-evento__field {
+  width: 100%;
+}
+
+.crear-evento__field--unit {
+  padding-top: 24px;
+}
+
+.crear-evento__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  &--end {
+    align-items: end;
+  }
+}

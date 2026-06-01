@@ -1,0 +1,39 @@
+.atom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--atom-header-height);
+  padding: 0 24px;
+  flex-shrink: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--atom-border-divider);
+}
+
+.atom-header__logo {
+  display: flex;
+  align-items: center;
+  height: 35px;
+}
+
+.atom-header__user {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.atom-header__user-name {
+  font: var(--atom-font-header-user);
+  color: #000;
+}
+
+.atom-header__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  font: var(--atom-font-header-user);
+}

@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FlowAgentInternalStateService } from '../../../../application/state/flow-agent-internal-state.service';
 import { FlowAgentNode, AgentNodeData, InfoCollectionItem } from '../../../../core/model/agent-flow.model';
 import { FieldCreationModalComponent } from '../../modals/field-creation-modal/field-creation-modal.component';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 
 const PREDEFINED_FIELDS = ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Empresa', 'Dirección', 'Ciudad', 'País'];
 
@@ -14,7 +15,7 @@ const PREDEFINED_FIELDS = ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Empresa'
   selector: 'flowagent-general-tab',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatSelectModule, FieldCreationModalComponent],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatSelectModule, FieldCreationModalComponent],
   templateUrl: './general-tab.component.html',
   styleUrl: './general-tab.component.scss',
 })

@@ -1,0 +1,71 @@
+<div class="review">
+  @if (mockState.promotedCaseId() && layout() === 'page') {
+    <div class="review__global-banner" role="status">
+      Mejora promovida a producción — {{ mockState.promotedVersion() }}
+      <span class="review__global-banner-hint">El caso «{{ promotedCaseExcerpt() }}» ya no requiere revisión.</span>
+    </div>
+  }
+
+  <div class="review__body">
+  <aside class="review__list">
+    @for (item of cases(); track item.id) {
+      <button
+        type="button"
+        class="review-card"
+        [class.review-card--active]="selectedId() === item.id"
+        [class.review-card--promoted]="isCasePromoted(item.id)"
+        (click)="selectCase(item.id)"
+      >
+        <span class="review-card__tags">
+          <span class="review-card__tag" [class.review-card__tag--atomic]="item.source === 'Atomic'">{{ item.source }}</span>
+          @if (isCasePromoted(item.id)) {
+            <span class="review-card__tag review-card__tag--done">Promovido</span>
+          }
+        </span>
+        <p class="review-card__excerpt">{{ item.excerpt }}</p>
+        <span class="review-card__meta">{{ item.author }} · {{ item.time }}</span>
+      </button>
+    }
+  </aside>
+
+  <div class="review__detail">
+    @if (isSelectedPromoted()) {
+      <div class="review__promoted-panel">
+        <div class="review__promoted-icon" aria-hidden="true">
+          <ab-icon name="check" size="xl" />
+        </div>
+        <h2 class="review__promoted-title">Mejora guardada y promovida</h2>
+        <p class="review__promoted-text">
+          El prompt actualizado está en producción como <strong>{{ mockState.promotedVersion() }}</strong>.
+          El agente ahora solicita el número de pedido antes de consultar saldos.
+        </p>
+        <div class="review__promoted-diff">
+          <p class="review__promoted-diff-label">Cambio aplicado</p>
+          <pre class="review__promoted-diff-snippet">…solicita primero el número de pedido o cuenta verificada…</pre>
+        </div>
+        <div class="review__promoted-meta">
+          <span>Desplegado hace unos segundos</span>
+          <span>·</span>
+          <span>Autor: María G.</span>
+        </div>
+        <button type="button" class="review__btn review__btn--outline" (click)="goToPlaygroundFromPromoted()">
+          Ver en Playground
+        </button>
+      </div>
+    } @else {
+      <div class="review__chat">
+        @for (msg of chat; track $index) {
+          <app-monitor-chat-bubble [role]="msg.role" [text]="msg.text" />
+        }
+      </div>
+      <aside class="review__actions">
+        <label class="review__notes-label">Notas del caso</label>
+        <textarea class="review__notes" rows="6" placeholder="Añadir contexto para el revisor…"></textarea>
+        <button type="button" class="review__btn review__btn--approve" (click)="openSuggestion()">Aprobar Mejora</button>
+        <button type="button" class="review__btn review__btn--reject">Rechazar</button>
+        <button type="button" class="review__btn review__btn--derive">Derivar a otra área</button>
+      </aside>
+    }
+  </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 import { FlowAgentInternalStateService } from '../../../../application/state/flow-agent-internal-state.service';
 import { FlowAgentNode, AgentNodeData } from '../../../../core/model/agent-flow.model';
 
@@ -12,7 +13,7 @@ import { FlowAgentNode, AgentNodeData } from '../../../../core/model/agent-flow.
   selector: 'flowagent-prompt-editor-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule],
   templateUrl: './prompt-editor-modal.component.html',
   styleUrl: './prompt-editor-modal.component.scss',
 })

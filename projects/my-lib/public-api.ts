@@ -2,6 +2,18 @@
 export { AtomAgentBuilderModule } from './src/presentation/lib/atom-agentbuilder.module';
 export { AtomAgentBuilderComponent } from './src/presentation/lib/atom-agentbuilder.component';
 
+// Icons (Font Awesome Pro)
+export {
+  AbIconComponent,
+  AB_ICON_ALIASES,
+  AB_ICON_FA_CLASS,
+  resolveFaIconClass,
+  type AbIconAlias,
+  type AbIconName,
+  type AbIconSize,
+  type FaProIconName,
+} from './src/presentation/shared/ab-icon';
+
 // Types
 export * from './src/core/model/agent-flow.model';
 

@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 import { FlowAgentInternalStateService } from '../../../../application/state/flow-agent-internal-state.service';
 import { GlobalStage, GlobalSaveField, StageType } from '../../../../core/model/agent-flow.model';
 
@@ -22,6 +23,7 @@ const PREDEFINED_FIELDS: readonly string[] = ['Nombre', 'Apellido', 'Email', 'Te
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    AbIconComponent,
     FormsModule, TranslocoModule,
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatSlideToggleModule, MatExpansionModule, MatButtonModule,

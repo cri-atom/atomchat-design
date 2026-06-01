@@ -6,6 +6,11 @@
   height: 100vh;
   font-family: var(--font-sans, inherit);
 
+  &.agentbuilder--embedded {
+    height: 100%;
+    min-height: 0;
+  }
+
   ::ng-deep {
     *,
     input,
@@ -33,6 +38,11 @@
   height: 100vh;
   overflow: hidden;
   background: $color-canvas-bg;
+
+  :host.agentbuilder--embedded & {
+    height: 100%;
+    min-height: 0;
+  }
 
   &__navbar {
     height: 52px;

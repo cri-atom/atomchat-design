@@ -1,0 +1,60 @@
+<citas-page-heading title="Crear evento" [showBack]="true" (back)="goBack()" />
+
+<citas-stepper [steps]="steps" [activeIndex]="0" />
+
+<div class="crear-evento__body">
+  <form class="crear-evento__form" [formGroup]="form">
+    <citas-form-card title="Identificación">
+      <mat-form-field appearance="outline" class="crear-evento__field">
+        <mat-label>Nombre de evento</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej. Visita Local A" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="crear-evento__field">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="descripcion"
+          rows="3"
+          placeholder="Ej. Sesión de 30 minutos"
+        ></textarea>
+      </mat-form-field>
+    </citas-form-card>
+
+    <citas-form-card title="Asignación">
+      <div class="crear-evento__row">
+        <mat-form-field appearance="outline" class="crear-evento__field">
+          <mat-label>Canal</mat-label>
+          <mat-select formControlName="canal" placeholder="Selecciona un número o canal">
+            @for (c of canales; track c) {
+              <mat-option [value]="c">{{ c }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="crear-evento__field">
+          <mat-label>Grupos</mat-label>
+          <mat-select formControlName="grupos" placeholder="Selecciona un grupo">
+            @for (g of gruposOptions; track g) {
+              <mat-option [value]="g">{{ g }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </citas-form-card>
+
+    <citas-form-card title="Tiempo">
+      <div class="crear-evento__row crear-evento__row--end">
+        <mat-form-field appearance="outline" class="crear-evento__field">
+          <mat-label>Duración</mat-label>
+          <input matInput formControlName="duracion" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="crear-evento__field crear-evento__field--unit">
+          <mat-select formControlName="unidad">
+            @for (u of unidades; track u) {
+              <mat-option [value]="u">{{ u }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </citas-form-card>
+  </form>
+</div>

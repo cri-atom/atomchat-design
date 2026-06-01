@@ -158,9 +158,8 @@
     box-shadow: none;
     transition: border-color 0.15s, color 0.15s;
 
-    svg {
-      width: 12px;
-      height: 12px;
+    ab-icon {
+      font-size: 12px;
     }
 
     &--copy:hover {

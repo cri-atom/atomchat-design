@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 import { Tool } from '../../../../core/model/agent-flow.model';
 
 interface Toolkit { id: string; name: string; icon: string; descriptionKey: string; connected: boolean; }
@@ -29,7 +30,7 @@ const MOCK_TOOLS: ToolItem[] = [
   selector: 'flowagent-tool-selection-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule],
   templateUrl: './tool-selection-modal.component.html',
   styleUrl: './tool-selection-modal.component.scss',
 })

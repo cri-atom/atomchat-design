@@ -6,12 +6,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { FlowAgentInternalStateService } from '../../../../application/state/flow-agent-internal-state.service';
 import { FlowAgentNode, AgentNodeData, KnowledgeBase } from '../../../../core/model/agent-flow.model';
 import { FileSelectionModalComponent } from '../../modals/file-selection-modal/file-selection-modal.component';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 
 @Component({
   selector: 'flowagent-knowledge-base-tab',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatSelectModule, FileSelectionModalComponent],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatSelectModule, FileSelectionModalComponent],
   templateUrl: './knowledge-base-tab.component.html',
   styleUrl: './knowledge-base-tab.component.scss',
 })

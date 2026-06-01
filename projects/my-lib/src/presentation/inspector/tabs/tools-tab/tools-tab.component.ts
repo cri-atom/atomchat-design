@@ -4,12 +4,13 @@ import { FlowAgentInternalStateService } from '../../../../application/state/flo
 import { FlowAgentNode, AgentNodeData, ToolNodeData, Tool, HttpToolConfig } from '../../../../core/model/agent-flow.model';
 import { ToolSelectionModalComponent } from '../../modals/tool-selection-modal/tool-selection-modal.component';
 import { HttpRequestModalComponent } from '../../modals/http-request-modal/http-request-modal.component';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 
 @Component({
   selector: 'flowagent-tools-tab',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslocoModule, ToolSelectionModalComponent, HttpRequestModalComponent],
+  imports: [AbIconComponent, TranslocoModule, ToolSelectionModalComponent, HttpRequestModalComponent],
   templateUrl: './tools-tab.component.html',
   styleUrl: './tools-tab.component.scss',
 })

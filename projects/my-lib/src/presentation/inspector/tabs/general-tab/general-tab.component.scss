@@ -295,9 +295,8 @@
   }
 
   &__warning-icon {
-    color: $color-primary-light;
+    color: $color-warning-text;
     border-radius: $radius-pill;
-    fill: $color-warning-text;
     padding: $spacing-2xs;
     flex-shrink: 0;
     margin-top: $spacing-3xs;

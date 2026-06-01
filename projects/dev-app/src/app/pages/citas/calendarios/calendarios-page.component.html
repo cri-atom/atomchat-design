@@ -1,0 +1,122 @@
+<atom-section-heading
+  title="Calendarios"
+  description="Gestiona tus agentes y profesionales externos que reciben citas automatizadas."
+/>
+
+<div class="calendarios">
+  <div class="calendarios__toolbar">
+    <div class="calendarios__tools">
+      <citas-toolbar-search
+        placeholder="Buscar por nombre o correo..."
+        [value]="filters().search"
+        (searchChange)="onSearchChange($event)"
+      />
+      <citas-filter-dropdown
+        icon="shapes"
+        [options]="tipoOptions"
+        [value]="filters().tipo"
+        (valueChange)="onTipoChange($event)"
+      />
+      <citas-filter-dropdown
+        icon="list-check"
+        [options]="estadoOptions"
+        [value]="filters().estado"
+        (valueChange)="onEstadoChange($event)"
+      />
+    </div>
+    <div class="calendarios__toolbar-right">
+      <span class="calendarios__count">
+        Mostrando <strong>{{ visibleCount() }}</strong> usuarios
+      </span>
+      <button type="button" class="calendarios__cta" (click)="openCreateDialog()">
+        <ab-icon name="plus" variant="regular" size="sm" />
+        <span>Crear usuario externo</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="calendarios__table-box">
+    <table class="calendarios__table">
+      <thead>
+        <tr>
+          <th class="calendarios__col-tipo">Tipo</th>
+          <th class="calendarios__col-name">Nombre</th>
+          <th class="calendarios__col-phone">Teléfono</th>
+          <th class="calendarios__col-email">Correo</th>
+          <th class="calendarios__col-groups">Grupos</th>
+          <th class="calendarios__col-types">Tipos de evento</th>
+          <th class="calendarios__col-status">Estado</th>
+          <th class="calendarios__col-actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (rows().length === 0) {
+          <tr>
+            <td colspan="8" class="calendarios__empty">
+              No se encontraron usuarios con calendarios activos que coincidan con los filtros.
+            </td>
+          </tr>
+        } @else {
+          @for (row of rows(); track row.id) {
+            <tr class="calendarios__row">
+              <td class="calendarios__col-tipo">
+                <citas-usuario-tipo-badge [tipo]="row.tipo" />
+              </td>
+              <td class="calendarios__col-name calendarios__name">{{ row.nombre }}</td>
+              <td class="calendarios__phone">{{ row.telefono }}</td>
+              <td class="calendarios__col-email">{{ row.correo }}</td>
+              <td>
+                @if (row.grupos.length > 1) {
+                  <span
+                    class="calendarios__groups-link"
+                    [matTooltip]="gruposTooltip(row.grupos)"
+                    matTooltipClass="calendarios-grupos-tooltip"
+                  >
+                    {{ formatGrupos(row.grupos) }}
+                  </span>
+                } @else {
+                  <span class="calendarios__groups">{{ formatGrupos(row.grupos) }}</span>
+                }
+              </td>
+              <td>{{ row.tiposEvento }}</td>
+              <td class="calendarios__col-status">
+                <citas-status-badge [variant]="row.estado" />
+              </td>
+              <td class="calendarios__col-actions">
+                <button
+                  type="button"
+                  class="calendarios__menu-btn"
+                  aria-label="Acciones"
+                  (click)="openActionsMenu($event, row)"
+                >
+                  <ab-icon name="ellipsis-vertical" variant="regular" size="sm" />
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <citas-table-pagination
+    mode="range"
+    [pageSize]="10"
+    [rangeLabel]="rangeLabel()"
+    [canFirst]="false"
+    [canPrev]="false"
+    [canNext]="false"
+    [canLast]="false"
+  />
+</div>
+
+<app-calendarios-actions-menu
+  [open]="menuOpen()"
+  [user]="menuUser()"
+  [position]="menuPosition()"
+  (editUser)="onEditUser($event)"
+  (configureAvailability)="onConfigureAvailability($event)"
+  (deactivate)="onDeactivate($event)"
+  (reactivate)="onReactivate($event)"
+  (closed)="closeMenu()"
+/>

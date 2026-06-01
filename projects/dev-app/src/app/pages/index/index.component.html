@@ -6,11 +6,9 @@
   </header>
 
   <nav class="index__nav" aria-label="Navegación principal">
-    <a class="index__item index__item--active" routerLink="/agentbuilder">
+    <a class="index__item index__item--active" routerLink="/campanas/agentes">
       <span class="index__item-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v18M3 12h18"/>
-        </svg>
+        <ab-icon name="plus" size="lg" />
       </span>
       <span class="index__item-body">
         <span class="index__item-label">Agent Builder</span>
@@ -19,16 +17,15 @@
       <span class="index__item-arrow" aria-hidden="true">→</span>
     </a>
 
-    <div class="index__item index__item--disabled" aria-disabled="true">
+    <a class="index__item" routerLink="/campanas/agentes/nuevo/monitor/dashboard" (click)="openMonitor()">
       <span class="index__item-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/>
-        </svg>
+        <ab-icon name="chart-line" size="lg" />
       </span>
       <span class="index__item-body">
         <span class="index__item-label">Monitor</span>
-        <span class="index__item-desc">Próximamente</span>
+        <span class="index__item-desc">Panel de monitoreo junto al canvas del agente</span>
       </span>
-    </div>
+      <span class="index__item-arrow" aria-hidden="true">→</span>
+    </a>
   </nav>
 </div>

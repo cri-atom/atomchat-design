@@ -11,6 +11,7 @@ import { EdgesTabComponent } from '../tabs/edges-tab/edges-tab.component';
 import { GeneralTabComponent } from '../tabs/general-tab/general-tab.component';
 import { ToolsTabComponent } from '../tabs/tools-tab/tools-tab.component';
 import { KnowledgeBaseTabComponent } from '../tabs/knowledge-base-tab/knowledge-base-tab.component';
+import { AbIconComponent } from '../../shared/ab-icon/ab-icon.component';
 
 type TabId = 'general' | 'kb' | 'tools';
 interface TabConfig { id: TabId; label: string; }
@@ -31,6 +32,7 @@ interface TabConfig { id: TabId; label: string; }
     ]),
   ],
   imports: [
+    AbIconComponent,
     MatInputModule,
     TranslocoModule,
     StartNodeViewComponent, EndNodeViewComponent,

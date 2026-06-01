@@ -1,0 +1,38 @@
+// GUIDELINES-NEW.md — Agent Builder canvas / Monitor chrome tokens
+:root {
+  --ab-canvas: #fafafa;
+  --ab-surface: #ffffff;
+  --ab-surface-muted: #f4f4f5;
+  --ab-surface-elevated: #e4e4e7;
+  --ab-border: #e4e4e7;
+  --ab-border-strong: #d4d4d8;
+  --ab-text: #18181b;
+  --ab-text-muted: #52525c;
+  --ab-text-light: #71717b;
+  --ab-text-disabled: #9f9fa9;
+  --ab-mode-editor: #00a6f5;
+  --ab-mode-monitor-inactive: #71717b;
+  --ab-mode-monitor-active: #ff6600;
+  --ab-ai-primary: #8023ff;
+  --ab-shadow: 0 6px 7px rgba(9, 9, 11, 0.08);
+  --ab-chrome-height: 40px;
+  --ab-header-outer-pad: 8px;
+  --ab-header-float-reserve: 56px;
+  --ab-radius-sm: 8px;
+  --ab-radius-md: 12px;
+  --ab-radius-lg: 16px;
+  --ab-radius-full: 9999px;
+  --ab-space-xs: 4px;
+  --ab-space-sm: 8px;
+  --ab-space-md: 12px;
+  --ab-space-lg: 16px;
+  --ab-space-xl: 24px;
+  --ab-font-label: 500 12px/16px Inter, ui-sans-serif, system-ui, sans-serif;
+  --ab-font-title: 700 16px/24px Inter, ui-sans-serif, system-ui, sans-serif;
+  --ab-font-kpi: 600 28px/32px Inter, ui-sans-serif, system-ui, sans-serif;
+  --ab-success: #006145;
+  --ab-success-bg: #ecfdf5;
+  --ab-danger: #9e0812;
+  --ab-danger-bg: #fff0f0;
+  --ab-brand-cta: #ff6600;
+}

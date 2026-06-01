@@ -7,9 +7,7 @@
         <p class="modal-subtitle-inline">{{ 'modals.file_selection.subtitle' | transloco }}</p>
       </div>
       <button class="modal-close" (click)="closed.emit()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-          <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
+        <ab-icon name="xmark" size="lg" />
       </button>
     </div>
 
@@ -17,15 +15,11 @@
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modal-search-field">
         <input matInput [placeholder]="'modals.file_selection.search_placeholder' | transloco" [ngModel]="search()" (ngModelChange)="search.set($event)" />
         <span matPrefix class="modal-search-prefix">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
+          <ab-icon name="magnifying-glass-plus" size="sm" />
         </span>
       </mat-form-field>
       <button class="modal-upload-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-        </svg>
+        <ab-icon name="upload" size="sm" />
         {{ 'modals.file_selection.upload_file' | transloco }}
       </button>
     </div>
@@ -54,9 +48,7 @@
                 </td>
                 <td class="modal-td">
                   <div class="modal-file-name-cell">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="modal-file-icon">
-                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    </svg>
+                    <ab-icon name="file" size="sm" class="modal-file-icon" />
                     <span class="modal-file-name" [title]="file.name">{{ file.name }}</span>
                   </div>
                 </td>
@@ -81,9 +73,7 @@
     <div class="modal-footer">
       <button class="modal-cancel-btn" (click)="closed.emit()">{{ 'common.cancel' | transloco }}</button>
       <button class="modal-primary-btn" (click)="confirm()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>
+        <ab-icon name="check" size="sm" />
         {{ 'modals.file_selection.save_selection' | transloco }}
       </button>
     </div>

@@ -1,0 +1,21 @@
+<div class="atom-shell">
+  <atom-primary-sidebar />
+
+  <div class="atom-shell__main">
+    <atom-header />
+
+    <div class="atom-shell__section">
+      @if (!shellNav.hideSecondary()) {
+        <atom-secondary-sidebar />
+      }
+
+      <main class="atom-shell__content" [class.atom-shell__content--canvas]="shellNav.hideSecondary()">
+        @if (shellNav.hideSecondary()) {
+          <router-outlet />
+        } @else {
+          <atom-content-frame />
+        }
+      </main>
+    </div>
+  </div>
+</div>

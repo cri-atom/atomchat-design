@@ -1,0 +1,37 @@
+<header class="ws-header">
+  <div class="ws-header__cluster ws-header__cluster--left">
+    <div class="ws-header__brand" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" width="24" height="24">
+        <path d="M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z" fill="#FF6600"/>
+        <path d="M21.9672 20.1243C21.9672 16.8117 19.2981 14.128 16.0147 14.128C12.8264 14.128 10.2231 16.6435 10.0622 19.8026C10.1865 23.7221 12.2999 26.5156 15.2615 27.6783C15.8611 27.7368 16.0366 27.4589 16.0366 27.1298L16.0513 25.9159C19.2761 25.8501 21.9672 23.3858 21.9672 20.1243Z" fill="white"/>
+        <path d="M14.9396 19.9415C14.9396 20.3437 14.6105 20.6728 14.2083 20.6728C13.8061 20.6728 13.4771 20.3437 13.4771 19.9415C13.4771 19.5393 13.8061 19.2103 14.2083 19.2103C14.6105 19.2103 14.9396 19.5393 14.9396 19.9415Z" fill="#0A0A0A"/>
+        <path d="M18.5301 19.9415C18.5301 20.3437 18.2011 20.6728 17.7989 20.6728C17.3967 20.6728 17.0676 20.3437 17.0676 19.9415C17.0676 19.5393 17.3967 19.2103 17.7989 19.2103C18.2084 19.2103 18.5301 19.5393 18.5301 19.9415Z" fill="#0A0A0A"/>
+      </svg>
+    </div>
+    <button type="button" class="ws-header__icon-btn" title="Volver" (click)="goBack()">
+      <ab-icon name="arrow-left" size="md" />
+    </button>
+    <input class="ws-header__title" type="text" [value]="agentName" readonly aria-label="Nombre del agente" />
+    <button type="button" class="ws-header__icon-btn" title="Configuración">
+      <ab-icon name="gear" size="md" />
+    </button>
+  </div>
+
+  <div class="ws-header__cluster ws-header__cluster--center">
+    <app-workspace-switcher />
+  </div>
+
+  <div class="ws-header__cluster ws-header__cluster--right">
+    <button type="button" class="ws-header__icon-btn" title="IA">
+      <ab-icon name="sparkles" size="md" />
+    </button>
+    <button type="button" class="ws-header__icon-btn" title="Historial">
+      <ab-icon name="clock" size="md" />
+    </button>
+    <button type="button" class="ws-header__icon-btn" title="Ejecutar">
+      <ab-icon name="play" size="md" />
+    </button>
+    <button type="button" class="ws-header__text-btn" disabled>Guardar</button>
+    <button type="button" class="ws-header__primary-btn" disabled>Publicar</button>
+  </div>
+</header>

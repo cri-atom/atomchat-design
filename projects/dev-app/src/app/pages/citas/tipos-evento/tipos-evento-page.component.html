@@ -1,0 +1,53 @@
+<atom-section-heading
+  title="Tipos de evento"
+  description="Crea eventos para que la gente que invites reserve en tu agenda."
+/>
+
+<div class="tipos-evento">
+  <div class="tipos-evento__toolbar">
+    <button type="button" class="tipos-evento__search-btn" title="Buscar" aria-label="Buscar">
+      <ab-icon name="magnifying-glass" variant="regular" size="md" />
+    </button>
+    <button mat-flat-button type="button" (click)="createEvent()">Crear evento</button>
+  </div>
+
+  <div class="tipos-evento__table-wrap">
+    <table class="tipos-evento__table">
+      <thead>
+        <tr>
+          <th class="tipos-evento__col-evento">Evento</th>
+          <th class="tipos-evento__col-narrow">Duración</th>
+          <th class="tipos-evento__col-narrow tipos-evento__col-center">Grupos</th>
+          <th class="tipos-evento__col-narrow tipos-evento__col-center">Estado</th>
+          <th class="tipos-evento__col-actions">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.id) {
+          <tr>
+            <td class="tipos-evento__col-evento">{{ row.nombre }}</td>
+            <td>{{ row.duracion }}</td>
+            <td class="tipos-evento__col-center"><citas-tag [label]="row.grupo" /></td>
+            <td class="tipos-evento__col-center"><citas-status-label [status]="row.status" /></td>
+            <td class="tipos-evento__col-actions">
+              <button type="button" class="tipos-evento__menu-btn" aria-label="Acciones">
+                <ab-icon name="ellipsis-vertical" variant="regular" size="sm" />
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <citas-table-pagination
+    mode="pages"
+    [page]="1"
+    [totalPages]="5"
+    [pageSize]="10"
+    [canFirst]="false"
+    [canPrev]="false"
+    [canNext]="true"
+    [canLast]="true"
+  />
+</div>

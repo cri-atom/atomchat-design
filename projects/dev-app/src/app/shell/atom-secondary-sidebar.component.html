@@ -1,0 +1,50 @@
+<aside class="atom-secondary" aria-label="Módulos">
+  <nav class="atom-secondary__menu">
+    @for (mod of modules; track mod.id) {
+      <div class="atom-secondary__section">
+        <div class="atom-secondary__header">
+          <button
+            type="button"
+            class="atom-secondary__header-btn"
+            (click)="navigateModule(mod)"
+          >
+            <ab-icon [name]="mod.icon" variant="regular" size="sm" />
+            <span class="atom-secondary__label">{{ mod.label }}</span>
+            @if (mod.badge) {
+              <span class="atom-secondary__badge">{{ mod.badge }}</span>
+            }
+          </button>
+          @if (mod.children?.length) {
+            <button
+              type="button"
+              class="atom-secondary__chevron"
+              [attr.aria-expanded]="isExpanded(mod)"
+              [attr.aria-label]="'Expandir ' + mod.label"
+              (click)="toggleSection(mod, $event)"
+            >
+              <ab-icon
+                [name]="isExpanded(mod) ? 'chevron-up' : 'chevron-down'"
+                variant="regular"
+                size="sm"
+              />
+            </button>
+          }
+        </div>
+
+        @if (mod.children?.length && isExpanded(mod)) {
+          <div class="atom-secondary__children">
+            @for (child of mod.children; track child.id) {
+              <a
+                class="atom-secondary__child"
+                [routerLink]="child.route"
+                routerLinkActive="atom-secondary__child--active"
+              >
+                {{ child.label }}
+              </a>
+            }
+          </div>
+        }
+      </div>
+    }
+  </nav>
+</aside>

@@ -15,6 +15,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { EditorComponent } from '../canvas/editor/editor.component';
 import { InspectorComponent } from '../inspector/container/inspector.component';
 import { GlobalSettingsViewComponent } from '../inspector/views/global-settings-view/global-settings-view.component';
+import { AbIconComponent } from '../shared/ab-icon/ab-icon.component';
 
 /**
  * Root component of the Atom Agent Builder.
@@ -36,13 +37,16 @@ import { GlobalSettingsViewComponent } from '../inspector/views/global-settings-
   selector: 'atom-agentbuilder',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  host: {
+    '[class.agentbuilder--embedded]': 'hideChrome()',
+  },
   providers: [
     FlowAgentDefaultsService,
     FlowAgentInternalStateService,
     FlowAgentValidationService,
     FlowAgentActionsService,
   ],
-  imports: [TranslocoModule, EditorComponent, InspectorComponent, GlobalSettingsViewComponent],
+  imports: [TranslocoModule, AbIconComponent, EditorComponent, InspectorComponent, GlobalSettingsViewComponent],
   templateUrl: './atom-agentbuilder.component.html',
   styleUrl: './atom-agentbuilder.component.scss',
 })
@@ -51,6 +55,10 @@ export class AtomAgentBuilderComponent implements OnInit, OnDestroy {
   public readonly flowAgentModeData = input.required<FlowAgentModeData>();
   /** Authenticated user passed down from the host application. */
   public readonly user = input.required<User>();
+  /** When true, hides the built-in navbar so a host shell can provide chrome. */
+  public readonly hideChrome = input(false);
+  /** When `monitor`, hides global settings so the host can show the monitor panel. */
+  public readonly workspaceMode = input<'editor' | 'monitor'>('editor');
   /** Emits `true` when unsaved changes are detected; `false` after a successful save. */
   public readonly unsavedChanges = output<boolean>();
 

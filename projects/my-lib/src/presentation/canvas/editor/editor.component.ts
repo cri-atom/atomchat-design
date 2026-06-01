@@ -23,6 +23,7 @@ import {
   ZOOM_MIN,
 } from '../theme';
 import { environment } from '../../../environments/environment';
+import { AbIconComponent } from '../../shared/ab-icon/ab-icon.component';
 
 import '../shapes/app.shapes';
 
@@ -30,7 +31,7 @@ import '../shapes/app.shapes';
   selector: 'flowagent-editor',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslocoModule, FormsModule],
+  imports: [TranslocoModule, FormsModule, AbIconComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.scss',
 })

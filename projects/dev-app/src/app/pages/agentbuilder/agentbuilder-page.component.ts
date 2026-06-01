@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AtomAgentBuilderComponent, FlowAgentModeData } from '../../../../../my-lib/public-api';
+import { WorkspaceModeService } from '../../workspace/workspace-mode.service';
 
 @Component({
   selector: 'app-agentbuilder-page',
@@ -8,27 +9,21 @@ import { AtomAgentBuilderComponent, FlowAgentModeData } from '../../../../../my-
   template: `
     <atom-agentbuilder
       class="agentbuilder-page"
+      [hideChrome]="true"
+      [workspaceMode]="workspace.mode()"
       [flowAgentModeData]="modeData"
       [user]="user"
       (unsavedChanges)="onUnsavedChanges($event)"
     />
   `,
-  styles: `
-    :host {
-      display: block;
-      height: 100vh;
-    }
-
-    .agentbuilder-page {
-      display: block;
-      height: 100%;
-    }
-  `,
+  styleUrl: './agentbuilder-page.component.scss',
 })
 export class AgentBuilderPageComponent {
+  readonly workspace = inject(WorkspaceModeService);
+
   modeData: FlowAgentModeData = {
     mode: 'create',
-    sourceRoute: '/',
+    sourceRoute: '/campanas/agentes',
   };
 
   user = { id: 'dev-user', name: 'Dev User', email: 'dev@atom.com', companyId: 'dev-company' };

@@ -139,7 +139,7 @@ $http-green: $color-success-http;
   align-items: center;
   gap: $spacing-sm;
 
-  svg { color: $color-link; flex-shrink: 0; }
+  ab-icon { color: $color-link; flex-shrink: 0; }
 }
 
 .http-info-title {

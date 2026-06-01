@@ -1,0 +1,143 @@
+import type { PrimaryRailItem, SecondaryNavModule } from './nav.model';
+
+export const PRIMARY_RAIL: PrimaryRailItem[] = [
+  { id: 'toggle', icon: 'arrow-right-from-line', title: 'Alternar menú', action: 'toggle' },
+  { id: 'inicio', icon: 'house', route: '/inicio', title: 'Inicio' },
+  { id: 'conversaciones', icon: 'comments', route: '/conversaciones', title: 'Conversaciones' },
+  { id: 'catalogo', icon: 'table-cells-columns', route: '/catalogo', title: 'Catálogo' },
+  { id: 'soporte', icon: 'headset', route: '/soporte', title: 'Soporte' },
+  { id: 'contactos', icon: 'id-card-clip', route: '/contactos', title: 'Contactos' },
+  { id: 'permisos', icon: 'user-slash', route: '/permisos', title: 'Permisos' },
+  { id: 'campanas', icon: 'bullhorn', route: '/campanas', title: 'Campañas' },
+  { id: 'reportes-chat', icon: 'chart-bar', route: '/reportes-chat', title: 'Reportes de chat' },
+  { id: 'chats', icon: 'comment', route: '/chats', title: 'Chats' },
+  { id: 'historial', icon: 'clock', route: '/historial', title: 'Historial' },
+  { id: 'ajustes', icon: 'gear', route: '/ajustes', title: 'Ajustes' },
+  { id: 'ayuda', icon: 'circle-question', title: 'Ayuda', action: 'help' },
+];
+
+export const SECONDARY_MODULES: SecondaryNavModule[] = [
+  {
+    id: 'plataforma',
+    label: 'Plataforma',
+    icon: 'headset',
+    routePrefix: '/plataforma',
+    title: 'Plataforma',
+    description: 'Configuración general de la plataforma',
+  },
+  {
+    id: 'llamadas',
+    label: 'Llamadas',
+    icon: 'phone',
+    routePrefix: '/llamadas',
+    badge: 'BETA',
+    title: 'Llamadas',
+    description: 'Gestión de llamadas',
+  },
+  {
+    id: 'mensajeria',
+    label: 'Mensajería',
+    icon: 'envelope',
+    routePrefix: '/mensajeria',
+    title: 'Mensajería',
+    description: 'Canales de mensajería',
+  },
+  {
+    id: 'conversaciones-mod',
+    label: 'Conversaciones',
+    icon: 'comment-dots',
+    routePrefix: '/conversaciones-mod',
+    title: 'Conversaciones',
+    description: 'Bandeja de conversaciones',
+  },
+  {
+    id: 'magia-atom',
+    label: 'Magia de Atom',
+    icon: 'sparkles',
+    routePrefix: '/magia-atom',
+    title: 'Magia de Atom',
+    description: 'Herramientas de IA',
+  },
+  {
+    id: 'usuarios',
+    label: 'Gestión Usuarios',
+    icon: 'users',
+    routePrefix: '/usuarios',
+    title: 'Gestión Usuarios',
+    description: 'Usuarios y roles',
+  },
+  {
+    id: 'reportes',
+    label: 'Reportes',
+    icon: 'chart-line',
+    routePrefix: '/reportes',
+    title: 'Reportes',
+    description: 'Reportes y analítica',
+  },
+  {
+    id: 'empresa',
+    label: 'Mi Empresa',
+    icon: 'building',
+    routePrefix: '/empresa',
+    title: 'Mi Empresa',
+    description: 'Datos de la empresa',
+  },
+  {
+    id: 'recursos',
+    label: 'Gestor de recursos',
+    icon: 'database',
+    routePrefix: '/recursos',
+    title: 'Gestor de recursos',
+    description: 'Recursos compartidos',
+  },
+  {
+    id: 'citas',
+    label: 'Citas',
+    icon: 'calendar-days',
+    routePrefix: '/citas',
+    defaultChild: 'calendarios',
+    children: [
+      {
+        id: 'tipos-evento',
+        label: 'Tipos de evento',
+        route: '/citas/tipos-evento',
+        title: 'Tipos de evento',
+        description: 'Crea eventos para que la gente que invites reserve en tu agenda.',
+      },
+      {
+        id: 'calendarios',
+        label: 'Calendarios',
+        route: '/citas/calendarios',
+        title: 'Calendarios',
+        description:
+          'Usuarios con calendario habilitado que pueden recibir citas agendadas vía WhatsApp',
+      },
+      {
+        id: 'agendadas',
+        label: 'Citas agendadas',
+        route: '/citas/agendadas',
+        title: 'Citas agendadas',
+        description: 'Listado de citas agendadas',
+      },
+    ],
+  },
+  {
+    id: 'campanas',
+    label: 'Campañas',
+    icon: 'bullhorn',
+    routePrefix: '/campanas',
+    defaultChild: 'agentes',
+    children: [
+      {
+        id: 'agentes',
+        label: 'Agentes',
+        route: '/campanas/agentes',
+        title: 'Agentes',
+        description: 'Agentes de IA para tus campañas',
+      },
+    ],
+  },
+];
+
+/** URL prefixes that hide the secondary sidebar (agent canvas / monitor). */
+export const CANVAS_ROUTE_PATTERN = /^\/campanas\/agentes\/[^/]+\/(editor|monitor)/;

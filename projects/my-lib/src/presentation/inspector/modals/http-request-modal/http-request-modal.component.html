@@ -7,9 +7,7 @@
         <h2 class="modal-title">{{ name() }}</h2>
       </div>
       <button class="modal-close" (click)="closed.emit()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-          <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
+        <ab-icon name="xmark" size="lg" />
       </button>
     </div>
 
@@ -19,14 +17,10 @@
       <div class="http-info-section">
         <button class="http-info-header" (click)="showInfo.set(!showInfo())">
           <div class="http-info-header-left">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-              <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
-            </svg>
+            <ab-icon name="circle-info" size="md" />
             <span class="http-info-title">{{ 'modals.http_request.learn_request' | transloco }}</span>
           </div>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="http-info-chevron" [class.rotate-180]="showInfo()">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
+          <ab-icon name="chevron-down" size="sm" class="http-info-chevron" [class.rotate-180]="showInfo()" />
         </button>
         @if (showInfo()) {
           <div class="http-info-body">
@@ -59,9 +53,7 @@
         </mat-form-field>
 
         <button class="http-test-btn" disabled>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" width="14" height="14">
-            <polygon points="5 3 19 12 5 21 5 3"/>
-          </svg>
+          <ab-icon name="play" size="sm" />
           {{ 'modals.http_request.test_request' | transloco }}
         </button>
       </div>
@@ -90,9 +82,7 @@
       <div class="http-advanced">
         <button class="http-advanced-header" (click)="showAdvanced.set(!showAdvanced())">
           <h3 class="http-section-title">{{ 'modals.http_request.advanced_config' | transloco }}</h3>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" [class.rotate-180]="showAdvanced()">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
+          <ab-icon name="chevron-down" size="md" [class.rotate-180]="showAdvanced()" />
         </button>
         @if (showAdvanced()) {
           <div class="http-advanced-body">
@@ -118,9 +108,7 @@
               <div class="http-toggle-info">
                 <div class="http-toggle-card-info">
                   <p class="http-toggle-title">{{ 'modals.http_request.handle_response_codes' | transloco }}</p>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="color: var(--color-text-muted, #52525C)">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
-                  </svg>
+                  <ab-icon name="circle-info" size="xs" style="color: var(--color-text-muted, #52525C)" />
                 </div>
                 <p class="http-toggle-desc">{{ 'modals.http_request.handle_response_codes_desc' | transloco }}</p>
               </div>
@@ -132,9 +120,7 @@
               <div class="http-toggle-info">
                 <div class="http-toggle-card-info">
                   <p class="http-toggle-title">{{ 'modals.http_request.api_timeout' | transloco }}</p>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="color: var(--color-text-muted, #52525C)">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
-                  </svg>
+                  <ab-icon name="circle-info" size="xs" style="color: var(--color-text-muted, #52525C)" />
                 </div>
                 <p class="http-toggle-desc">{{ 'modals.http_request.api_timeout_desc' | transloco }}</p>
               </div>

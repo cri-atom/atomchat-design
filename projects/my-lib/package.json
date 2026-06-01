@@ -14,7 +14,8 @@
     "@angular/router": "20.3.16",
     "@jsverse/transloco": "8.2.1",
     "rxjs": "7.8.1",
-    "zone.js": "0.15.1"
+    "zone.js": "0.15.1",
+    "@fortawesome/fontawesome-pro": "^7.2.0"
   },
   "scripts": {
     "postinstall": "npm install --legacy-peer-deps @joint/plus@file:lib-deps/joint-plus.tgz @atom/ui@file:lib-deps/atom-ui.tgz"

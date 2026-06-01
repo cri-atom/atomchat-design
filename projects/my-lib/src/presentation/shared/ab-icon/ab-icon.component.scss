@@ -1,0 +1,33 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.ab-icon {
+  display: block;
+  width: 1em;
+  text-align: center;
+}
+
+.ab-icon--xs {
+  font-size: 12px;
+}
+
+.ab-icon--sm {
+  font-size: 14px;
+}
+
+.ab-icon--md {
+  font-size: 16px;
+}
+
+.ab-icon--lg {
+  font-size: 20px;
+}
+
+.ab-icon--xl {
+  font-size: 24px;
+}

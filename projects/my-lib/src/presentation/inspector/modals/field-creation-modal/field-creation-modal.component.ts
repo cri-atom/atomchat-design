@@ -4,13 +4,14 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 import { InfoCollectionItem } from '../../../../core/model/agent-flow.model';
 
 @Component({
   selector: 'flowagent-field-creation-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './field-creation-modal.component.html',
   styleUrl: './field-creation-modal.component.scss',
 })

@@ -1,0 +1,48 @@
+<aside class="atom-rail" aria-label="Navegación principal">
+  <div class="atom-rail__logo">
+    <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" fill="#FF6600" />
+      <path
+        d="M21.97 20.12c0-3.31-2.67-6-5.96-6s-5.95 2.69-5.81 5.85c.12 3.92 2.24 6.71 5.2 7.88.6.06.78-.22.78-.55v-1.21c3.22-.07 5.79-2.53 5.79-5.97Z"
+        fill="#fff"
+      />
+      <circle cx="14.21" cy="19.94" r="0.87" fill="#0A0A0A" />
+      <circle cx="17.8" cy="19.94" r="0.87" fill="#0A0A0A" />
+    </svg>
+  </div>
+
+  <nav class="atom-rail__nav">
+    @for (item of items; track item.id) {
+      @if (item.route) {
+        <a
+          class="atom-rail__item"
+          [routerLink]="item.route"
+          routerLinkActive="atom-rail__item--active"
+          [attr.title]="item.title"
+          [attr.aria-label]="item.title"
+        >
+          <ab-icon [name]="item.icon" variant="regular" size="xl" />
+        </a>
+      } @else {
+        <button
+          type="button"
+          class="atom-rail__item"
+          [attr.title]="item.title"
+          [attr.aria-label]="item.title"
+          (click)="onItemClick(item, $event)"
+        >
+          <ab-icon [name]="item.icon" variant="regular" size="xl" />
+        </button>
+      }
+    }
+  </nav>
+
+  <a
+    class="atom-rail__item atom-rail__item--help"
+    routerLink="/inicio"
+    title="Ayuda"
+    aria-label="Ayuda"
+  >
+    <ab-icon name="circle-question" variant="regular" size="xl" />
+  </a>
+</aside>

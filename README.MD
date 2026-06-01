@@ -104,7 +104,27 @@ Exports include:
 
 From repo root:
 
-npm install
+1. Font Awesome Pro (required for icons):
+
+   ```bash
+   cp .env.example .env
+   # Edit .env and set FONTAWESOME_NPM_AUTH_TOKEN from https://fontawesome.com/account/general
+   npm run install:deps
+   ```
+
+   Verifica solo la autenticación (sin instalar todo):
+
+   ```bash
+   npm run verify:fa-auth
+   ```
+
+   **Importante:** no uses `npm install` directo para la primera instalación; el token vive en `.env` y solo `install:deps` lo inyecta en npm.
+
+2. Or, if the token is already exported in your shell:
+
+   ```bash
+   npm install
+   ```
 
 ## 7. Run modes (3 ways to run/integrate)
 

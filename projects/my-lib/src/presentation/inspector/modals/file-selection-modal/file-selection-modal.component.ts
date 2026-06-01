@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@jsverse/transloco';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AbIconComponent } from '../../../shared/ab-icon/ab-icon.component';
 import { KnowledgeBase } from '../../../../core/model/agent-flow.model';
 
 interface MockFile {
@@ -24,7 +25,7 @@ const MOCK_FILES: MockFile[] = [
   selector: 'flowagent-file-selection-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule],
+  imports: [AbIconComponent, FormsModule, TranslocoModule, MatFormFieldModule, MatInputModule],
   templateUrl: './file-selection-modal.component.html',
   styleUrl: './file-selection-modal.component.scss',
 })

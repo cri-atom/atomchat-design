@@ -1,0 +1,134 @@
+<div class="playground" [class.playground--workspace]="layout() === 'workspace'">
+  @if (mockState.playgroundFromReview()) {
+    <div class="playground__banner playground__banner--review">
+      <div class="playground__banner-body">
+        <strong>Prueba desde Revisión Humana</strong>
+        <span>Escenario: {{ mockState.playgroundScenarioTitle() }}</span>
+      </div>
+      <button type="button" class="playground__banner-dismiss" (click)="dismissReviewBanner()" aria-label="Cerrar">×</button>
+    </div>
+  }
+
+  @if (mockState.promotedToProduction()) {
+    <div class="playground__banner playground__banner--success" role="status">
+      <strong>Promovido a producción</strong>
+      <span>Versión {{ mockState.promotedVersion() ?? 'v2.4.1' }} activa.</span>
+    </div>
+  }
+
+  @if (layout() === 'page') {
+    <header class="playground__header">
+      <div class="playground__header-meta">
+        @if (mockState.lastRun(); as run) {
+          <span class="playground__run-metrics">
+            Última ejecución: {{ run.latencyMs }}ms · {{ run.tokens }} tokens · {{ run.cost }}
+          </span>
+        }
+      </div>
+      <div class="playground__header-actions">
+        <button type="button" class="playground__btn-outline" (click)="openCompare()">Comparar versiones</button>
+        <button type="button" class="playground__btn-primary" [disabled]="mockState.promotedToProduction()" (click)="promote()">
+          {{ mockState.promotedToProduction() ? 'En producción' : 'Promover a producción' }}
+        </button>
+      </div>
+    </header>
+  }
+
+  <div class="playground__columns">
+    <section class="playground__col playground__col--prompt">
+      <h2>System Prompt</h2>
+      <textarea class="playground__textarea" rows="12" [(ngModel)]="promptText"></textarea>
+      <div class="playground__vars">
+        <span class="playground__vars-label">Variables detectadas</span>
+        <ul>
+          @for (v of variables; track v) {
+            <li><code>{{ v }}</code></li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="playground__col playground__col--sim">
+      <h2>Simulación</h2>
+      @if (isRunning()) {
+        <p class="playground__running" aria-live="polite">Ejecutando…</p>
+      }
+      <div class="playground__chat-log">
+        @for (msg of chatMessages(); track $index) {
+          <div
+            class="playground__msg"
+            [class.playground__msg--user]="msg.role === 'user'"
+            [class.playground__msg--fresh]="msg.fresh"
+          >
+            {{ msg.text }}
+          </div>
+        }
+      </div>
+      <div class="playground__chat-input-row">
+        <input
+          type="text"
+          class="playground__chat-input"
+          placeholder="Enviar mensaje como usuario"
+          [(ngModel)]="userInput"
+          [disabled]="isRunning()"
+          (keydown.enter)="run()"
+        />
+      </div>
+      <button type="button" class="playground__run" [disabled]="isRunning()" (click)="run()">
+        {{ isRunning() ? 'Ejecutando…' : 'Ejecutar / Run' }}
+      </button>
+
+      @if (layout() === 'workspace') {
+        <footer class="playground__footer">
+          @if (mockState.lastRun(); as run) {
+            <span class="playground__run-metrics">{{ run.latencyMs }}ms · {{ run.tokens }} tok · {{ run.cost }}</span>
+          }
+          <div class="playground__footer-config">
+            <label>
+              Modelo
+              <select class="playground__select playground__select--inline" [(ngModel)]="model">
+                <option value="claude-3.5-sonnet">Claude 3.5</option>
+                <option value="gpt-4o">GPT-4o</option>
+              </select>
+            </label>
+            <label>
+              Temp {{ temperature }}
+              <mat-slider class="playground__slider" min="0" max="1" step="0.1" discrete>
+                <input matSliderThumb [(ngModel)]="temperature" />
+              </mat-slider>
+            </label>
+          </div>
+          <div class="playground__footer-actions">
+            <button type="button" class="playground__btn-outline" (click)="openCompare()">Comparar</button>
+            <button type="button" class="playground__btn-primary" [disabled]="mockState.promotedToProduction()" (click)="promote()">
+              {{ mockState.promotedToProduction() ? 'En producción' : 'Promover' }}
+            </button>
+          </div>
+        </footer>
+      }
+    </section>
+
+    @if (layout() === 'page') {
+      <section class="playground__col playground__col--config">
+        <h2>Configuración</h2>
+        <label class="playground__field">
+          Modelo
+          <select class="playground__select" [(ngModel)]="model">
+            <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+          </select>
+        </label>
+        <label class="playground__field">
+          Temperatura: {{ temperature }}
+          <mat-slider min="0" max="1" step="0.1" discrete>
+            <input matSliderThumb [(ngModel)]="temperature" />
+          </mat-slider>
+        </label>
+        <label class="playground__field">
+          Max Tokens
+          <input type="number" class="playground__select" [(ngModel)]="maxTokens" />
+        </label>
+      </section>
+    }
+  </div>
+</div>

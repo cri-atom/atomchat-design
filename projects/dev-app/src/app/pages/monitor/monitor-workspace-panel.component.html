@@ -1,0 +1,46 @@
+<aside class="mws-panel" aria-label="Monitoreo del agente">
+  <header class="mws-panel__header">
+    <div class="mws-panel__title-block">
+      <h2 class="mws-panel__title">Monitoreo</h2>
+      <p class="mws-panel__subtitle">Entrenamiento y mejora continua del agente</p>
+    </div>
+    <nav class="mws-panel__tabs" aria-label="Secciones de monitoreo">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          class="mws-panel__tab"
+          [class.mws-panel__tab--active]="workspace.monitorTab() === tab.id"
+          (click)="setTab(tab.id)"
+        >
+          {{ tab.label }}
+          @if (tab.badge) {
+            <span class="mws-panel__badge">{{ tab.badge }}</span>
+          }
+        </button>
+      }
+    </nav>
+  </header>
+
+  <div class="mws-panel__body">
+    @switch (workspace.monitorTab()) {
+      @case ('dashboard') {
+        <section class="mws-col mws-col--primary">
+          <app-monitor-dashboard [embedded]="true" />
+        </section>
+        <section class="mws-col mws-col--secondary">
+          @if (workspace.evaluationsView() === 'list') {
+            <app-monitor-evaluations-list />
+          } @else {
+            <app-monitor-evaluations-create />
+          }
+        </section>
+      }
+      @case ('revision') {
+        <app-monitor-human-review layout="workspace" class="mws-review" />
+      }
+      @case ('playground') {
+        <app-monitor-playground layout="workspace" class="mws-playground" />
+      }
+    }
+  </div>
+</aside>

@@ -1,5 +1,12 @@
 @use '@angular/material' as mat;
 @use '../../my-lib/src/styles/variables' as *;
+@use './styles/guidelines-new';
+@use './styles/atom-layout-tokens';
+
+/* Font Awesome Pro — única librería de iconos en UI */
+@import '@fortawesome/fontawesome-pro/css/fontawesome.min.css';
+@import '@fortawesome/fontawesome-pro/css/solid.min.css';
+@import '@fortawesome/fontawesome-pro/css/regular.min.css';
 
 @include mat.core();
 
@@ -16,9 +23,9 @@ html {
 
 :root {
   /* Typography */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-  --font-family-primary: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+  --font-family-primary: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* Atom DS — Semantic colors (light) */
   --color-bg-primary:               #FFFFFF;
@@ -474,4 +481,292 @@ html .mat-mdc-icon-button.mat-primary {
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 16px !important;
   box-shadow: 0px 16px 32px rgba(9, 9, 11, 0.08) !important;
+}
+
+.monitor-suggestion-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  max-width: 95vw;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+   Citas — Dialog panels & snackbar
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.citas-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.citas-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  background: #fff;
+}
+
+.citas-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--atom-border-divider);
+}
+
+.citas-dialog__title {
+  margin: 0;
+  font: 600 16px/1.35 Inter, sans-serif;
+  color: var(--atom-fg-primary);
+}
+
+.citas-dialog__title-accent {
+  color: var(--atom-brand);
+}
+
+.citas-dialog__subtitle {
+  margin: 4px 0 0;
+  font: var(--atom-font-page-desc);
+  color: var(--atom-fg-quaternary);
+
+  strong {
+    font-weight: 500;
+    color: var(--atom-content-tertiary);
+  }
+}
+
+.citas-dialog__close {
+  border: none;
+  background: none;
+  padding: 0 4px;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--atom-fg-quaternary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--atom-fg-primary);
+  }
+}
+
+.citas-dialog__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.citas-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.citas-dialog__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.citas-dialog__field {
+  width: 100%;
+}
+
+.citas-dialog__field--phone {
+  flex: 1;
+}
+
+.citas-dialog__phone-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.citas-dialog__phone-label {
+  font: 500 12px/1.35 Inter, sans-serif;
+  color: var(--atom-content-tertiary);
+}
+
+.citas-dialog__phone-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.citas-dialog__phone-prefix {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 10px;
+  border: 1px solid var(--atom-filter-border);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  background: var(--atom-surface-data);
+  font: 400 12px/1.25 Inter, sans-serif;
+  color: var(--atom-fg-quaternary);
+  white-space: nowrap;
+}
+
+.citas-dialog__phone-row .citas-dialog__field--phone .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.citas-dialog__hint {
+  font: 400 10px/1.35 Inter, sans-serif;
+  color: var(--atom-fg-quaternary);
+
+  &--error {
+    color: #dc2626;
+  }
+}
+
+.citas-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--atom-border-divider);
+  background: var(--atom-surface-data);
+
+  &--end {
+    justify-content: flex-end;
+  }
+}
+
+.citas-dialog__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.citas-dialog__primary {
+  background: var(--atom-brand) !important;
+  color: var(--atom-brand-cta-text) !important;
+}
+
+.citas-dialog__danger {
+  background: var(--atom-fg-primary) !important;
+  color: #fff !important;
+}
+
+.citas-dialog--compact .citas-dialog__alert-body {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+}
+
+.citas-dialog__alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffedd5;
+  color: #ea580c;
+  flex-shrink: 0;
+}
+
+.citas-dialog__alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.citas-dialog__future-block {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--atom-border-divider);
+  border-radius: 8px;
+  background: var(--atom-surface-data);
+}
+
+.citas-dialog__future-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 12px/1.35 Inter, sans-serif;
+  color: var(--atom-fg-primary);
+}
+
+.citas-dialog__future-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f97316;
+}
+
+.citas-dialog__future-desc {
+  margin: 8px 0 12px;
+  font: 400 11px/1.45 Inter, sans-serif;
+  color: var(--atom-fg-quaternary);
+}
+
+.citas-dialog__radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.citas-dialog__radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font: 400 12px/1.35 Inter, sans-serif;
+  color: var(--atom-content-tertiary);
+
+  strong {
+    display: block;
+    font-weight: 500;
+    color: var(--atom-fg-primary);
+  }
+
+  small {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    color: var(--atom-fg-quaternary);
+  }
+
+  input {
+    margin-top: 2px;
+    accent-color: var(--atom-brand);
+  }
+}
+
+.citas-dialog__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-left: 24px;
+  font: 500 12px/1.35 Inter, sans-serif;
+  color: var(--atom-content-tertiary);
+  cursor: pointer;
+
+  input {
+    accent-color: var(--atom-brand);
+  }
+}
+
+.citas-snackbar .mdc-snackbar__surface {
+  background: #18181b !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  font: 400 14px/1.35 Inter, sans-serif !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+.calendarios-grupos-tooltip {
+  white-space: pre-line;
+  font: 400 12px/1.45 Inter, sans-serif;
+}
+
+@media (max-width: 640px) {
+  .citas-dialog__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendarios__toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
