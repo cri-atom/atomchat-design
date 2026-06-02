@@ -11,8 +11,16 @@ export {
   type AbIconAlias,
   type AbIconName,
   type AbIconSize,
+  type AbIconVariant,
   type FaProIconName,
 } from './src/presentation/shared/ab-icon';
+
+// Platform UI components
+export { AtomTagComponent, type AtomTagVariant } from './src/platform/tag/atom-tag.component';
+export { AtomStatusBadgeComponent, type AtomStatusVariant } from './src/platform/status-badge/atom-status-badge.component';
+export { AtomAvatarComponent, type AtomAvatarSize } from './src/platform/avatar/atom-avatar.component';
+export { AtomButtonComponent, type AtomButtonVariant, type AtomButtonSize } from './src/platform/button/atom-button.component';
+export { AtomIconButtonComponent } from './src/platform/icon-button/atom-icon-button.component';
 
 // Types
 export * from './src/core/model/agent-flow.model';

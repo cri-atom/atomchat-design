@@ -43,7 +43,7 @@ export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
       refHeight: '100%',
     },
     iconBg: { x: 12, y: 10, width: 40, height: 40, rx: 12, ry: 12, fill: SURFACE_MUTED, stroke: 'none' },
-    icon: { d: ICONS.bot, stroke: 'none', fill: TEXT_LIGHT, refX: 23, refY: 22, transform: 'scale(1)' },
+    icon: { d: ICONS.bot, stroke: 'none', fill: TEXT_LIGHT, refX: 23, refY: 23, transform: 'scale(0.03125)' },
     label: {
       text: 'Nuevo Agente',
       refX: 62,
@@ -70,21 +70,21 @@ export const AgentNodeShape = dia.Element.define('agentApp.AgentNode', {
     },
     // Badge: Tools
     badgeToolsBg: { x: 12, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
-    badgeToolsIcon: { d: ICONS.wrench, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 17, refY: 84, transform: 'scale(0.6)' },
+    badgeToolsIcon: { d: ICONS.wrench, stroke: 'none', fill: TEXT_SECONDARY, refX: 17, refY: 85, transform: 'scale(0.021)' },
     badgeToolsText: { text: '+0', refX: 38, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
     // Badge: Knowledge Base
     badgeKbBg: { x: 64, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
-    badgeKbIcon: { d: ICONS.database, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 69, refY: 84, transform: 'scale(0.6)' },
+    badgeKbIcon: { d: ICONS.database, stroke: 'none', fill: TEXT_SECONDARY, refX: 70, refY: 85, transform: 'scale(0.023)' },
     badgeKbText: { text: '+0', refX: 90, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
     // Badge: Info Collection
     badgeInfoBg: { x: 116, y: 80, width: 48, height: 20, rx: 10, ry: 16, fill: BODY_BORDER, stroke: 'none' },
-    badgeInfoIcon: { d: ICONS.bookmark, stroke: TEXT_SECONDARY, strokeWidth: 1.8, fill: 'none', refX: 121, refY: 84, transform: 'scale(0.6)' },
+    badgeInfoIcon: { d: ICONS.bookmark, stroke: 'none', fill: TEXT_SECONDARY, refX: 123, refY: 85, transform: 'scale(0.023)' },
     badgeInfoText: { text: '+0', refX: 142, refY: 91, textAnchor: 'start', textVerticalAnchor: 'middle', fill: TEXT_SECONDARY, fontFamily: FONT_FAMILY, fontSize: 10, fontWeight: '600' },
     // Hover hotspot to reveal add button when cursor is near its expected area
     addButtonHoverZone: { width: 40, height: 40, rx: 8, ry: 8, fill: 'transparent', stroke: 'none', refX: '50%', refDy: 8, x: -20, y: -8, pointerEvents: 'auto' },
     // Add child button
     addButtonBg: { width: 24, height: 24, rx: 4, ry: 4, fill: BODY_BG, stroke: BODY_BORDER, strokeWidth: 1, refX: '50%', refDy: 8, x: -12, cursor: 'pointer', event: 'cell:addChild', magnet: true, visibility: 'visible', opacity: 0, pointerEvents: 'none', style: 'transition: opacity 180ms ease;' },
-    addButtonIcon: { d: ICONS.plus, stroke: TEXT_SECONDARY, strokeWidth: 2, fill: 'none', refX: '50%', refDy: 8, transform: 'translate(-6, 6) scale(0.5)', pointerEvents: 'none', visibility: 'visible', opacity: 0, style: 'transition: opacity 180ms ease;' },
+    addButtonIcon: { d: ICONS.plus, stroke: 'none', fill: TEXT_SECONDARY, refX: '50%', refDy: 8, transform: 'translate(-5, 6) scale(0.023)', pointerEvents: 'none', visibility: 'visible', opacity: 0, style: 'transition: opacity 180ms ease;' },
     avatarErrorDot: { r: 4, cx: 50, cy: 44, fill: ERROR_COLOR, stroke: BODY_BG, strokeWidth: 1, visibility: 'hidden' },
   },
   markup: [

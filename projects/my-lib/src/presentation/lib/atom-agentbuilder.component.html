@@ -22,6 +22,9 @@
         (change)="saveName($any($event.target).value)"
         [placeholder]="'editor.node.flow_name_placeholder' | transloco" />
     </div>
+    <div class="agentbuilder__navbar-center">
+      <ng-content />
+    </div>
     <div class="agentbuilder__navbar-right">
       @if (validationErrors.length > 0) {
         <div class="agentbuilder__validation-wrap" (click)="$event.stopPropagation()">

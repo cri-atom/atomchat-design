@@ -3,14 +3,3 @@
   height: 100%;
   width: 100%;
 }
-
-.agentbuilder-page {
-  display: block;
-  height: 100%;
-}
-
-:host ::ng-deep atom-agentbuilder,
-:host ::ng-deep .agentbuilder {
-  height: 100% !important;
-  min-height: 0;
-}

@@ -42,4 +42,28 @@
   --atom-usuario-interno-fg: #4f46e5;
   --atom-status-desactivado-bg: #f4f4f5;
   --atom-status-desactivado-fg: #71717b;
+
+  /* Foreground escala completa */
+  --atom-fg-secondary: #2d2b29;
+  --atom-fg-tertiary:  #52525c;
+
+  /* Status — conjunto completo */
+  --atom-status-connected-fg: #008428;
+  --atom-status-error-bg:     #fff0f0;
+  --atom-status-error-fg:     #dc2626;
+  --atom-status-pending-bg:   #fef3c7;
+  --atom-status-pending-fg:   #92400e;
+
+  /* Escala de spacing */
+  --atom-space-xs: 4px;
+  --atom-space-sm: 8px;
+  --atom-space-md: 12px;
+  --atom-space-lg: 16px;
+  --atom-space-xl: 24px;
+
+  /* Escala de border-radius */
+  --atom-radius-xs:   4px;
+  --atom-radius-sm:   8px;
+  --atom-radius-md:   12px;
+  --atom-radius-pill: 9999px;
 }

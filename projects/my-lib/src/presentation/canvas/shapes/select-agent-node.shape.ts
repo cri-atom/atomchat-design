@@ -20,7 +20,7 @@ export const SelectAgentNodeShape = dia.Element.define('agentApp.SelectAgentNode
   },
   attrs: {
     body: { fill: BODY_BG, stroke: SELECT_AGENT_BORDER, strokeWidth: 1, strokeDasharray: '6 3', rx: 8, ry: 8, refWidth: '100%', refHeight: '100%' },
-    icon: { d: ICONS.users, fill: ERROR_COLOR, refX: 14, refY: 12, transform: 'scale(0.6)' },
+    icon: { d: ICONS.users, stroke: 'none', fill: ERROR_COLOR, refX: 14, refY: 12, transform: 'scale(0.020)' },
     label: { text: 'Select agent', refX: '55%', refY: '50%', textAnchor: 'middle', textVerticalAnchor: 'middle', fill: ERROR_COLOR, fontFamily: FONT_FAMILY, fontSize: 13, fontWeight: '600' },
   },
   markup: [

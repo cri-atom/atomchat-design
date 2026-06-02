@@ -8,13 +8,12 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AbIconComponent } from '../../../../../../my-lib/public-api';
+import { AbIconComponent, AtomStatusBadgeComponent } from '../../../../../../my-lib/public-api';
 import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 import {
   CitasFilterDropdownComponent,
   type CitasFilterOption,
 } from '../shared/citas-filter-dropdown.component';
-import { CitasStatusBadgeComponent } from '../shared/citas-status-badge.component';
 import { CitasTablePaginationComponent } from '../shared/citas-table-pagination.component';
 import { CitasToolbarSearchComponent } from '../shared/citas-toolbar-search.component';
 import { CitasUsuarioTipoBadgeComponent } from '../shared/citas-usuario-tipo-badge.component';
@@ -51,7 +50,7 @@ const ESTADO_OPTIONS: CitasFilterOption<'todos' | CalendarioUsuarioEstado>[] = [
     CitasFilterDropdownComponent,
     AbIconComponent,
     CitasUsuarioTipoBadgeComponent,
-    CitasStatusBadgeComponent,
+    AtomStatusBadgeComponent,
     CitasTablePaginationComponent,
     CalendariosActionsMenuComponent,
     MatTooltipModule,

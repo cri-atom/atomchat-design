@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostListener, signal } from '@angular/core';
-import { AbIconComponent } from '../../../../../../my-lib/public-api';
+import {
+  AtomAvatarComponent,
+  AtomButtonComponent,
+  AtomIconButtonComponent,
+  AtomStatusBadgeComponent,
+  AtomTagComponent,
+} from '../../../../../../my-lib/public-api';
 import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 import { IntegracionesCardMenuComponent } from './integraciones-card-menu.component';
 import { INTEGRACIONES_MOCK } from './integraciones.mock';
@@ -9,7 +15,15 @@ const MENU_WIDTH = 224;
 @Component({
   selector: 'app-integraciones-page',
   standalone: true,
-  imports: [AtomSectionHeadingComponent, AbIconComponent, IntegracionesCardMenuComponent],
+  imports: [
+    AtomSectionHeadingComponent,
+    AtomAvatarComponent,
+    AtomTagComponent,
+    AtomStatusBadgeComponent,
+    AtomButtonComponent,
+    AtomIconButtonComponent,
+    IntegracionesCardMenuComponent,
+  ],
   templateUrl: './integraciones-page.component.html',
   styleUrl: './integraciones-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,9 +31,9 @@ const MENU_WIDTH = 224;
 export class IntegracionesPageComponent {
   readonly integraciones = INTEGRACIONES_MOCK;
 
-  readonly menuOpen = signal(false);
+  readonly menuOpen          = signal(false);
   readonly menuIntegrationId = signal('');
-  readonly menuPosition = signal({ top: 0, left: 0 });
+  readonly menuPosition      = signal({ top: 0, left: 0 });
 
   @HostListener('document:click')
   onDocumentClick(): void {

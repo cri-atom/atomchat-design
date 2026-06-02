@@ -66,7 +66,7 @@ export const ConditionEdgeLink = dia.Link.define('agentApp.Link', {
         d: ICONS.condition,
         fill: TEXT_PRIMARY,
         stroke: 'none',
-        transform: 'translate(-60 -6) scale(1)',
+        transform: 'translate(-60 -8) scale(0.030)',
       },
       labelText: {
         fill: TEXT_PRIMARY, fontFamily: FONT_FAMILY, fontSize: 14, fontWeight: '500',

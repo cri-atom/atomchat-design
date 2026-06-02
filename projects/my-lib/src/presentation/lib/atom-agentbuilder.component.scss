@@ -49,10 +49,16 @@
     background: transparent;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: $spacing-2xs $spacing-sm;
     z-index: 20;
     flex-shrink: 0;
+  }
+
+  &__navbar-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__navbar-left {

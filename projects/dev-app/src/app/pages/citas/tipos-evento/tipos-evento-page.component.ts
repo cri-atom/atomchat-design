@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { AbIconComponent } from '../../../../../../my-lib/public-api';
+import { AbIconComponent, AtomTagComponent } from '../../../../../../my-lib/public-api';
 import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 import { CitasStatusLabelComponent } from '../shared/citas-status-label.component';
 import { CitasTablePaginationComponent } from '../shared/citas-table-pagination.component';
-import { CitasTagComponent } from '../shared/citas-tag.component';
 import { TIPOS_EVENTO_MOCK } from './tipos-evento.mock';
 
 @Component({
@@ -15,7 +14,7 @@ import { TIPOS_EVENTO_MOCK } from './tipos-evento.mock';
     AtomSectionHeadingComponent,
     AbIconComponent,
     MatButtonModule,
-    CitasTagComponent,
+    AtomTagComponent,
     CitasStatusLabelComponent,
     CitasTablePaginationComponent,
   ],

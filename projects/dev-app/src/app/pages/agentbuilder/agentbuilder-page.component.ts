@@ -1,22 +1,25 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AtomAgentBuilderComponent, FlowAgentModeData } from '../../../../../my-lib/public-api';
 import { WorkspaceModeService } from '../../workspace/workspace-mode.service';
+import { WorkspaceSwitcherComponent } from '../../workspace/workspace-switcher.component';
 
 @Component({
   selector: 'app-agentbuilder-page',
   standalone: true,
-  imports: [AtomAgentBuilderComponent],
+  imports: [AtomAgentBuilderComponent, WorkspaceSwitcherComponent],
   template: `
     <atom-agentbuilder
       class="agentbuilder-page"
-      [hideChrome]="true"
       [workspaceMode]="workspace.mode()"
       [flowAgentModeData]="modeData"
       [user]="user"
       (unsavedChanges)="onUnsavedChanges($event)"
-    />
+    >
+      <app-workspace-switcher />
+    </atom-agentbuilder>
   `,
   styleUrl: './agentbuilder-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgentBuilderPageComponent {
   readonly workspace = inject(WorkspaceModeService);
