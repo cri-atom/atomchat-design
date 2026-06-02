@@ -12,7 +12,7 @@ export class ShellNavService {
   readonly url = signal(this.router.url);
   readonly railCollapsed = signal(false);
   private readonly expandedModules = signal<ReadonlySet<string>>(
-    new Set(['citas', 'campanas']),
+    new Set(['plataforma', 'citas', 'campanas']),
   );
 
   readonly hideSecondary = computed(() => CANVAS_ROUTE_PATTERN.test(this.url()));

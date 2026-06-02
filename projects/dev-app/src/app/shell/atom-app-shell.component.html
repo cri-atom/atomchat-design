@@ -1,8 +1,12 @@
 <div class="atom-shell">
-  <atom-primary-sidebar />
+  @if (!shellNav.hideSecondary()) {
+    <atom-primary-sidebar />
+  }
 
   <div class="atom-shell__main">
-    <atom-header />
+    @if (!shellNav.hideSecondary()) {
+      <atom-header />
+    }
 
     <div class="atom-shell__section">
       @if (!shellNav.hideSecondary()) {

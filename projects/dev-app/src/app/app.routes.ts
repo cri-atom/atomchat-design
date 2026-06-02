@@ -8,6 +8,7 @@ import { MonitorHumanReviewComponent } from './pages/monitor/monitor-human-revie
 import { MonitorPageComponent } from './pages/monitor/monitor-page.component';
 import { MonitorPlaygroundComponent } from './pages/monitor/monitor-playground.component';
 import { CalendariosPageComponent } from './pages/citas/calendarios/calendarios-page.component';
+import { IntegracionesPageComponent } from './pages/plataforma/integraciones/integraciones-page.component';
 import { CrearEventoPageComponent } from './pages/citas/tipos-evento/crear-evento-page.component';
 import { TiposEventoPageComponent } from './pages/citas/tipos-evento/tipos-evento-page.component';
 import { AtomAppShellComponent } from './shell/atom-app-shell.component';
@@ -40,7 +41,29 @@ export const routes: Routes = [
       { path: 'historial', component: AtomPlaceholderPageComponent, ...ph('Historial') },
       { path: 'ajustes', component: AtomPlaceholderPageComponent, ...ph('Ajustes') },
 
-      { path: 'plataforma', component: AtomPlaceholderPageComponent, ...ph('Plataforma', 'Configuración general de la plataforma') },
+      {
+        path: 'plataforma',
+        children: [
+          { path: '', redirectTo: 'bots', pathMatch: 'full' },
+          { path: 'bots', component: AtomPlaceholderPageComponent, ...ph('Bots', 'Gestión de bots de la plataforma') },
+          { path: 'canales', component: AtomPlaceholderPageComponent, ...ph('Canales', 'Canales de comunicación') },
+          {
+            path: 'integraciones',
+            children: [
+              { path: '', component: IntegracionesPageComponent },
+              { path: ':id/conectar', component: AtomPlaceholderPageComponent, ...ph('Conectar') },
+              { path: ':id/conectada', component: AtomPlaceholderPageComponent, ...ph('Conectada') },
+              { path: ':id/configuracion-pendiente', component: AtomPlaceholderPageComponent, ...ph('Configuración pendiente') },
+              { path: ':id/con-error', component: AtomPlaceholderPageComponent, ...ph('Con error') },
+              { path: ':id/oneclick', component: AtomPlaceholderPageComponent, ...ph('Oneclick') },
+              { path: ':id/configurar', component: AtomPlaceholderPageComponent, ...ph('Configurar') },
+              { path: ':id/eliminar-conexion', component: AtomPlaceholderPageComponent, ...ph('Eliminar conexión') },
+            ],
+          },
+          { path: 'mm-lite', component: AtomPlaceholderPageComponent, ...ph('MM Lite', 'Módulo MM Lite') },
+          { path: 'portafolio-meta', component: AtomPlaceholderPageComponent, ...ph('Portafolio de Meta', 'Portafolio de productos Meta') },
+        ],
+      },
       { path: 'llamadas', component: AtomPlaceholderPageComponent, ...ph('Llamadas', 'Gestión de llamadas') },
       { path: 'mensajeria', component: AtomPlaceholderPageComponent, ...ph('Mensajería', 'Canales de mensajería') },
       {

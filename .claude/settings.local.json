@@ -18,7 +18,8 @@
       "Bash(grep:*)",
       "Bash(git -C /c/dev/atom-agentbuilder log --oneline projects/my-lib/src/presentation/inspector/views/global-settings-view/)",
       "Read(//c/lab/agentbuilder//**)",
-      "Read(//c/lab/agentbuilder/**)"
+      "Read(//c/lab/agentbuilder/**)",
+      "mcp__plugin_figma_figma__get_design_context"
     ]
   },
   "spinnerTipsEnabled": false

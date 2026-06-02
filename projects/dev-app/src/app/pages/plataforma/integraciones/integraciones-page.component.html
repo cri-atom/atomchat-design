@@ -1,0 +1,59 @@
+<atom-section-heading
+  title="Integraciones"
+  description="Configura tus integraciones para realizar conexiones entre cada conversación y tus CRM de preferencia."
+/>
+
+<div class="integraciones">
+  <div class="integraciones__grid">
+    @for (item of integraciones; track item.id) {
+      <div class="integraciones__card">
+        <div class="integraciones__card-header">
+          <div class="integraciones__card-info">
+            <div
+              class="integraciones__logo-wrap"
+              [class.integraciones__logo-wrap--colored]="!!item.logoBgColor"
+              [style.background-color]="item.logoBgColor ?? null"
+            >
+              <img class="integraciones__logo" [src]="item.logoUrl" [alt]="item.name" />
+            </div>
+            <div class="integraciones__card-meta">
+              <span class="integraciones__card-name">{{ item.name }}</span>
+              <span class="integraciones__card-tag">{{ item.category }}</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="integraciones__menu-btn"
+            [title]="'Opciones de ' + item.name"
+            aria-label="Más opciones"
+            (click)="openMenu($event, item.id)"
+          >
+            <ab-icon name="ellipsis-vertical" variant="regular" size="sm" />
+          </button>
+        </div>
+
+        <div class="integraciones__card-body">
+          <p class="integraciones__card-desc">{{ item.description }}</p>
+        </div>
+
+        <div class="integraciones__card-footer">
+          @if (item.status === 'conectado') {
+            <span class="integraciones__status integraciones__status--connected">
+              <ab-icon name="circle-check" variant="regular" size="sm" />
+              Conectado
+            </span>
+          } @else {
+            <button type="button" class="integraciones__connect-btn">Conectar</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<app-integraciones-card-menu
+  [open]="menuOpen()"
+  [position]="menuPosition()"
+  [integrationId]="menuIntegrationId()"
+  (closed)="closeMenu()"
+/>
