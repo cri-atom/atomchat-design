@@ -1,20 +1,27 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { MONITOR_KPIS } from './monitor-mock.data';
-import { MonitorKpiCardComponent } from './shared/monitor-kpi-card.component';
-import { MonitorBarChartComponent } from './shared/monitor-bar-chart.component';
-import { MonitorDoughnutChartComponent } from './shared/monitor-doughnut-chart.component';
-import { MonitorLineChartComponent } from './shared/monitor-line-chart.component';
-import { MonitorSegmentedControlComponent } from './shared/monitor-segmented-control.component';
+import {
+  AtomBarChartComponent,
+  AtomDoughnutChartComponent,
+  AtomKpiCardComponent,
+  AtomLineChartComponent,
+  AtomSegmentedControlComponent,
+} from '../../../../../my-lib/public-api';
+import {
+  CLOSURE_REASONS,
+  COST_BY_MODEL_LABELS, COST_BY_MODEL_VALUES,
+  LATENCY_CHART_LABELS, LATENCY_CHART_VALUES,
+  MONITOR_KPIS,
+} from './monitor-mock.data';
 
 @Component({
   selector: 'app-monitor-dashboard',
   standalone: true,
   imports: [
-    MonitorKpiCardComponent,
-    MonitorSegmentedControlComponent,
-    MonitorLineChartComponent,
-    MonitorBarChartComponent,
-    MonitorDoughnutChartComponent,
+    AtomKpiCardComponent,
+    AtomSegmentedControlComponent,
+    AtomLineChartComponent,
+    AtomBarChartComponent,
+    AtomDoughnutChartComponent,
   ],
   templateUrl: './monitor-dashboard.component.html',
   styleUrl: './monitor-dashboard.component.scss',
@@ -26,6 +33,11 @@ import { MonitorSegmentedControlComponent } from './shared/monitor-segmented-con
 export class MonitorDashboardComponent {
   readonly embedded = input(false);
   readonly kpis = MONITOR_KPIS;
+  readonly latencyLabels = LATENCY_CHART_LABELS;
+  readonly latencyValues = LATENCY_CHART_VALUES;
+  readonly costLabels    = COST_BY_MODEL_LABELS;
+  readonly costValues    = COST_BY_MODEL_VALUES;
+  readonly closureData   = CLOSURE_REASONS;
   timeRange = '7d';
   readonly timeOptions = [
     { id: '24h', label: '24h' },

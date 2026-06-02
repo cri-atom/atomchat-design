@@ -8,15 +8,16 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AbIconComponent, AtomStatusBadgeComponent } from '../../../../../../my-lib/public-api';
-import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 import {
-  CitasFilterDropdownComponent,
-  type CitasFilterOption,
-} from '../shared/citas-filter-dropdown.component';
-import { CitasTablePaginationComponent } from '../shared/citas-table-pagination.component';
-import { CitasToolbarSearchComponent } from '../shared/citas-toolbar-search.component';
-import { CitasUsuarioTipoBadgeComponent } from '../shared/citas-usuario-tipo-badge.component';
+  AbIconComponent,
+  AtomFilterDropdownComponent,
+  type AtomFilterOption,
+  AtomPaginationComponent,
+  AtomSearchInputComponent,
+  AtomStatusBadgeComponent,
+  AtomUserTypeBadgeComponent,
+} from '../../../../../../my-lib/public-api';
+import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 import { CalendariosActionsMenuComponent } from './calendarios-actions-menu.component';
 import type {
   CalendarioUsuarioEstado,
@@ -29,13 +30,13 @@ import { CalendariosDesactivarDialogComponent } from './dialogs/calendarios-desa
 import { CalendariosDisponibilidadDialogComponent } from './dialogs/calendarios-disponibilidad-dialog.component';
 import { CalendariosEditUsuarioDialogComponent } from './dialogs/calendarios-edit-usuario-dialog.component';
 
-const TIPO_OPTIONS: CitasFilterOption<'todos' | CalendarioUsuarioTipo>[] = [
+const TIPO_OPTIONS: AtomFilterOption<'todos' | CalendarioUsuarioTipo>[] = [
   { value: 'todos', label: 'Todos los tipos' },
   { value: 'interno', label: 'Usuarios Internos (A)' },
   { value: 'externo', label: 'Usuarios Externos (E)' },
 ];
 
-const ESTADO_OPTIONS: CitasFilterOption<'todos' | CalendarioUsuarioEstado>[] = [
+const ESTADO_OPTIONS: AtomFilterOption<'todos' | CalendarioUsuarioEstado>[] = [
   { value: 'todos', label: 'Todos los estados' },
   { value: 'activo', label: 'Activo' },
   { value: 'desactivado', label: 'Desactivado' },
@@ -46,12 +47,12 @@ const ESTADO_OPTIONS: CitasFilterOption<'todos' | CalendarioUsuarioEstado>[] = [
   standalone: true,
   imports: [
     AtomSectionHeadingComponent,
-    CitasToolbarSearchComponent,
-    CitasFilterDropdownComponent,
+    AtomSearchInputComponent,
+    AtomFilterDropdownComponent,
     AbIconComponent,
-    CitasUsuarioTipoBadgeComponent,
+    AtomUserTypeBadgeComponent,
     AtomStatusBadgeComponent,
-    CitasTablePaginationComponent,
+    AtomPaginationComponent,
     CalendariosActionsMenuComponent,
     MatTooltipModule,
   ],

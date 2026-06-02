@@ -6,14 +6,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  AtomAvailabilityEditorComponent,
+  AtomModalStepperComponent,
+} from '../../../../../../../my-lib/public-api';
 import { CalendariosStateService } from '../calendarios-state.service';
 import {
   createDefaultDisponibilidad,
   GRUPOS_ATOM,
   type CalendarioDisponibilidad,
 } from '../calendario-usuario.model';
-import { CitasModalStepperComponent } from '../../shared/citas-modal-stepper.component';
-import { CitasWeeklyAvailabilityEditorComponent } from '../../shared/citas-weekly-availability-editor.component';
+
+
 
 @Component({
   selector: 'app-calendarios-create-usuario-dialog',
@@ -26,8 +30,8 @@ import { CitasWeeklyAvailabilityEditorComponent } from '../../shared/citas-weekl
     MatInputModule,
     MatSelectModule,
     MatSnackBarModule,
-    CitasModalStepperComponent,
-    CitasWeeklyAvailabilityEditorComponent,
+    AtomModalStepperComponent,
+    AtomAvailabilityEditorComponent,
   ],
   template: `
     <div class="citas-dialog">
@@ -43,7 +47,7 @@ import { CitasWeeklyAvailabilityEditorComponent } from '../../shared/citas-weekl
         </button>
       </header>
 
-      <citas-modal-stepper
+      <atom-modal-stepper
         [activeStep]="step"
         [totalSteps]="2"
         [stepLabel]="step === 1 ? 'Paso 1 de 2: Información básica' : 'Paso 2 de 2: Disponibilidad semanal'"
@@ -111,7 +115,7 @@ import { CitasWeeklyAvailabilityEditorComponent } from '../../shared/citas-weekl
             </mat-form-field>
           </form>
         } @else {
-          <citas-weekly-availability-editor [formControl]="disponibilidadControl" />
+          <atom-availability-editor [formControl]="disponibilidadControl" />
         }
       </div>
 

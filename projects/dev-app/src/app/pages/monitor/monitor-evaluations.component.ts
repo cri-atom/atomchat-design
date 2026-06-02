@@ -2,14 +2,14 @@ import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { EVALUATION_ROWS } from './monitor-mock.data';
-import { MonitorChipComponent } from './shared/monitor-chip.component';
+import { AtomChipComponent } from '../../../../../my-lib/public-api';
 
 export type EvaluationsViewMode = 'table' | 'cards';
 
 @Component({
   selector: 'app-monitor-evaluations',
   standalone: true,
-  imports: [DecimalPipe, KeyValuePipe, MatSidenavModule, MonitorChipComponent],
+  imports: [DecimalPipe, KeyValuePipe, MatSidenavModule, AtomChipComponent],
   templateUrl: './monitor-evaluations.component.html',
   styleUrl: './monitor-evaluations.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

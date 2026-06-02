@@ -3,13 +3,14 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AtomAvailabilityEditorComponent } from '../../../../../../../my-lib/public-api';
 import {
   createDefaultDisponibilidad,
   type CalendarioDisponibilidad,
   type CalendarioUsuarioRow,
 } from '../calendario-usuario.model';
 import { CalendariosStateService } from '../calendarios-state.service';
-import { CitasWeeklyAvailabilityEditorComponent } from '../../shared/citas-weekly-availability-editor.component';
+
 
 export interface DisponibilidadDialogData {
   user: CalendarioUsuarioRow;
@@ -23,7 +24,7 @@ export interface DisponibilidadDialogData {
     MatDialogModule,
     MatButtonModule,
     MatSnackBarModule,
-    CitasWeeklyAvailabilityEditorComponent,
+    AtomAvailabilityEditorComponent,
   ],
   template: `
     <div class="citas-dialog">
@@ -41,7 +42,7 @@ export interface DisponibilidadDialogData {
       </header>
 
       <div class="citas-dialog__body">
-        <citas-weekly-availability-editor [formControl]="disponibilidadControl" />
+        <atom-availability-editor [formControl]="disponibilidadControl" />
       </div>
 
       <footer class="citas-dialog__footer citas-dialog__footer--end">

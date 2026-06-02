@@ -41,7 +41,7 @@
               <tr>
                 <td>{{ row.name }}</td>
                 <td>
-                  <app-monitor-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</app-monitor-chip>
+                  <atom-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</atom-chip>
                 </td>
                 <td>{{ row.cases }}</td>
                 <td>
@@ -51,7 +51,7 @@
                   </div>
                 </td>
                 <td>
-                  <app-monitor-chip variant="success">{{ row.status }}</app-monitor-chip>
+                  <atom-chip variant="success">{{ row.status }}</atom-chip>
                 </td>
                 <td>{{ row.date }}</td>
               </tr>
@@ -65,7 +65,7 @@
           <article class="eval-card">
             <header class="eval-card__header">
               <h3 class="eval-card__title">{{ row.name }}</h3>
-              <app-monitor-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</app-monitor-chip>
+              <atom-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</atom-chip>
             </header>
             <dl class="eval-card__stats">
               <div>
@@ -81,7 +81,7 @@
               </div>
               <div>
                 <dt>Estado</dt>
-                <dd><app-monitor-chip variant="success">{{ row.status }}</app-monitor-chip></dd>
+                <dd><atom-chip variant="success">{{ row.status }}</atom-chip></dd>
               </div>
               <div>
                 <dt>Fecha</dt>

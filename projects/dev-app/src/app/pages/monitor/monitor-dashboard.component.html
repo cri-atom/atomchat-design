@@ -1,27 +1,27 @@
 <div class="dashboard">
   <div class="dashboard__toolbar">
-    <app-monitor-segmented-control [options]="timeOptions" [(value)]="timeRange" />
+    <atom-segmented-control [options]="timeOptions" [(value)]="timeRange" />
   </div>
 
   <div class="dashboard__kpis">
     @for (kpi of kpis; track kpi.title) {
-      <app-monitor-kpi-card [kpi]="kpi" />
+      <atom-kpi-card [kpi]="kpi" />
     }
   </div>
 
   <section class="dashboard__card dashboard__card--wide">
     <h2 class="dashboard__card-title">Latencia en los últimos 7 días</h2>
-    <app-monitor-line-chart [height]="embedded() ? '100px' : '160px'" />
+    <atom-line-chart [labels]="latencyLabels" [values]="latencyValues" [height]="embedded() ? '100px' : '160px'" />
   </section>
 
   <div class="dashboard__row-2">
     <section class="dashboard__card">
       <h2 class="dashboard__card-title">Costo por modelo</h2>
-      <app-monitor-bar-chart />
+      <atom-bar-chart [labels]="costLabels" [values]="costValues" />
     </section>
     <section class="dashboard__card">
       <h2 class="dashboard__card-title">Motivos de cierre</h2>
-      <app-monitor-doughnut-chart />
+      <atom-doughnut-chart [reasons]="closureData" />
     </section>
   </div>
 </div>

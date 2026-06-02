@@ -1,13 +1,13 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { EVALUATION_ROWS } from './monitor-mock.data';
-import { MonitorChipComponent } from './shared/monitor-chip.component';
+import { AtomChipComponent } from '../../../../../my-lib/public-api';
 import { WorkspaceModeService } from '../../workspace/workspace-mode.service';
 
 @Component({
   selector: 'app-monitor-evaluations-list',
   standalone: true,
-  imports: [DecimalPipe, MonitorChipComponent],
+  imports: [DecimalPipe, AtomChipComponent],
   template: `
     <div class="eval-list">
       <header class="eval-list__header">
@@ -20,12 +20,12 @@ import { WorkspaceModeService } from '../../workspace/workspace-mode.service';
           <li class="eval-list__item">
             <div class="eval-list__item-top">
               <strong>{{ row.name }}</strong>
-              <app-monitor-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</app-monitor-chip>
+              <atom-chip [variant]="chipVariant(row.origin)">{{ row.origin }}</atom-chip>
             </div>
             <div class="eval-list__meta">
               <span>{{ row.cases }} casos</span>
               <span>Score {{ row.score | number: '1.0%' }}</span>
-              <app-monitor-chip variant="success">{{ row.status }}</app-monitor-chip>
+              <atom-chip variant="success">{{ row.status }}</atom-chip>
             </div>
             <span class="eval-list__date">{{ row.date }}</span>
           </li>

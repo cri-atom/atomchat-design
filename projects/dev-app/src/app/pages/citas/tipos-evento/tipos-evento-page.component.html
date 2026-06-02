@@ -28,7 +28,7 @@
             <td class="tipos-evento__col-evento">{{ row.nombre }}</td>
             <td>{{ row.duracion }}</td>
             <td class="tipos-evento__col-center"><atom-tag [label]="row.grupo" /></td>
-            <td class="tipos-evento__col-center"><citas-status-label [status]="row.status" /></td>
+            <td class="tipos-evento__col-center"><atom-status-label [variant]="row.status" /></td>
             <td class="tipos-evento__col-actions">
               <button type="button" class="tipos-evento__menu-btn" aria-label="Acciones">
                 <ab-icon name="ellipsis-vertical" variant="regular" size="sm" />
@@ -40,7 +40,7 @@
     </table>
   </div>
 
-  <citas-table-pagination
+  <atom-pagination
     mode="pages"
     [page]="1"
     [totalPages]="5"

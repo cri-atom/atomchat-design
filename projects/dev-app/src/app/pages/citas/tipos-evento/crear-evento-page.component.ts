@@ -4,11 +4,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { CitasFormCardComponent } from '../shared/citas-form-card.component';
-import { CitasPageHeadingComponent } from '../shared/citas-page-heading.component';
-import { CitasStepperComponent, type CitasStepperStep } from '../shared/citas-stepper.component';
+import {
+  AtomCardComponent,
+  AtomStepperComponent,
+  type AtomStepperStep,
+} from '../../../../../../my-lib/public-api';
+import { AtomSectionHeadingComponent } from '../../../shell/atom-section-heading.component';
 
-const STEPS: CitasStepperStep[] = [
+const STEPS: AtomStepperStep[] = [
   { id: 'identificacion', label: 'Identificación de evento' },
   { id: 'disponibilidad', label: 'Disponibilidad' },
   { id: 'limites', label: 'Límites' },
@@ -23,9 +26,9 @@ const STEPS: CitasStepperStep[] = [
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    CitasPageHeadingComponent,
-    CitasStepperComponent,
-    CitasFormCardComponent,
+    AtomSectionHeadingComponent,
+    AtomStepperComponent,
+    AtomCardComponent,
   ],
   templateUrl: './crear-evento-page.component.html',
   styleUrl: './crear-evento-page.component.scss',

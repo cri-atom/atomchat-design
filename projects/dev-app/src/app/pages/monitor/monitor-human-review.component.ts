@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AbIconComponent } from '../../../../../my-lib/public-api';
+import { AbIconComponent, AtomChatBubbleComponent } from '../../../../../my-lib/public-api';
 import { REVIEW_CASES, REVIEW_CHAT } from './monitor-mock.data';
-import { MonitorChatBubbleComponent } from './shared/monitor-chat-bubble.component';
 import {
   MonitorSuggestionDialogComponent,
   type SuggestionDialogData,
@@ -14,7 +13,7 @@ import { WorkspaceModeService } from '../../workspace/workspace-mode.service';
 @Component({
   selector: 'app-monitor-human-review',
   standalone: true,
-  imports: [AbIconComponent, MatDialogModule, MonitorChatBubbleComponent],
+  imports: [AbIconComponent, MatDialogModule, AtomChatBubbleComponent],
   templateUrl: './monitor-human-review.component.html',
   styleUrl: './monitor-human-review.component.scss',
   host: {

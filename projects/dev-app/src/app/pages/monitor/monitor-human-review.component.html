@@ -55,7 +55,7 @@
     } @else {
       <div class="review__chat">
         @for (msg of chat; track $index) {
-          <app-monitor-chat-bubble [role]="msg.role" [text]="msg.text" />
+          <atom-chat-bubble [role]="msg.role" [text]="msg.text" />
         }
       </div>
       <aside class="review__actions">

@@ -1,10 +1,10 @@
-<citas-page-heading title="Crear evento" [showBack]="true" (back)="goBack()" />
+<atom-section-heading title="Crear evento" [showBack]="true" (back)="goBack()" />
 
-<citas-stepper [steps]="steps" [activeIndex]="0" />
+<atom-stepper [steps]="steps" [activeIndex]="0" />
 
 <div class="crear-evento__body">
   <form class="crear-evento__form" [formGroup]="form">
-    <citas-form-card title="Identificación">
+    <atom-card title="Identificación">
       <mat-form-field appearance="outline" class="crear-evento__field">
         <mat-label>Nombre de evento</mat-label>
         <input matInput formControlName="nombre" placeholder="Ej. Visita Local A" />
@@ -18,9 +18,9 @@
           placeholder="Ej. Sesión de 30 minutos"
         ></textarea>
       </mat-form-field>
-    </citas-form-card>
+    </atom-card>
 
-    <citas-form-card title="Asignación">
+    <atom-card title="Asignación">
       <div class="crear-evento__row">
         <mat-form-field appearance="outline" class="crear-evento__field">
           <mat-label>Canal</mat-label>
@@ -39,9 +39,9 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </citas-form-card>
+    </atom-card>
 
-    <citas-form-card title="Tiempo">
+    <atom-card title="Tiempo">
       <div class="crear-evento__row crear-evento__row--end">
         <mat-form-field appearance="outline" class="crear-evento__field">
           <mat-label>Duración</mat-label>
@@ -55,6 +55,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </citas-form-card>
+    </atom-card>
   </form>
 </div>

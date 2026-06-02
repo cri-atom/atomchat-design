@@ -6,18 +6,18 @@
 <div class="calendarios">
   <div class="calendarios__toolbar">
     <div class="calendarios__tools">
-      <citas-toolbar-search
+      <atom-search-input
         placeholder="Buscar por nombre o correo..."
         [value]="filters().search"
         (searchChange)="onSearchChange($event)"
       />
-      <citas-filter-dropdown
+      <atom-filter-dropdown
         icon="shapes"
         [options]="tipoOptions"
         [value]="filters().tipo"
         (valueChange)="onTipoChange($event)"
       />
-      <citas-filter-dropdown
+      <atom-filter-dropdown
         icon="list-check"
         [options]="estadoOptions"
         [value]="filters().estado"
@@ -60,7 +60,7 @@
           @for (row of rows(); track row.id) {
             <tr class="calendarios__row">
               <td class="calendarios__col-tipo">
-                <citas-usuario-tipo-badge [tipo]="row.tipo" />
+                <atom-user-type-badge [tipo]="row.tipo" />
               </td>
               <td class="calendarios__col-name calendarios__name">{{ row.nombre }}</td>
               <td class="calendarios__phone">{{ row.telefono }}</td>
@@ -99,7 +99,7 @@
     </table>
   </div>
 
-  <citas-table-pagination
+  <atom-pagination
     mode="range"
     [pageSize]="10"
     [rangeLabel]="rangeLabel()"
